@@ -50,6 +50,12 @@ namespace Core
             SetState(GameState.GameOver);
         }
 
+        public void RestartGame()
+        {
+            SceneLoader.Instance.Reload();
+            StartGame();
+        }
+
         public void BackToMenu()
         {
             Time.timeScale = 1f;
