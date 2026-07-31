@@ -33,6 +33,8 @@ namespace Game.EditorTools
             CreateBrush("GoalItemBrush", goalItem);
             CreateBrush("CheckpointBrush", checkpoint);
 
+            CreatePlayerPrefab();
+
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             Debug.Log("[Game] 스테이지 툴링 에셋 생성 완료 (타일/팔레트/프리팹/브러시)");
@@ -109,6 +111,46 @@ namespace Game.EditorTools
             var prefab = PrefabUtility.SaveAsPrefabAsset(go, path);
             Object.DestroyImmediate(go);
             return prefab;
+        }
+
+        private static void CreatePlayerPrefab()
+        {
+            const string resourcesDir = "Assets/Game/Resources";
+            const string playerPath = "Assets/Game/Resources/Player.prefab";
+            const string materialPath = "Assets/Game/Resources/PlayerPhysics.physicsMaterial2D";
+
+            EnsureFolder(resourcesDir);
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(playerPath) != null) return;
+
+            var material = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>(materialPath);
+            if (material == null)
+            {
+                material = new PhysicsMaterial2D("PlayerPhysics") { friction = 0f, bounciness = 0f };
+                AssetDatabase.CreateAsset(material, materialPath);
+            }
+
+            var go = new GameObject("Player");
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
+            sr.color = new Color(0.4f, 0.85f, 0.35f); // 카멜레온 기본색
+            sr.sortingOrder = 20;
+
+            var body = go.AddComponent<Rigidbody2D>();
+            body.freezeRotation = true;
+            body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            body.interpolation = RigidbodyInterpolation2D.Interpolate;
+
+            var collider = go.AddComponent<CircleCollider2D>();
+            collider.radius = 0.35f;
+            collider.sharedMaterial = material;
+
+            go.AddComponent<PlayerStats>();
+            go.AddComponent<Player>();
+            go.AddComponent<PlayerMovement>();
+            go.AddComponent<PlayerBounce>();
+
+            PrefabUtility.SaveAsPrefabAsset(go, playerPath);
+            Object.DestroyImmediate(go);
         }
 
         private static void CreateBrush(string name, GameObject prefab)

@@ -32,6 +32,36 @@ namespace Game
         public int TotalGoalItemCount => totalGoalItemCount;
         public int RequiredGoalItemCount => requiredGoalItemCount;
 
+        private void Start()
+        {
+            SpawnPlayer();
+        }
+
+        // Resources/Player.prefab을 시작 위치에 스폰하고 카메라를 연결한다.
+        // 씬에 플레이어를 수동 배치할 필요가 없다.
+        private void SpawnPlayer()
+        {
+            if (UnityEngine.Object.FindFirstObjectByType<Player>() != null) return;
+
+            var prefab = Resources.Load<GameObject>("Player");
+            if (prefab == null)
+            {
+                Debug.LogWarning("[Game] Resources/Player.prefab이 없습니다. Game > Setup Stage Tooling을 실행하세요.");
+                return;
+            }
+
+            var spawnAt = startPosition != null ? startPosition.position : Vector3.zero;
+            var player = Instantiate(prefab, spawnAt, Quaternion.identity);
+
+            var cam = Camera.main;
+            if (cam != null)
+            {
+                var follow = cam.GetComponent<CameraFollow>();
+                if (follow == null) follow = cam.gameObject.AddComponent<CameraFollow>();
+                follow.Init(player.transform, this);
+            }
+        }
+
         public void SetBounds(float minX, float maxX, float minY, float maxY, float fallLimitY)
         {
             stageMinX = minX;
