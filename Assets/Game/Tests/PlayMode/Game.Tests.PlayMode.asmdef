@@ -1,0 +1,17 @@
+{
+    "name": "Game.Tests.PlayMode",
+    "rootNamespace": "Game.Tests",
+    "references": [
+        "Game",
+        "Core",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "overrideReferences": true
+}
