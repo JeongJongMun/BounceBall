@@ -1,0 +1,8 @@
+{
+    "name": "Game",
+    "rootNamespace": "Game",
+    "references": [
+        "Core"
+    ],
+    "autoReferenced": true
+}
