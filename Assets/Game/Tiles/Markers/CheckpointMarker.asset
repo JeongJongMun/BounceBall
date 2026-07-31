@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game::Game.PrefabMarkerTile
   prefab: {fileID: 8867948408819232915, guid: 8c188f12d7069204ba1ada345921698e, type: 3}
   previewSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  previewColor: {r: 0.3, g: 0.9, b: 0.45, a: 1}
+  previewColor: {r: 1, g: 0.4, b: 0.75, a: 1}

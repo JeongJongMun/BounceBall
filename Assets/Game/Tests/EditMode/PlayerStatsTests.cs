@@ -20,30 +20,26 @@ namespace Game.Tests
         }
 
         [Test]
-        public void 배율_기본값은_1이라_기본값이_그대로_나온다()
+        public void 공용_점프값은_감소_일반_증가_순으로_커진다()
         {
-            Assert.AreEqual(12f, _stats.JumpForce);
-            Assert.AreEqual(7f, _stats.MoveSpeed);
-            Assert.AreEqual(3f, _stats.GravityScale);
+            // 기획 §4: 점프 감소 < 일반 점프 < 점프 증가
+            Assert.Less(_stats.LowJumpForce, _stats.NormalJumpForce);
+            Assert.Less(_stats.NormalJumpForce, _stats.HighJumpForce);
         }
 
         [Test]
-        public void 배율_적용_시_곱셈_결과가_나온다()
+        public void 상호작용_결과에_맞는_공용_점프값을_돌려준다()
         {
-            _stats.SetMultipliers(jump: 1.5f, move: 0.5f, gravity: 2f, airControlMult: 0.25f);
-            Assert.AreEqual(12f * 1.5f, _stats.JumpForce);
-            Assert.AreEqual(7f * 0.5f, _stats.MoveSpeed);
-            Assert.AreEqual(3f * 2f, _stats.GravityScale);
-            Assert.AreEqual(0.8f * 0.25f, _stats.AirControl, 0.0001f);
+            Assert.AreEqual(_stats.NormalJumpForce, _stats.GetJumpForce(PropertyInteractionType.NormalJump));
+            Assert.AreEqual(_stats.LowJumpForce, _stats.GetJumpForce(PropertyInteractionType.LowJump));
+            Assert.AreEqual(_stats.HighJumpForce, _stats.GetJumpForce(PropertyInteractionType.HighJump));
         }
 
         [Test]
-        public void ResetMultipliers_후_기본값으로_복귀한다()
+        public void 미끄러짐은_일반_점프값을_쓴다()
         {
-            _stats.SetMultipliers(2f, 2f, 2f, 2f);
-            _stats.ResetMultipliers();
-            Assert.AreEqual(12f, _stats.JumpForce);
-            Assert.AreEqual(7f, _stats.MoveSpeed);
+            // 기획 §6.1: 얼음 타일 착지 시에는 공용 일반 점프를 적용한다
+            Assert.AreEqual(_stats.NormalJumpForce, _stats.GetJumpForce(PropertyInteractionType.Slide));
         }
     }
 }

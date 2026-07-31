@@ -84,7 +84,7 @@ namespace Game.EditorTools
             Debug.Log($"[Game] 메인 메뉴 씬 생성 완료: {MenuScenePath}");
         }
 
-        private static TextMeshProUGUI CreateText(Transform parent, string name, string content, float fontSize)
+        internal static TextMeshProUGUI CreateText(Transform parent, string name, string content, float fontSize)
         {
             var rt = new GameObject(name, typeof(RectTransform)).GetComponent<RectTransform>();
             rt.SetParent(parent, false);
@@ -96,7 +96,7 @@ namespace Game.EditorTools
             return tmp;
         }
 
-        private static Button CreateButton(Transform parent, string name, string label)
+        internal static Button CreateButton(Transform parent, string name, string label)
         {
             var rt = new GameObject(name, typeof(RectTransform)).GetComponent<RectTransform>();
             rt.SetParent(parent, false);

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -7,40 +6,25 @@ namespace Game.Tests
 {
     public class SpecialTileTests
     {
-        private SpecialTile CreateTile(params SpecialTile.Reaction[] reactions)
+        private static SpecialTile CreateTile(TilePropertyType property)
         {
             var tile = ScriptableObject.CreateInstance<SpecialTile>();
-            tile.SetData("Test", new List<SpecialTile.Reaction>(reactions));
+            tile.SetTileProperty(property);
             return tile;
         }
 
         [Test]
-        public void 성질_태그와_일치하는_반응을_반환한다()
+        public void 타일_성질을_보관한다()
         {
-            var tile = CreateTile(
-                new SpecialTile.Reaction { propertyTag = "", effectId = "Default", value = 1f },
-                new SpecialTile.Reaction { propertyTag = "Rubber", effectId = "JumpMultiplier", value = 2f });
-
-            var reaction = tile.GetReaction("Rubber");
-            Assert.AreEqual("JumpMultiplier", reaction.effectId);
-            Assert.AreEqual(2f, reaction.value);
+            Assert.AreEqual(TilePropertyType.Jelly, CreateTile(TilePropertyType.Jelly).TileProperty);
+            Assert.AreEqual(TilePropertyType.Ice, CreateTile(TilePropertyType.Ice).TileProperty);
         }
 
         [Test]
-        public void 일치_태그가_없으면_기본_반응으로_폴백한다()
+        public void 기본값은_Default다()
         {
-            var tile = CreateTile(
-                new SpecialTile.Reaction { propertyTag = "", effectId = "Default", value = 1.5f });
-
-            var reaction = tile.GetReaction("Magnet");
-            Assert.AreEqual("Default", reaction.effectId);
-        }
-
-        [Test]
-        public void 반응이_없으면_null()
-        {
-            var tile = CreateTile();
-            Assert.IsNull(tile.GetReaction("Rubber"));
+            var tile = ScriptableObject.CreateInstance<SpecialTile>();
+            Assert.AreEqual(TilePropertyType.Default, tile.TileProperty);
         }
 
         [Test]
@@ -52,7 +36,7 @@ namespace Game.Tests
             mapGo.transform.SetParent(gridGo.transform);
             var tilemap = mapGo.AddComponent<Tilemap>();
 
-            var special = CreateTile(new SpecialTile.Reaction { effectId = "Default" });
+            var special = CreateTile(TilePropertyType.Jelly);
             tilemap.SetTile(new Vector3Int(2, -3, 0), special);
             StageTiles.InvalidateCache();
 
@@ -60,7 +44,7 @@ namespace Game.Tests
             var found = StageTiles.GetSpecialTileAt(new Vector2(2.5f, -2f), Vector2.up);
             Assert.AreSame(special, found);
 
-            // 다른 셀은 null
+            // 다른 셀은 null → 호출부는 TilePropertyType.Default로 취급한다
             Assert.IsNull(StageTiles.GetSpecialTileAt(new Vector2(5.5f, -2f), Vector2.up));
 
             Object.DestroyImmediate(gridGo);

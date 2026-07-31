@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: StageDatabase
   m_EditorClassIdentifier: Game::Game.StageDatabase
   stages:
+  - sceneName: Stage01
+    displayName: Stage01
+  - sceneName: Stage02
+    displayName: Stage02
   - sceneName: StageTest
     displayName: StageTest

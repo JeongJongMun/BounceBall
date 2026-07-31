@@ -16,6 +16,9 @@ GameObject:
   - component: {fileID: 7306247814573327423}
   - component: {fileID: 4506365759296888543}
   - component: {fileID: 863239501045667196}
+  - component: {fileID: 8371669652415473926}
+  - component: {fileID: 2552269633990665898}
+  - component: {fileID: 6878519923600047725}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -173,7 +176,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae04010f3be78fd4a8c4827e9d4437ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::Game.PlayerStats
-  baseJumpForce: 12
+  normalJumpForce: 11
+  lowJumpForce: 8
+  highJumpForce: 13
   gravityScale: 3
   maxFallSpeed: 20
   landingVelocityThreshold: 0.5
@@ -225,3 +230,49 @@ MonoBehaviour:
     m_Bits: 4294967295
   onPlayerBounced: {fileID: 0}
   onPlayerLanded: {fileID: 0}
+--- !u!114 &8371669652415473926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843506291825221947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb4c4838b35c32644b6ca0ec298e778e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.PlayerProperty
+  defaultProperty: {fileID: 11400000, guid: 7d1eaba3a1568b842b98c2d3c1dfb4e8, type: 2}
+  onPropertyChanged: {fileID: 0}
+--- !u!114 &2552269633990665898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843506291825221947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abdb19c50d9743440a3d580d1a646ae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.PlayerInteraction
+  readKeyboard: 1
+--- !u!114 &6878519923600047725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843506291825221947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb44fe83f87e6d0459c8fc6908c01cbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.PlayerJellyAttach
+  jellyMoveSpeed: 4
+  canFollowJellyCorner: 1
+  surfaceLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  reattachCooldown: 0.15
+  readKeyboard: 1

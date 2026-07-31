@@ -35,6 +35,8 @@ namespace Game
         private void FixedUpdate()
         {
             if (_player.State == PlayerState.Disabled) return;
+            // 부착 중 표면 이동은 PlayerJellyAttach가 담당한다 (기획 §5.4)
+            if (_player.State == PlayerState.Attached) return;
 
             var stats = _player.Stats;
             var body = _player.Body;

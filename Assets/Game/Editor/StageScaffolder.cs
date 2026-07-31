@@ -93,6 +93,8 @@ namespace Game.EditorTools
             so.FindProperty("stageId").stringValue = System.IO.Path.GetFileNameWithoutExtension(path);
             so.ApplyModifiedPropertiesWithoutUndo();
 
+            GameFlowSetup.WireStageChannels(controller);
+
             EditorSceneManager.SaveScene(scene, path);
             Debug.Log($"[Game] 스테이지 씬 생성 완료: {path}");
         }

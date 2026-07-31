@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace Core
 {
-    public enum GameState { Ready, Playing, Paused, GameOver }
+    // 값이 onGameStateChanged로 int 직렬화되어 나가므로 새 상태는 항상 뒤에 추가한다.
+    public enum GameState { Ready, Playing, Paused, GameOver, Cleared }
 
     public class GameManager : Singleton<GameManager>
     {
@@ -50,6 +51,14 @@ namespace Core
             Time.timeScale = 1f;
             if (Score > SaveData.HighScore) SaveData.HighScore = Score;
             SetState(GameState.GameOver);
+        }
+
+        // 스테이지 클리어. GameOver와 달리 실패가 아니므로 하이스코어를 저장하지 않는다.
+        public void StageClear()
+        {
+            if (State != GameState.Playing) return;
+            Time.timeScale = 1f;
+            SetState(GameState.Cleared);
         }
 
         public void RestartGame()

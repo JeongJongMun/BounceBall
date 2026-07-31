@@ -10,7 +10,9 @@ namespace Core.UI
         [SerializeField] private MainMenuScreen mainMenu;
         [SerializeField] private PauseScreen pause;
         [SerializeField] private ResultScreen result;
-        [SerializeField] private ScoreHud hud;
+        // hud/clear는 base 타입 — 게임별로 자체 화면을 꽂을 수 있게 한다 (Core가 게임 레이어를 참조하지 않도록).
+        [SerializeField] private UIScreen hud;
+        [SerializeField] private UIScreen clear;
 
         private void OnEnable()
         {
@@ -40,12 +42,14 @@ namespace Core.UI
                     if (mainMenu != null) mainMenu.Show();
                     if (pause != null) pause.Hide();
                     if (result != null) result.Hide();
+                    if (clear != null) clear.Hide();
                     if (hud != null) hud.Hide();
                     break;
                 case GameState.Playing:
                     if (mainMenu != null) mainMenu.Hide();
                     if (pause != null) pause.Hide();
                     if (result != null) result.Hide();
+                    if (clear != null) clear.Hide();
                     if (hud != null) hud.Show();
                     break;
                 case GameState.Paused:
@@ -55,6 +59,11 @@ namespace Core.UI
                     if (pause != null) pause.Hide();
                     if (hud != null) hud.Hide();
                     if (result != null) result.Show();
+                    break;
+                case GameState.Cleared:
+                    if (pause != null) pause.Hide();
+                    if (hud != null) hud.Hide();
+                    if (clear != null) clear.Show();
                     break;
             }
         }

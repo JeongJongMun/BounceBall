@@ -2,12 +2,17 @@ using UnityEngine;
 
 namespace Game
 {
-    // 플레이어 기본 물리값과 성질 배율을 분리 관리한다 (기획 §9).
-    // 최종값 = 기본값 × 배율. 배율은 Phase C에서 성질(PropertyData)이 설정한다.
+    // 플레이어 물리값 (기획 §4, §8.4).
+    // 점프력은 성질별 배율이 아니라 공용 3값을 쓴다 — 어떤 값을 쓸지는
+    // PropertyInteractionTable이 성질 × 타일 조합으로 결정한다.
     public class PlayerStats : MonoBehaviour
     {
+        [Header("공용 점프 값 (기획 §4: 감소 < 일반 < 증가)")]
+        [SerializeField] private float normalJumpForce = 12f;
+        [SerializeField] private float lowJumpForce = 8f;
+        [SerializeField] private float highJumpForce = 17f;
+
         [Header("바운스 (기획 §7.4)")]
-        [SerializeField] private float baseJumpForce = 12f;
         [SerializeField] private float gravityScale = 3f;
         [SerializeField] private float maxFallSpeed = 20f;
         [SerializeField] private float landingVelocityThreshold = 0.5f;
@@ -20,15 +25,12 @@ namespace Game
         [SerializeField] private float airControl = 0.8f;
         [SerializeField] private float directionChangePower = 2f;
 
-        private float _jumpForceMultiplier = 1f;
-        private float _moveSpeedMultiplier = 1f;
-        private float _gravityMultiplier = 1f;
-        private float _airControlMultiplier = 1f;
-
-        public float JumpForce => baseJumpForce * _jumpForceMultiplier;
-        public float MoveSpeed => moveSpeed * _moveSpeedMultiplier;
-        public float GravityScale => gravityScale * _gravityMultiplier;
-        public float AirControl => airControl * _airControlMultiplier;
+        public float NormalJumpForce => normalJumpForce;
+        public float LowJumpForce => lowJumpForce;
+        public float HighJumpForce => highJumpForce;
+        public float MoveSpeed => moveSpeed;
+        public float GravityScale => gravityScale;
+        public float AirControl => airControl;
         public float MaxFallSpeed => maxFallSpeed;
         public float LandingVelocityThreshold => landingVelocityThreshold;
         public float BounceCooldown => bounceCooldown;
@@ -36,15 +38,15 @@ namespace Game
         public float Deceleration => deceleration;
         public float DirectionChangePower => directionChangePower;
 
-        // Phase C: 성질 변경 시 호출. 기본값은 건드리지 않는다.
-        public void SetMultipliers(float jump, float move, float gravity, float airControlMult)
+        // 상호작용 결과에 대응하는 공용 점프력. Attach/Slide는 점프력을 직접 쓰지 않는다.
+        public float GetJumpForce(PropertyInteractionType interaction)
         {
-            _jumpForceMultiplier = jump;
-            _moveSpeedMultiplier = move;
-            _gravityMultiplier = gravity;
-            _airControlMultiplier = airControlMult;
+            switch (interaction)
+            {
+                case PropertyInteractionType.LowJump: return lowJumpForce;
+                case PropertyInteractionType.HighJump: return highJumpForce;
+                default: return normalJumpForce; // NormalJump, Slide
+            }
         }
-
-        public void ResetMultipliers() => SetMultipliers(1f, 1f, 1f, 1f);
     }
 }

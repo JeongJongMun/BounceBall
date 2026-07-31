@@ -24,7 +24,9 @@ namespace Game
 
         private void FixedUpdate()
         {
-            // 성질 변경으로 중력 배율이 바뀔 수 있어 매 프레임 동기화
+            // 부착 중에는 중력을 0으로 잡아두므로 동기화를 건너뛴다 (기획 §5.2)
+            if (_player.State == PlayerState.Attached) return;
+
             _player.Body.gravityScale = _player.Stats.GravityScale;
 
             // 최대 낙하 속도 제한 (기획 §7.4 MaxFallSpeed)
@@ -46,6 +48,7 @@ namespace Game
         private void TryBounce(Collision2D collision)
         {
             if (_player.State == PlayerState.Disabled) return;
+            if (_player.State == PlayerState.Attached) return; // 부착 중에는 바운스하지 않는다 (기획 §5.2)
             if (((1 << collision.gameObject.layer) & bounceableLayers) == 0) return;
             if (Time.time - _lastBounceTime < _player.Stats.BounceCooldown) return;
 
@@ -71,15 +74,19 @@ namespace Game
             _player.SetGrounded(true);
             onPlayerLanded?.Raise();
 
-            // 착지한 특수 타일의 반응 적용 (현재 성질 태그 기준)
-            float jumpForce = _player.Stats.JumpForce;
-            var special = StageTiles.GetSpecialTileAt(contactPoint, contactNormal);
-            if (special != null)
-            {
-                var reaction = special.GetReaction(_player.PropertyTag);
-                if (reaction != null && reaction.effectId == SpecialTileEffects.JumpMultiplier)
-                    jumpForce *= reaction.value;
-            }
+            // 성질 × 타일 조합으로 결과를 조회한다 (기획 §3.1, §9)
+            var tile = StageTiles.GetSpecialTileAt(contactPoint, contactNormal);
+            var tileProperty = tile != null ? tile.TileProperty : TilePropertyType.Default;
+            var interaction = PropertyInteractionTable.Resolve(_player.PropertyType, tileProperty);
+
+            // 부착 조합에서는 자동 점프만 하지 않는다 (기획 §8 Attach).
+            // 속도 0·중력 해제·표면 밀착 같은 실제 부착 처리는 PlayerJellyAttach가 담당한다 —
+            // 여기서 속도를 건드리면 부착 해제 후에도 낙하하지 못한다.
+            if (interaction == PropertyInteractionType.Attach) return;
+
+            // Slide는 일반 점프력을 쓰고 수평 속도를 유지한다 (기획 §8 Slide).
+            // 미끄러짐 이동 자체는 얼음 작업에서 구현한다.
+            float jumpForce = _player.Stats.GetJumpForce(interaction);
 
             var velocity = _player.Body.linearVelocity;
             _player.Body.linearVelocity = new Vector2(velocity.x, jumpForce);

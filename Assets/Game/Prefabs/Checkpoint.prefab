@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.3, g: 0.9, b: 0.45, a: 1}
+  m_Color: {r: 1, g: 0.4, b: 0.75, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -142,3 +142,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cf7e063e0e44f046b17a528088ac8bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::Game.Checkpoint
+  inactiveColor: {r: 1, g: 0.4, b: 0.75, a: 1}
+  activatedColor: {r: 1, g: 1, b: 1, a: 1}
