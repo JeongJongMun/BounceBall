@@ -12,6 +12,9 @@ namespace Game
         public PlayerStats Stats { get; private set; }
         public Rigidbody2D Body { get; private set; }
 
+        // 현재 성질 태그. Phase C에서 성질 시스템이 설정하며, 특수 타일 반응 조회에 쓰인다.
+        public string PropertyTag { get; set; } = "";
+
         private void Awake()
         {
             Stats = GetComponent<PlayerStats>();

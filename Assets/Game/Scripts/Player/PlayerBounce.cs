@@ -51,11 +51,15 @@ namespace Game
 
             // 하단 접촉인지 확인 (기획 §7.2: 벽/천장 충돌 시 바운스 금지)
             bool bottomContact = false;
+            Vector2 contactPoint = default, contactNormal = default;
             for (int i = 0; i < collision.contactCount; i++)
             {
-                if (collision.GetContact(i).normal.y > 0.5f)
+                var contact = collision.GetContact(i);
+                if (contact.normal.y > 0.5f)
                 {
                     bottomContact = true;
+                    contactPoint = contact.point;
+                    contactNormal = contact.normal;
                     break;
                 }
             }
@@ -67,8 +71,18 @@ namespace Game
             _player.SetGrounded(true);
             onPlayerLanded?.Raise();
 
+            // 착지한 특수 타일의 반응 적용 (현재 성질 태그 기준)
+            float jumpForce = _player.Stats.JumpForce;
+            var special = StageTiles.GetSpecialTileAt(contactPoint, contactNormal);
+            if (special != null)
+            {
+                var reaction = special.GetReaction(_player.PropertyTag);
+                if (reaction != null && reaction.effectId == SpecialTileEffects.JumpMultiplier)
+                    jumpForce *= reaction.value;
+            }
+
             var velocity = _player.Body.linearVelocity;
-            _player.Body.linearVelocity = new Vector2(velocity.x, _player.Stats.JumpForce);
+            _player.Body.linearVelocity = new Vector2(velocity.x, jumpForce);
             _lastBounceTime = Time.time;
             _player.SetGrounded(false);
             onPlayerBounced?.Raise();
