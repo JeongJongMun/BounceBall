@@ -72,6 +72,11 @@ namespace Game.EditorTools
                     groundTilemap.SetTile(new Vector3Int(x, -3, 0), tile);
             }
 
+            // 배치 모드에서는 물리 스텝이 돌지 않아 컴포지트 지오메트리가 빈 채로 저장된다.
+            // 저장 전에 명시적으로 생성하지 않으면 런타임에 바닥 충돌이 없어 플레이어가 뚫고 떨어진다.
+            tilemapCollider.ProcessTilemapChanges();
+            composite.GenerateGeometry();
+
             // 기믹 컨테이너
             var gimmicks = new GameObject("Gimmicks");
             gimmicks.AddComponent<GimmickContainer>();
