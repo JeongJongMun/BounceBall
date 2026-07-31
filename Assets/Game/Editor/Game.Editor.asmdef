@@ -1,0 +1,12 @@
+{
+    "name": "Game.Editor",
+    "rootNamespace": "Game.EditorTools",
+    "references": [
+        "Game",
+        "Core",
+        "Unity.2D.Tilemap.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ]
+}
