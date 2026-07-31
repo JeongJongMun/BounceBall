@@ -12,6 +12,13 @@ namespace Core.Tests
         [UnitySetUp]
         public IEnumerator SetUp()
         {
+            // 자동 부트스트랩된 Systems.prefab의 싱글톤들이 테스트용 인스턴스를 밀어내지 않도록 제거
+            var systems = GameObject.Find("Systems");
+            if (systems != null)
+            {
+                Object.Destroy(systems);
+                yield return null;
+            }
             SaveData.ResetAll();
             _gm = new GameObject("GM").AddComponent<GameManager>();
             yield return null;

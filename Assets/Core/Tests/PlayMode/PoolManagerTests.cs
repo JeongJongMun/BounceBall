@@ -13,6 +13,13 @@ namespace Core.Tests
         [UnitySetUp]
         public IEnumerator SetUp()
         {
+            // 자동 부트스트랩된 Systems.prefab의 싱글톤들이 테스트용 인스턴스를 밀어내지 않도록 제거
+            var systems = GameObject.Find("Systems");
+            if (systems != null)
+            {
+                Object.Destroy(systems);
+                yield return null;
+            }
             _pool = new GameObject("Pool").AddComponent<PoolManager>();
             _prefab = new GameObject("Prefab");
             _prefab.SetActive(false); // 씬 오브젝트를 프리팹 대용으로 사용
