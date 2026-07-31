@@ -107,3 +107,6 @@ InitTestScene*.unity*
 
 # Test results
 /TestResults*.xml
+
+# IDE
+/.idea/
