@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b05c8f511940bc54e9f2324fe5b0ff21, type: 3}
-  m_Name: CheckpointBrush
-  m_EditorClassIdentifier: Game.Editor::Game.EditorTools.PrefabPaletteBrush
+  m_Script: {fileID: 11500000, guid: 15a794364c288f44aa2d46e50838f905, type: 3}
+  m_Name: CheckpointMarker
+  m_EditorClassIdentifier: Game::Game.PrefabMarkerTile
   prefab: {fileID: 8867948408819232915, guid: 8c188f12d7069204ba1ada345921698e, type: 3}
+  previewSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  previewColor: {r: 0.3, g: 0.9, b: 0.45, a: 1}

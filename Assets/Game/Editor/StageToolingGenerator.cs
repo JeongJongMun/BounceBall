@@ -23,15 +23,18 @@ namespace Game.EditorTools
             EnsureFolder(PrefabsDir);
 
             var tile = CreateGroundTile();
-            CreatePalette(tile);
 
             var propertyItem = CreateItemPrefab("PropertyItem", new Color(0.75f, 0.35f, 0.95f), typeof(PropertyItem));
             var goalItem = CreateItemPrefab("GoalItem", new Color(1f, 0.85f, 0.2f), typeof(GoalItem));
             var checkpoint = CreateItemPrefab("Checkpoint", new Color(0.3f, 0.9f, 0.45f), typeof(Checkpoint));
 
-            CreateBrush("PropertyItemBrush", propertyItem);
-            CreateBrush("GoalItemBrush", goalItem);
-            CreateBrush("CheckpointBrush", checkpoint);
+            var propertyMarker = CreateMarkerTile("PropertyItemMarker", propertyItem, new Color(0.75f, 0.35f, 0.95f));
+            var goalMarker = CreateMarkerTile("GoalItemMarker", goalItem, new Color(1f, 0.85f, 0.2f));
+            var checkpointMarker = CreateMarkerTile("CheckpointMarker", checkpoint, new Color(0.3f, 0.9f, 0.45f));
+            var bouncyTile = CreateBouncySampleTile();
+
+            CreateStageBrushAsset();
+            UpdatePalette(tile, bouncyTile, propertyMarker, goalMarker, checkpointMarker);
 
             CreatePlayerPrefab();
 
@@ -71,25 +74,84 @@ namespace Game.EditorTools
             return tile;
         }
 
-        private static void CreatePalette(Tile tile)
+        // 팔레트를 만들고(없으면), 배치 가능한 전 항목을 항상 등록한다.
+        // 1행: 일반 타일 + 특수 타일 / 2행: 프리팹 마커 (아이템/체크포인트)
+        private static void UpdatePalette(
+            Tile ground, SpecialTile bouncy,
+            PrefabMarkerTile propertyMarker, PrefabMarkerTile goalMarker, PrefabMarkerTile checkpointMarker)
         {
-            if (AssetDatabase.LoadAssetAtPath<GameObject>(PalettePath) != null) return;
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(PalettePath) == null)
+            {
+                var root = new GameObject("StagePalette");
+                root.AddComponent<Grid>();
+                var layer = new GameObject("Layer1");
+                layer.transform.SetParent(root.transform, false);
+                layer.AddComponent<Tilemap>();
+                layer.AddComponent<TilemapRenderer>();
 
-            var root = new GameObject("StagePalette");
-            root.AddComponent<Grid>();
-            var layer = new GameObject("Layer1");
-            layer.transform.SetParent(root.transform, false);
-            var tilemap = layer.AddComponent<Tilemap>();
-            layer.AddComponent<TilemapRenderer>();
-            tilemap.SetTile(Vector3Int.zero, tile);
+                var prefabAsset = PrefabUtility.SaveAsPrefabAsset(root, PalettePath);
+                Object.DestroyImmediate(root);
 
-            var prefab = PrefabUtility.SaveAsPrefabAsset(root, PalettePath);
-            Object.DestroyImmediate(root);
+                var palette = ScriptableObject.CreateInstance<GridPalette>();
+                palette.name = "Palette Settings";
+                palette.cellSizing = GridPalette.CellSizing.Automatic;
+                AssetDatabase.AddObjectToAsset(palette, prefabAsset);
+            }
 
-            var palette = ScriptableObject.CreateInstance<GridPalette>();
-            palette.name = "Palette Settings";
-            palette.cellSizing = GridPalette.CellSizing.Automatic;
-            AssetDatabase.AddObjectToAsset(palette, prefab);
+            var contents = PrefabUtility.LoadPrefabContents(PalettePath);
+            try
+            {
+                var tilemap = contents.GetComponentInChildren<Tilemap>();
+                tilemap.SetTile(new Vector3Int(0, 0, 0), ground);
+                tilemap.SetTile(new Vector3Int(1, 0, 0), bouncy);
+                tilemap.SetTile(new Vector3Int(0, 1, 0), propertyMarker);
+                tilemap.SetTile(new Vector3Int(1, 1, 0), goalMarker);
+                tilemap.SetTile(new Vector3Int(2, 1, 0), checkpointMarker);
+                PrefabUtility.SaveAsPrefabAsset(contents, PalettePath);
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(contents);
+            }
+        }
+
+        private static PrefabMarkerTile CreateMarkerTile(string name, GameObject prefab, Color color)
+        {
+            EnsureFolder("Assets/Game/Tiles/Markers");
+            var path = $"Assets/Game/Tiles/Markers/{name}.asset";
+            var existing = AssetDatabase.LoadAssetAtPath<PrefabMarkerTile>(path);
+            if (existing != null) return existing;
+
+            var marker = ScriptableObject.CreateInstance<PrefabMarkerTile>();
+            marker.SetData(prefab, AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd"), color);
+            AssetDatabase.CreateAsset(marker, path);
+            return marker;
+        }
+
+        // 특수 타일 파이프라인 시연용 샘플: 밟으면 1.6배로 튀는 타일
+        private static SpecialTile CreateBouncySampleTile()
+        {
+            const string path = "Assets/Game/Tiles/BouncyTile.asset";
+            var existing = AssetDatabase.LoadAssetAtPath<SpecialTile>(path);
+            if (existing != null) return existing;
+
+            var tile = ScriptableObject.CreateInstance<SpecialTile>();
+            tile.sprite = AssetDatabase.LoadAssetAtPath<Sprite>(WhiteTexPath);
+            tile.color = new Color(1f, 0.55f, 0.25f);
+            tile.colliderType = Tile.ColliderType.Grid;
+            tile.SetData("Bouncy", new System.Collections.Generic.List<SpecialTile.Reaction>
+            {
+                new() { propertyTag = "", effectId = SpecialTileEffects.JumpMultiplier, value = 1.6f }
+            });
+            AssetDatabase.CreateAsset(tile, path);
+            return tile;
+        }
+
+        private static void CreateStageBrushAsset()
+        {
+            const string path = "Assets/Game/Tiles/Brushes/StageBrush.asset";
+            if (AssetDatabase.LoadAssetAtPath<StageBrush>(path) != null) return;
+            AssetDatabase.CreateAsset(ScriptableObject.CreateInstance<StageBrush>(), path);
         }
 
         private static GameObject CreateItemPrefab(string name, Color color, System.Type shellComponent)
@@ -151,17 +213,6 @@ namespace Game.EditorTools
 
             PrefabUtility.SaveAsPrefabAsset(go, playerPath);
             Object.DestroyImmediate(go);
-        }
-
-        private static void CreateBrush(string name, GameObject prefab)
-        {
-            var path = $"{BrushesDir}/{name}.asset";
-            var existing = AssetDatabase.LoadAssetAtPath<PrefabPaletteBrush>(path);
-            if (existing != null) return;
-
-            var brush = ScriptableObject.CreateInstance<PrefabPaletteBrush>();
-            brush.Prefab = prefab;
-            AssetDatabase.CreateAsset(brush, path);
         }
 
         private static void EnsureFolder(string path)
