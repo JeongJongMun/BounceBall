@@ -11,11 +11,7 @@ namespace Core.UI
         private void Awake()
         {
             resumeButton.onClick.AddListener(() => GameManager.Instance.Resume());
-            menuButton.onClick.AddListener(() =>
-            {
-                GameManager.Instance.BackToMenu();
-                SceneLoader.Instance.Reload();
-            });
+            menuButton.onClick.AddListener(() => GameManager.Instance.BackToMenu());
         }
     }
 }

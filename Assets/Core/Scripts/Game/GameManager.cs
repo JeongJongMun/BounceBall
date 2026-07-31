@@ -9,6 +9,8 @@ namespace Core
     {
         [SerializeField] private IntEventChannel onGameStateChanged;
         [SerializeField] private IntEventChannel onScoreChanged;
+        [Tooltip("설정 시 BackToMenu가 이 씬을 로드한다. 비우면 현재 씬 리로드 (단일 씬 게임)")]
+        [SerializeField] private string menuSceneName = "";
 
         public GameState State { get; private set; } = GameState.Ready;
         public int Score { get; private set; }
@@ -61,6 +63,10 @@ namespace Core
             Time.timeScale = 1f;
             Score = 0;
             SetState(GameState.Ready);
+
+            if (SceneLoader.Instance == null) return;
+            if (string.IsNullOrEmpty(menuSceneName)) SceneLoader.Instance.Reload();
+            else SceneLoader.Instance.Load(menuSceneName);
         }
 
         public void AddScore(int amount)

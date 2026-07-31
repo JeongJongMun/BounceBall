@@ -14,11 +14,7 @@ namespace Core.UI
         private void Awake()
         {
             restartButton.onClick.AddListener(() => GameManager.Instance.RestartGame());
-            menuButton.onClick.AddListener(() =>
-            {
-                GameManager.Instance.BackToMenu();
-                SceneLoader.Instance.Reload();
-            });
+            menuButton.onClick.AddListener(() => GameManager.Instance.BackToMenu());
         }
 
         protected override void OnShow()

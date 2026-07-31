@@ -30,22 +30,31 @@ namespace Core.UI
                 GameManager.Instance.TogglePause();
         }
 
+        // 화면 참조는 null 허용 — 전용 메뉴 씬을 쓰는 게임은 mainMenu 없이 구성한다.
         private void HandleStateChanged(int stateValue)
         {
             var state = (GameState)stateValue;
             switch (state)
             {
                 case GameState.Ready:
-                    mainMenu.Show(); pause.Hide(); result.Hide(); hud.Hide();
+                    if (mainMenu != null) mainMenu.Show();
+                    if (pause != null) pause.Hide();
+                    if (result != null) result.Hide();
+                    if (hud != null) hud.Hide();
                     break;
                 case GameState.Playing:
-                    mainMenu.Hide(); pause.Hide(); result.Hide(); hud.Show();
+                    if (mainMenu != null) mainMenu.Hide();
+                    if (pause != null) pause.Hide();
+                    if (result != null) result.Hide();
+                    if (hud != null) hud.Show();
                     break;
                 case GameState.Paused:
-                    pause.Show();
+                    if (pause != null) pause.Show();
                     break;
                 case GameState.GameOver:
-                    pause.Hide(); hud.Hide(); result.Show();
+                    if (pause != null) pause.Hide();
+                    if (hud != null) hud.Hide();
+                    if (result != null) result.Show();
                     break;
             }
         }
