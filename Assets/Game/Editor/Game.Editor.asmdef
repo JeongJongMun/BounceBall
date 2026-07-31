@@ -4,7 +4,8 @@
     "references": [
         "Game",
         "Core",
-        "Unity.2D.Tilemap.Editor"
+        "Unity.2D.Tilemap.Editor",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"

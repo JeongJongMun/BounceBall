@@ -3,7 +3,8 @@
     "rootNamespace": "Game",
     "references": [
         "Core",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.TextMeshPro"
     ],
     "autoReferenced": true
 }

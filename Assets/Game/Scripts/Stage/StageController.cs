@@ -35,6 +35,10 @@ namespace Game
         private void Start()
         {
             SpawnPlayer();
+
+            // 스테이지 씬 진입 = 게임 시작. 에디터에서 씬 단독 Play 시에도 동일하게 동작한다.
+            if (Core.GameManager.Instance != null && Core.GameManager.Instance.State != Core.GameState.Playing)
+                Core.GameManager.Instance.StartGame();
         }
 
         // Resources/Player.prefab을 시작 위치에 스폰하고 카메라를 연결한다.
