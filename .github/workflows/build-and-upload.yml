@@ -47,9 +47,11 @@ jobs:
           retention-days: 7
 
       - name: Upload to Google Drive
-        uses: adityak74/google-drive-upload-git-action@main
-        with:
-          credentials: ${{ secrets.GDRIVE_CREDENTIALS }}
-          filename: BounceBall-${{ github.ref_name }}-${{ github.run_number }}.zip
-          folderId: ${{ secrets.GDRIVE_FOLDER_ID }}
-          overwrite: "true"
+        env:
+          RCLONE_CONFIG_GDRIVE_TYPE: drive
+          RCLONE_CONFIG_GDRIVE_SCOPE: drive
+          RCLONE_CONFIG_GDRIVE_TOKEN: ${{ secrets.RCLONE_DRIVE_TOKEN }}
+          RCLONE_CONFIG_GDRIVE_ROOT_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq rclone
+          rclone copy "BounceBall-${{ github.ref_name }}-${{ github.run_number }}.zip" gdrive: -v
