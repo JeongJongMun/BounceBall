@@ -33,17 +33,17 @@ jobs:
           targetPlatform: StandaloneWindows64
           buildName: BounceBall
 
-      - name: Zip build
+      - name: Set build name
+        id: buildname
         run: |
           sudo chown -R $USER build
-          cd build/StandaloneWindows64
-          zip -r "$GITHUB_WORKSPACE/BounceBall-${{ github.ref_name }}-${{ github.run_number }}.zip" .
+          echo "name=$(TZ=Asia/Seoul date +%Y_%m_%d_%H%M)_${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
 
       - name: Upload artifact (backup)
         uses: actions/upload-artifact@v4
         with:
-          name: BounceBall-${{ github.ref_name }}-${{ github.run_number }}
-          path: BounceBall-${{ github.ref_name }}-${{ github.run_number }}.zip
+          name: ${{ steps.buildname.outputs.name }}
+          path: build/StandaloneWindows64
           retention-days: 7
 
       - name: Upload to Google Drive
@@ -54,4 +54,4 @@ jobs:
           RCLONE_CONFIG_GDRIVE_ROOT_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq rclone
-          rclone copy "BounceBall-${{ github.ref_name }}-${{ github.run_number }}.zip" gdrive: -v
+          rclone copy build/StandaloneWindows64 "gdrive:${{ steps.buildname.outputs.name }}" -v --transfers 8
