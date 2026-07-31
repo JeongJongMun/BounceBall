@@ -1,0 +1,17 @@
+{
+	"name": "DOTween.Modules",
+	"references": [
+		"UnityEngine.UI"
+	],
+	"includePlatforms": [],
+	"excludePlatforms": [],
+	"allowUnsafeCode": false,
+	"overrideReferences": true,
+	"precompiledReferences": [
+		"DOTween.dll"
+	],
+	"autoReferenced": true,
+	"defineConstraints": [],
+	"versionDefines": [],
+	"noEngineReferences": false
+}

@@ -1,0 +1,19 @@
+{
+    "name": "Core.Tests.EditMode",
+    "rootNamespace": "Core.Tests",
+    "references": [
+        "Core",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "overrideReferences": true
+}

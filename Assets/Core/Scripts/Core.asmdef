@@ -1,0 +1,10 @@
+{
+    "name": "Core",
+    "rootNamespace": "Core",
+    "references": [
+        "DOTween.Modules",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro"
+    ],
+    "autoReferenced": true
+}

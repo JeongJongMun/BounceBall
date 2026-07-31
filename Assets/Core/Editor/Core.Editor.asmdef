@@ -1,0 +1,12 @@
+{
+    "name": "Core.Editor",
+    "rootNamespace": "Core.EditorTools",
+    "references": [
+        "Core",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ]
+}
