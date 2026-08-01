@@ -54,13 +54,12 @@ namespace Game.EditorTools
             DrawField("useIntroCamera");
             if (serializedObject.FindProperty("useIntroCamera").boolValue)
             {
-                DrawField("introPadding");
                 DrawField("introMaxSize");
             }
             else
             {
                 // 숨겨도 값은 유지되므로, 다시 켜면 이전 설정이 그대로 돌아온다.
-                MarkDrawn("introPadding", "introMaxSize");
+                MarkDrawn("introMaxSize");
             }
 
             DrawField("cameraSettingsOverride");
