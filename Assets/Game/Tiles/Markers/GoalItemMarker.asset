@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GoalItemMarker
   m_EditorClassIdentifier: Game::Game.PrefabMarkerTile
   prefab: {fileID: 6300237834259825103, guid: 7666db903bce82f4fbe1f6bafcdf715e, type: 3}
-  previewSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  previewColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  previewSprite: {fileID: 21300000, guid: d3e5beb33bbeb7a46ad14386cb1d248c, type: 3}
+  previewColor: {r: 1, g: 1, b: 1, a: 1}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PropertyItemIceMarker
   m_EditorClassIdentifier: Game::Game.PrefabMarkerTile
   prefab: {fileID: 1408966165090812587, guid: 26e55c903beab7a49aa7b9018cf17445, type: 3}
-  previewSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  previewColor: {r: 0.45, g: 0.85, b: 1, a: 1}
+  previewSprite: {fileID: 21300000, guid: 0416e01e7845a194a8c1d91ecd35f7b1, type: 3}
+  previewColor: {r: 1, g: 1, b: 1, a: 1}

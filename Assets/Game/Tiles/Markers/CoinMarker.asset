@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CoinMarker
   m_EditorClassIdentifier: Game::Game.PrefabMarkerTile
   prefab: {fileID: 5068520937003030242, guid: b22d9f65b2449ea40a02d40e06a224cd, type: 3}
-  previewSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  previewSprite: {fileID: 21300000, guid: d1194d14ecfe2d644a0b530bf4b0cb21, type: 3}
   previewColor: {r: 1, g: 0.72, b: 0.1, a: 1}

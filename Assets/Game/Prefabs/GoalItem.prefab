@@ -83,8 +83,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0.85, b: 0.2, a: 1}
+  m_Sprite: {fileID: 21300000, guid: d3e5beb33bbeb7a46ad14386cb1d248c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -129,7 +129,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.35
+  m_Radius: 0.5
 --- !u!114 &7038578060595626728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,3 +142,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ded8a8c43b6894d8cef736e654ec12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::Game.GoalItem
+  onCollected: {fileID: 0}
