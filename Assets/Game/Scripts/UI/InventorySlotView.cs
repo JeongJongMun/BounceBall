@@ -12,7 +12,6 @@ namespace Game
         IPointerDownHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [SerializeField] private Image iconImage;
-        [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text countText;
         [SerializeField] private Image selectionOutline;
 
@@ -30,10 +29,8 @@ namespace Game
             if (iconImage != null)
             {
                 iconImage.sprite = item != null ? item.Thumbnail : null;
-                // 썸네일이 아직 없으면 아이콘을 숨기고 이름으로 구분한다
                 iconImage.enabled = iconImage.sprite != null;
             }
-            if (nameText != null) nameText.text = item != null ? item.ItemName : "";
             if (countText != null) countText.text = count > 1 ? count.ToString() : "";
             SetSelected(false);
         }
@@ -94,10 +91,9 @@ namespace Game
         }
 
         // 에디터 툴링에서 배선할 때 사용.
-        public void SetReferences(Image icon, TMP_Text itemName, TMP_Text count, Image outline)
+        public void SetReferences(Image icon, TMP_Text count, Image outline)
         {
             iconImage = icon;
-            nameText = itemName;
             countText = count;
             selectionOutline = outline;
         }
