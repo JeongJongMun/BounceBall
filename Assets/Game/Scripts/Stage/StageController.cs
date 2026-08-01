@@ -91,12 +91,11 @@ namespace Game
         [Label("클리어 보상 코인")]
         [SerializeField] private int clearRewardCoin = 50;
 
-        [Label("목표 진행도 변경")]
-        [Header("사망 연출")]
+        [Label("사망 시 튀는 힘")]
         [Tooltip("사망 순간 위로 튀어 오르는 속도")]
         [SerializeField] private float deathBounceForce = 6f;
 
-        [Header("이벤트")]
+        [Label("목표 진행도 변경")]
         [SerializeField] private StringEventChannel onGoalProgressChanged;
 
         [Label("스테이지 클리어")]
@@ -248,6 +247,13 @@ namespace Game
                 if (item.IsCollected) collected.Add(item);
             }
 
+            // 성질 아이템도 같은 시점 상태를 저장한다 (기획 §11.5)
+            var acquiredProperties = new List<PropertyItem>();
+            foreach (var item in FindObjectsByType<PropertyItem>(FindObjectsSortMode.None))
+            {
+                if (item.IsAcquired) acquiredProperties.Add(item);
+            }
+
             // 코인도 같은 시점 상태를 저장한다 (인벤토리 문서 §6.5)
             var collectedCoins = new List<CoinItem>();
             foreach (var coin in FindObjectsByType<CoinItem>(FindObjectsSortMode.None))
@@ -255,15 +261,9 @@ namespace Game
                 if (coin.IsCollected) collectedCoins.Add(coin);
             }
 
-            _checkpoint = new CheckpointState(position, property, collected,
+            _checkpoint = new CheckpointState(position, property,
+                collected, acquiredProperties,
                 collectedCoins, CurrencyWallet.Coin, StageCoinEarned);
-            var acquiredProperties = new List<PropertyItem>();
-            foreach (var item in FindObjectsByType<PropertyItem>(FindObjectsSortMode.None))
-            {
-                if (item.IsAcquired) acquiredProperties.Add(item);
-            }
-
-            _checkpoint = new CheckpointState(position, property, collected, acquiredProperties);
         }
 
         // 맵 이탈 부활 (기획 §23.2, §24.3). 게임 오버가 아니므로 GameState는 Playing을 유지한다.
@@ -302,19 +302,17 @@ namespace Game
 
             // 부착·미끄러짐 같은 성질 전용 상태는 저장하지 않고 초기화한다 (기획 §12, §6.7)
             player.GetComponent<PlayerJellyAttach>()?.Release();
-            player.GetComponent<PlayerIceSlide>()?.Exit();
+            player.GetComponent<PlayerIceSlide>()?.Exit();  
 
             // 저장된 성질 복구 (기획 §25.5)
             var playerProperty = player.GetComponent<PlayerProperty>();
             if (playerProperty != null) playerProperty.Restore(_checkpoint.Property);
 
-            // 상호작용 대상·E UI 초기화 (기획 §24.3)
-            var interaction = player.GetComponent<PlayerInteraction>();
-            if (interaction != null) interaction.ClearRange();
+            // 성질 아이템이 접촉 즉시 획득으로 바뀌면서 E 상호작용 초기화는 필요 없어졌다.
 
-            RestoreGoalItems();
-            RestoreCoins();
+            // RestoreItems가 목표 아이템·성질 아이템·일회성 발판을 함께 되돌린다.
             RestoreItems();
+            RestoreCoins();
 
             // 기본은 즉시 이동. 끄면 맵을 가로질러 부드럽게 따라간다 (CameraSettings.snapOnRespawn)
             var follow = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
