@@ -6,17 +6,14 @@ namespace Game
     [RequireComponent(typeof(Collider2D))]
     public class Checkpoint : MonoBehaviour
     {
-        [SerializeField] private Color inactiveColor = new(1f, 0.4f, 0.75f);
-        [SerializeField] private Color activatedColor = Color.white;
-
-        private SpriteRenderer _renderer;
+        private CheckpointSpineView _view;
         private StageController _stage;
 
         // 팔레트 브러시가 Gimmicks 아래에 스폰하므로 인스펙터 배선이 불가능하다 — 런타임에 지연 해석한다.
         private StageController StageRef => _stage != null ? _stage : (_stage = FindAnyObjectByType<StageController>());
 
         // Awake 타이밍에 의존하지 않도록 지연 해석한다 (EditMode 테스트에서는 Awake가 돌지 않는다).
-        private SpriteRenderer RendererRef => _renderer != null ? _renderer : (_renderer = GetComponent<SpriteRenderer>());
+        private CheckpointSpineView ViewRef => _view != null ? _view : (_view = GetComponentInChildren<CheckpointSpineView>(true));
 
         public bool IsActivated { get; private set; }
 
@@ -33,7 +30,7 @@ namespace Game
         public void SetActivated(bool activated)
         {
             IsActivated = activated;
-            if (RendererRef != null) RendererRef.color = activated ? activatedColor : inactiveColor;
+            if (ViewRef != null) ViewRef.SetActivated(activated);
         }
     }
 }
