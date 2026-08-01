@@ -71,26 +71,40 @@ namespace Game.Tests
             Assert.AreNotEqual(PlayerState.Disabled, _player.State, "부활 후 조작이 재개되지 않았습니다.");
         }
 
+        // 좌우는 사망이 아니다 — 투명 벽이 막을 뿐이다 (기획 §23.1: 사망은 낙사만)
         [UnityTest]
-        public IEnumerator 좌측_경계를_넘으면_부활한다()
+        public IEnumerator 좌우_경계를_넘어도_부활하지_않는다()
         {
-            _playerGo.transform.position = new Vector3(-50f, 0f, 0f);
+            var left = new Vector3(-50f, 0f, 0f);
+            _playerGo.transform.position = left;
 
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            Assert.AreEqual(StartPos.x, _playerGo.transform.position.x, 0.01f);
+            Assert.AreEqual(left.x, _playerGo.transform.position.x, 0.01f, "좌측 이탈이 사망 처리됐습니다.");
+
+            var right = new Vector3(50f, 0f, 0f);
+            _playerGo.transform.position = right;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.AreEqual(right.x, _playerGo.transform.position.x, 0.01f, "우측 이탈이 사망 처리됐습니다.");
         }
 
+        // 스테이지 시작 시 경계 좌우에 투명 벽이 생성된다
         [UnityTest]
-        public IEnumerator 우측_경계를_넘으면_부활한다()
+        public IEnumerator 경계에_투명_벽이_생성된다()
         {
-            _playerGo.transform.position = new Vector3(50f, 0f, 0f);
+            yield return null; // StageController.Start 대기
 
-            yield return new WaitForFixedUpdate();
-            yield return null;
-
-            Assert.AreEqual(StartPos.x, _playerGo.transform.position.x, 0.01f);
+            var walls = new System.Collections.Generic.List<string>();
+            foreach (var collider in Object.FindObjectsByType<BoxCollider2D>(FindObjectsSortMode.None))
+            {
+                if (collider.gameObject.name.Contains("BoundaryWall")) walls.Add(collider.gameObject.name);
+            }
+            CollectionAssert.Contains(walls, "LeftBoundaryWall");
+            CollectionAssert.Contains(walls, "RightBoundaryWall");
         }
 
         [UnityTest]
