@@ -21,3 +21,5 @@ MonoBehaviour:
     displayName: Stage03
   - sceneName: Stage04
     displayName: Stage04
+  - sceneName: Stage05
+    displayName: Stage05
