@@ -5,8 +5,7 @@ using UnityEngine;
 namespace Game
 {
     // 성질별 스파인 스켈레톤 전환과 애니메이션 재생.
-    // 아트가 성질별 별도 스켈레톤(Default/Jelly)으로 제작되어 스킨이 아니라 오브젝트 전환을 쓴다.
-    // 얼음 에셋은 아직 없어 Default 스켈레톤 + 틴트로 대체한다.
+    // 아트가 성질별 별도 스켈레톤(Default/Jelly/Ice)으로 제작되어 스킨이 아니라 오브젝트 전환을 쓴다.
     public class PlayerSpineView : MonoBehaviour
     {
         [System.Serializable]
@@ -16,41 +15,53 @@ namespace Game
             public string idle;
             public string jump;
             public string eat;
-            [Tooltip("부착 이동 루프. 없으면 빈 문자열")]
+            [Tooltip("부착 이동 루프(젤리). 없으면 빈 문자열")]
             public string crawl;
+            [Tooltip("미끄러짐 이동 루프(얼음). 없으면 빈 문자열")]
+            public string slide;
             [Tooltip("사망. 없으면 빈 문자열 (스케일 아웃으로 대체)")]
             public string die;
         }
 
         [SerializeField] private ViewSet defaultView;
         [SerializeField] private ViewSet jellyView;
+        [SerializeField] private ViewSet iceView;
 
         private ViewSet _active;
         private bool _crawling;
+        private bool _sliding;
         private Vector3 _defaultBaseScale = Vector3.one;
         private Vector3 _jellyBaseScale = Vector3.one;
+        private Vector3 _iceBaseScale = Vector3.one;
 
         private void Awake()
         {
             // 부활 팝/스케일 아웃 연출이 원래 크기로 복원할 수 있도록 프리팹 스케일을 기억한다
             if (defaultView?.skeleton != null) _defaultBaseScale = defaultView.skeleton.transform.localScale;
             if (jellyView?.skeleton != null) _jellyBaseScale = jellyView.skeleton.transform.localScale;
+            if (iceView?.skeleton != null) _iceBaseScale = iceView.skeleton.transform.localScale;
         }
 
         public void SetProperty(PlayerPropertyType type, Color tint)
         {
-            var next = type == PlayerPropertyType.Jelly ? jellyView : defaultView;
-            bool useTint = type == PlayerPropertyType.Ice; // 얼음 에셋 도착 전 임시 표현
+            ViewSet next;
+            switch (type)
+            {
+                case PlayerPropertyType.Jelly: next = jellyView; break;
+                case PlayerPropertyType.Ice: next = iceView; break;
+                default: next = defaultView; break;
+            }
 
             SetViewActive(defaultView, next == defaultView);
             SetViewActive(jellyView, next == jellyView);
+            SetViewActive(iceView, next == iceView);
             _active = next;
 
             if (_active?.skeleton != null && _active.skeleton.Skeleton != null)
             {
-                var color = useTint ? tint : Color.white;
-                _active.skeleton.Skeleton.SetColor(color);
+                _active.skeleton.Skeleton.SetColor(Color.white); // 세 성질 모두 고유 아트 — 틴트 불필요
                 _crawling = false;
+                _sliding = false;
                 PlayIdle();
             }
         }
@@ -58,7 +69,7 @@ namespace Game
         // 자동 바운스 순간 재생, 끝나면 Idle 복귀
         public void PlayJump()
         {
-            if (!HasState || _crawling || string.IsNullOrEmpty(_active.jump)) return;
+            if (!HasState || _crawling || _sliding || string.IsNullOrEmpty(_active.jump)) return;
             var state = _active.skeleton.AnimationState;
             state.SetAnimation(0, _active.jump, false);
             state.AddAnimation(0, _active.idle, true, 0f);
@@ -84,7 +95,18 @@ namespace Game
                 PlayIdle();
         }
 
-        // 사망 연출 재생 후 소요 시간을 돌려준다. 사망 애니가 없는 스켈레톤(젤리)은 스케일 아웃으로 대체.
+        // 얼음 미끄러짐 루프
+        public void SetSliding(bool sliding)
+        {
+            _sliding = sliding;
+            if (!HasState) return;
+            if (sliding && !string.IsNullOrEmpty(_active.slide))
+                _active.skeleton.AnimationState.SetAnimation(0, _active.slide, true);
+            else
+                PlayIdle();
+        }
+
+        // 사망 연출 재생 후 소요 시간을 돌려준다. 사망 애니가 없는 스켈레톤은 스케일 아웃으로 대체.
         public float PlayDeath()
         {
             if (!HasState) return 0f;
@@ -108,13 +130,17 @@ namespace Game
         // 부활 연출: 스케일 0 → 1.3배 → 원래 크기
         public void PlayRespawnPop()
         {
-            // 사망 중 스케일 아웃됐을 수 있으니 양쪽 뷰 모두 원복해 둔다
+            // 사망 중 스케일 아웃됐을 수 있으니 세 뷰 모두 원복해 둔다
             RestoreScale(defaultView, _defaultBaseScale);
             RestoreScale(jellyView, _jellyBaseScale);
+            RestoreScale(iceView, _iceBaseScale);
 
             if (_active?.skeleton == null) return;
             var t = _active.skeleton.transform;
-            var baseScale = _active == jellyView ? _jellyBaseScale : _defaultBaseScale;
+            Vector3 baseScale;
+            if (_active == jellyView) baseScale = _jellyBaseScale;
+            else if (_active == iceView) baseScale = _iceBaseScale;
+            else baseScale = _defaultBaseScale;
 
             t.DOKill();
             t.localScale = Vector3.zero;
@@ -124,6 +150,7 @@ namespace Game
                 .SetTarget(t);
 
             _crawling = false;
+            _sliding = false;
             PlayIdle();
         }
 

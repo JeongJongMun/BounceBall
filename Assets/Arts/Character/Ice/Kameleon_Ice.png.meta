@@ -1,0 +1,1261 @@
+fileFormatVersion: 2
+guid: 3a505b840a18ede438593e7c981da4d6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9138146414258833582
+    second: Kameleon_Ice_0
+  - first:
+      213: 5506031003986690270
+    second: Kameleon_Ice_1
+  - first:
+      213: 9201864487667302292
+    second: Kameleon_Ice_2
+  - first:
+      213: 3824383894249724131
+    second: Kameleon_Ice_3
+  - first:
+      213: 1855173385412667802
+    second: Kameleon_Ice_4
+  - first:
+      213: -2641558746702713269
+    second: Kameleon_Ice_5
+  - first:
+      213: 806867139090485672
+    second: Kameleon_Ice_6
+  - first:
+      213: -2954740324313858607
+    second: Kameleon_Ice_7
+  - first:
+      213: -4126842391648172574
+    second: Kameleon_Ice_8
+  - first:
+      213: 1398605528384300453
+    second: Kameleon_Ice_9
+  - first:
+      213: -4775648860755438717
+    second: Kameleon_Ice_10
+  - first:
+      213: 4386263423407679346
+    second: Kameleon_Ice_11
+  - first:
+      213: -3874537903587953781
+    second: Kameleon_Ice_12
+  - first:
+      213: 5889452988817992839
+    second: Kameleon_Ice_13
+  - first:
+      213: 4523238761679512657
+    second: Kameleon_Ice_14
+  - first:
+      213: 7449520926640824594
+    second: Kameleon_Ice_15
+  - first:
+      213: -6810794509162038155
+    second: Kameleon_Ice_16
+  - first:
+      213: 7980593291267496900
+    second: Kameleon_Ice_17
+  - first:
+      213: 5100993622183786387
+    second: Kameleon_Ice_18
+  - first:
+      213: 7452761185809645860
+    second: Kameleon_Ice_19
+  - first:
+      213: -6778002258554722869
+    second: Kameleon_Ice_20
+  - first:
+      213: 3580416191098116125
+    second: Kameleon_Ice_21
+  - first:
+      213: 172329168186437664
+    second: Kameleon_Ice_22
+  - first:
+      213: -7759259926065862082
+    second: Kameleon_Ice_23
+  - first:
+      213: -4850996497661067723
+    second: Kameleon_Ice_24
+  - first:
+      213: 410241001542830386
+    second: Kameleon_Ice_25
+  - first:
+      213: 4074656057638609169
+    second: Kameleon_Ice_26
+  - first:
+      213: 3285680644540169987
+    second: Kameleon_Ice_27
+  - first:
+      213: 6034794697872397619
+    second: Kameleon_Ice_28
+  - first:
+      213: 6438472191183792870
+    second: Kameleon_Ice_29
+  - first:
+      213: -291354900000734059
+    second: Kameleon_Ice_30
+  - first:
+      213: -6576640403533989862
+    second: Kameleon_Ice_31
+  - first:
+      213: -1367326557855952484
+    second: Kameleon_Ice_32
+  - first:
+      213: -4146759211493866219
+    second: Kameleon_Ice_33
+  - first:
+      213: -4658667818594832284
+    second: Kameleon_Ice_34
+  - first:
+      213: 5278376446267607168
+    second: Kameleon_Ice_35
+  - first:
+      213: 6503805898869903829
+    second: Kameleon_Ice_36
+  - first:
+      213: 2024372886365906571
+    second: Kameleon_Ice_37
+  - first:
+      213: -7585313190381528870
+    second: Kameleon_Ice_38
+  - first:
+      213: 6110393057511491807
+    second: Kameleon_Ice_39
+  - first:
+      213: 3903177013090337334
+    second: Kameleon_Ice_40
+  - first:
+      213: -4926193995426546956
+    second: Kameleon_Ice_41
+  - first:
+      213: -2883111954822751406
+    second: Kameleon_Ice_42
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 0
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 0
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Kameleon_Ice_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1705
+        width: 104
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea8486f6fb731de70800000000000000
+      internalID: 9138146414258833582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_1
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 341
+        height: 1704
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed00ae2a60a596c40800000000000000
+      internalID: 5506031003986690270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_2
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 1705
+        width: 66
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49ff0ba7ff693bf70800000000000000
+      internalID: 9201864487667302292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_3
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 1493
+        width: 425
+        height: 430
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e8da7da3e0f21530800000000000000
+      internalID: 3824383894249724131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_4
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 1493
+        width: 296
+        height: 426
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a99e74a6d56eeb910800000000000000
+      internalID: 1855173385412667802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_5
+      rect:
+        serializedVersion: 2
+        x: 1063
+        y: 1493
+        width: 329
+        height: 420
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4e6571c05c475bd0800000000000000
+      internalID: -2641558746702713269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_6
+      rect:
+        serializedVersion: 2
+        x: 1392
+        y: 1493
+        width: 280
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a19c665361923b00800000000000000
+      internalID: 806867139090485672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_7
+      rect:
+        serializedVersion: 2
+        x: 1672
+        y: 1488
+        width: 263
+        height: 343
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ddffb57457aef6d0800000000000000
+      internalID: -2954740324313858607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_8
+      rect:
+        serializedVersion: 2
+        x: 1935
+        y: 1488
+        width: 313
+        height: 341
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e589c1b5b28ab6c0800000000000000
+      internalID: -4126842391648172574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_9
+      rect:
+        serializedVersion: 2
+        x: 2248
+        y: 1488
+        width: 265
+        height: 315
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a56e346158d86310800000000000000
+      internalID: 1398605528384300453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_10
+      rect:
+        serializedVersion: 2
+        x: 2513
+        y: 506
+        width: 1102
+        height: 1330
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3835ca2e9ac79bdb0800000000000000
+      internalID: -4775648860755438717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_11
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 1428
+        width: 171
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 277e08b18532fdc30800000000000000
+      internalID: 4386263423407679346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_12
+      rect:
+        serializedVersion: 2
+        x: 1073
+        y: 1439
+        width: 30
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b837adb0e40ea3ac0800000000000000
+      internalID: -3874537903587953781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_13
+      rect:
+        serializedVersion: 2
+        x: 1911
+        y: 1439
+        width: 179
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78cebd72a4a8bb150800000000000000
+      internalID: 5889452988817992839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_14
+      rect:
+        serializedVersion: 2
+        x: 2167
+        y: 1423
+        width: 37
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1546f2840b5c5ce30800000000000000
+      internalID: 4523238761679512657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_15
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 1192
+        width: 235
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 211e34340d3026760800000000000000
+      internalID: 7449520926640824594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_16
+      rect:
+        serializedVersion: 2
+        x: 731
+        y: 1330
+        width: 38
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57c3733aa723b71a0800000000000000
+      internalID: -6810794509162038155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_17
+      rect:
+        serializedVersion: 2
+        x: 1543
+        y: 1205
+        width: 227
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cb5ddeb053c0ce60800000000000000
+      internalID: 7980593291267496900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_18
+      rect:
+        serializedVersion: 2
+        x: 1819
+        y: 1327
+        width: 32
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3973cc35cae5ac640800000000000000
+      internalID: 5100993622183786387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_19
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 1081
+        width: 31
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 421c004efc68d6760800000000000000
+      internalID: 7452761185809645860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_20
+      rect:
+        serializedVersion: 2
+        x: 1469
+        y: 1080
+        width: 43
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc5ec047bd2bfe1a0800000000000000
+      internalID: -6778002258554722869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_21
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 869
+        width: 46
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d18d5725e8130b130800000000000000
+      internalID: 3580416191098116125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_22
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 886
+        width: 54
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 020f036277c346200800000000000000
+      internalID: 172329168186437664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_23
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 726
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3aabe22532915490800000000000000
+      internalID: -7759259926065862082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_24
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 640
+        width: 59
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53e7f36136ccdacb0800000000000000
+      internalID: -4850996497661067723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_25
+      rect:
+        serializedVersion: 2
+        x: 1430
+        y: 632
+        width: 55
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 239c241740871b500800000000000000
+      internalID: 410241001542830386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_26
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 492
+        width: 19
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 111617198161c8830800000000000000
+      internalID: 4074656057638609169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_27
+      rect:
+        serializedVersion: 2
+        x: 1477
+        y: 497
+        width: 27
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30f713f4325199d20800000000000000
+      internalID: 3285680644540169987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_28
+      rect:
+        serializedVersion: 2
+        x: 2514
+        y: 1
+        width: 1150
+        height: 504
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3355813ddc5efb350800000000000000
+      internalID: 6034794697872397619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_29
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 306
+        width: 41
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6eaadbb685c0a5950800000000000000
+      internalID: 6438472191183792870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_30
+      rect:
+        serializedVersion: 2
+        x: 1463
+        y: 308
+        width: 45
+        height: 127
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59403e91346e4fbf0800000000000000
+      internalID: -291354900000734059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_31
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 92
+        width: 157
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a18ffd3c5641bb4a0800000000000000
+      internalID: -6576640403533989862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_32
+      rect:
+        serializedVersion: 2
+        x: 1384
+        y: 123
+        width: 26
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c91d9037db7460de0800000000000000
+      internalID: -1367326557855952484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_33
+      rect:
+        serializedVersion: 2
+        x: 1494
+        y: 101
+        width: 141
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51544d5b770c376c0800000000000000
+      internalID: -4146759211493866219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_34
+      rect:
+        serializedVersion: 2
+        x: 2429
+        y: 105
+        width: 49
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4607c1a3d46195fb0800000000000000
+      internalID: -4658667818594832284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_35
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 70
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 088c19e696f804940800000000000000
+      internalID: 5278376446267607168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_36
+      rect:
+        serializedVersion: 2
+        x: 1182
+        y: 31
+        width: 148
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d11b32a109224a50800000000000000
+      internalID: 6503805898869903829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_37
+      rect:
+        serializedVersion: 2
+        x: 1671
+        y: 63
+        width: 40
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b86a5c02a64081c10800000000000000
+      internalID: 2024372886365906571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_38
+      rect:
+        serializedVersion: 2
+        x: 2207
+        y: 24
+        width: 187
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad8593197dd8bb690800000000000000
+      internalID: -7585313190381528870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_39
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 2
+        width: 216
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd84cfe8c1a7cc450800000000000000
+      internalID: 6110393057511491807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_40
+      rect:
+        serializedVersion: 2
+        x: 1050
+        y: 49
+        width: 21
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63248b040deda2630800000000000000
+      internalID: 3903177013090337334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_41
+      rect:
+        serializedVersion: 2
+        x: 1832
+        y: 1
+        width: 238
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fa30f749a4a2abb0800000000000000
+      internalID: -4926193995426546956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kameleon_Ice_42
+      rect:
+        serializedVersion: 2
+        x: 2087
+        y: 25
+        width: 36
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25b9b15d3f02df7d0800000000000000
+      internalID: -2883111954822751406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Kameleon_Ice_0: 9138146414258833582
+      Kameleon_Ice_1: 5506031003986690270
+      Kameleon_Ice_10: -4775648860755438717
+      Kameleon_Ice_11: 4386263423407679346
+      Kameleon_Ice_12: -3874537903587953781
+      Kameleon_Ice_13: 5889452988817992839
+      Kameleon_Ice_14: 4523238761679512657
+      Kameleon_Ice_15: 7449520926640824594
+      Kameleon_Ice_16: -6810794509162038155
+      Kameleon_Ice_17: 7980593291267496900
+      Kameleon_Ice_18: 5100993622183786387
+      Kameleon_Ice_19: 7452761185809645860
+      Kameleon_Ice_2: 9201864487667302292
+      Kameleon_Ice_20: -6778002258554722869
+      Kameleon_Ice_21: 3580416191098116125
+      Kameleon_Ice_22: 172329168186437664
+      Kameleon_Ice_23: -7759259926065862082
+      Kameleon_Ice_24: -4850996497661067723
+      Kameleon_Ice_25: 410241001542830386
+      Kameleon_Ice_26: 4074656057638609169
+      Kameleon_Ice_27: 3285680644540169987
+      Kameleon_Ice_28: 6034794697872397619
+      Kameleon_Ice_29: 6438472191183792870
+      Kameleon_Ice_3: 3824383894249724131
+      Kameleon_Ice_30: -291354900000734059
+      Kameleon_Ice_31: -6576640403533989862
+      Kameleon_Ice_32: -1367326557855952484
+      Kameleon_Ice_33: -4146759211493866219
+      Kameleon_Ice_34: -4658667818594832284
+      Kameleon_Ice_35: 5278376446267607168
+      Kameleon_Ice_36: 6503805898869903829
+      Kameleon_Ice_37: 2024372886365906571
+      Kameleon_Ice_38: -7585313190381528870
+      Kameleon_Ice_39: 6110393057511491807
+      Kameleon_Ice_4: 1855173385412667802
+      Kameleon_Ice_40: 3903177013090337334
+      Kameleon_Ice_41: -4926193995426546956
+      Kameleon_Ice_42: -2883111954822751406
+      Kameleon_Ice_5: -2641558746702713269
+      Kameleon_Ice_6: 806867139090485672
+      Kameleon_Ice_7: -2954740324313858607
+      Kameleon_Ice_8: -4126842391648172574
+      Kameleon_Ice_9: 1398605528384300453
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

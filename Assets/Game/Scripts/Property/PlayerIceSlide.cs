@@ -66,11 +66,18 @@ namespace Game
                 body.linearVelocity = new Vector2(PlayerRef.FacingDirection * minimumSlideSpeed, body.linearVelocity.y);
             else
                 PlayerRef.FacingDirection = Mathf.Sign(vx);
+
+            GetComponent<PlayerSpineView>()?.SetSliding(true);
         }
 
         // 미끄러짐 해제 (기획 §6.7). 수평 속도는 즉시 0으로 만들지 않는다 —
         // 다음 타일의 일반 이동 감속 규칙에 넘긴다. 사망·부활의 속도 초기화는 StageController가 한다.
-        public void Exit() => IsSliding = false;
+        public void Exit()
+        {
+            if (!IsSliding) return;
+            IsSliding = false;
+            GetComponent<PlayerSpineView>()?.SetSliding(false);
+        }
 
         private void FixedUpdate()
         {

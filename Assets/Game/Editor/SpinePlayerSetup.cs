@@ -12,6 +12,7 @@ namespace Game.EditorTools
         private const string PlayerPrefabPath = "Assets/Game/Resources/Player.prefab";
         private const string DefaultDataPath = "Assets/Arts/Character/Default/Player_Kameleon_SkeletonData.asset";
         private const string JellyDataPath = "Assets/Arts/Character/Jelly/Player_Kameleon_Jelly_SkeletonData.asset";
+        private const string IceDataPath = "Assets/Arts/Character/Ice/Kameleon_Ice_SkeletonData.asset";
 
         // 스켈레톤 원본 높이 ~1257px, SkeletonData 기본 스케일 0.01 → 약 12.6유닛.
         // 플레이어 콜라이더(반지름 0.35)에 맞춰 시각 높이 ~1유닛으로 축소한다.
@@ -22,7 +23,8 @@ namespace Game.EditorTools
         {
             var defaultData = AssetDatabase.LoadAssetAtPath<SkeletonDataAsset>(DefaultDataPath);
             var jellyData = AssetDatabase.LoadAssetAtPath<SkeletonDataAsset>(JellyDataPath);
-            if (defaultData == null || jellyData == null)
+            var iceData = AssetDatabase.LoadAssetAtPath<SkeletonDataAsset>(IceDataPath);
+            if (defaultData == null || jellyData == null || iceData == null)
             {
                 Debug.LogError("[Game] SkeletonData 에셋을 찾을 수 없습니다. Assets/Arts를 Reimport 했는지 확인하세요.");
                 return;
@@ -37,18 +39,23 @@ namespace Game.EditorTools
 
                 var defaultSkeleton = RebuildView(root.transform, "DefaultView", defaultData);
                 var jellySkeleton = RebuildView(root.transform, "JellyView", jellyData);
+                var iceSkeleton = RebuildView(root.transform, "IceView", iceData);
 
                 var view = root.GetComponent<PlayerSpineView>();
                 if (view == null) view = root.AddComponent<PlayerSpineView>();
 
                 var so = new SerializedObject(view);
                 BindViewSet(so, "defaultView", defaultSkeleton,
-                    "Kameleon_Idle", "Kameleon_Jump", "Kameleon_Uwaa", "", "Kameleon_Die");
+                    "Kameleon_Idle", "Kameleon_Jump", "Kameleon_Uwaa", crawl: "", slide: "", die: "Kameleon_Die");
                 BindViewSet(so, "jellyView", jellySkeleton,
-                    "Kameleon_Jelly_Idle", "Kameleon_Jelly_Jymp", "Kameleon_Jelly_Uwaa", "Kameleon_Jelly_Slime", "");
+                    "Kameleon_Jelly_Idle", "Kameleon_Jelly_Jump", "Kameleon_Jelly_Uwaa", crawl: "Kameleon_Jelly_Slime", slide: "", die: "Kameleon_Jelly_Die");
+                // 얼음은 아직 사망 애니메이션이 없다 — PlayDeath()가 스케일 아웃으로 대체한다.
+                BindViewSet(so, "iceView", iceSkeleton,
+                    "Kameleon_Ice_Idle", "Kameleon_Jump", "Kameleon_Ice_Uwaa", crawl: "", slide: "Kameleon_Ice_Slide", die: "");
                 so.ApplyModifiedPropertiesWithoutUndo();
 
                 jellySkeleton.gameObject.SetActive(false); // 기본 성질로 시작
+                iceSkeleton.gameObject.SetActive(false);
 
                 PrefabUtility.SaveAsPrefabAsset(root, PlayerPrefabPath);
             }
@@ -79,13 +86,14 @@ namespace Game.EditorTools
         }
 
         private static void BindViewSet(SerializedObject so, string field,
-            SkeletonAnimation skeleton, string idle, string jump, string eat, string crawl, string die)
+            SkeletonAnimation skeleton, string idle, string jump, string eat, string crawl, string slide, string die)
         {
             so.FindProperty($"{field}.skeleton").objectReferenceValue = skeleton;
             so.FindProperty($"{field}.idle").stringValue = idle;
             so.FindProperty($"{field}.jump").stringValue = jump;
             so.FindProperty($"{field}.eat").stringValue = eat;
             so.FindProperty($"{field}.crawl").stringValue = crawl;
+            so.FindProperty($"{field}.slide").stringValue = slide;
             so.FindProperty($"{field}.die").stringValue = die;
         }
     }
