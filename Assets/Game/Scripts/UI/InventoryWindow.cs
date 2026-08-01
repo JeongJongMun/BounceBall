@@ -78,6 +78,9 @@ namespace Game
         public void Open()
         {
             if (root == null) return;
+            // 상점과 동시에 열리지 않는다
+            if (ShopWindow.Instance != null && ShopWindow.Instance.IsOpen) return;
+
             root.SetActive(true);
             UIPopupState.SetOpen(this, true);
             BuildQuickSlots();

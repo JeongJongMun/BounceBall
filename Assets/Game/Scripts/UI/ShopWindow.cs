@@ -70,6 +70,8 @@ namespace Game
         public void Open()
         {
             if (root == null || !CanOpenHere()) return;
+            // 인벤토리와 동시에 열리지 않는다
+            if (InventoryWindow.Instance != null && InventoryWindow.Instance.IsOpen) return;
 
             root.SetActive(true);
             UIPopupState.SetOpen(this, true);
