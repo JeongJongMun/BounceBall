@@ -154,6 +154,8 @@ GameObject:
   - component: {fileID: 8621931243942346258}
   - component: {fileID: 8361329329186711336}
   - component: {fileID: 1131591135147823217}
+  - component: {fileID: 2675657181321383595}
+  - component: {fileID: 1409228114899994422}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -422,6 +424,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7206dca051a127c4187eac2ca473f3d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::Game.PlayerHazardContact
+--- !u!114 &2675657181321383595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843506291825221947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766ef70f4c48f464d8355ea82ce1a1bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.PlayerPropertyEffect
+  trailSets:
+  - property: 2
+    sprites:
+    - {fileID: 21300000, guid: 5519c8569a5b0264aaa22a565aad2fdf, type: 3}
+    - {fileID: 21300000, guid: cae141faf0cc6b9439265d84fdd95c59, type: 3}
+    - {fileID: 21300000, guid: 31d49fce5080cf94594cfa693b0d0923, type: 3}
+    - {fileID: 21300000, guid: 7fbd7f8143667c0499e0c3a81f73bfa9, type: 3}
+    - {fileID: 21300000, guid: 7f9f313b61062dd4190333f69fc8e685, type: 3}
+  - property: 1
+    sprites:
+    - {fileID: 21300000, guid: 1397898db0f8d2244be5132111d88b05, type: 3}
+    - {fileID: 21300000, guid: 9a2556712f91eec45aed44ea5ea89743, type: 3}
+  transformSprites:
+  - {fileID: 21300000, guid: 7f4ca3054cd79d840a26147cb0318c9a, type: 3}
+  - {fileID: 21300000, guid: 30d39e7752d7efd40bbb0c7629c7baaf, type: 3}
+  - {fileID: 21300000, guid: a6cb0f6e406d62649a0f4fb5e438b606, type: 3}
+  - {fileID: 21300000, guid: 41b08470beeda6c469d1f23913ba0cbe, type: 3}
+  transformBurstCount: 10
+  slideIntervalSlow: 0.18
+  slideIntervalFast: 0.03
+  crawlInterval: 0.22
+  speedRange: {x: 2, y: 5}
+  spreadAngle: 80
+  gravity: 14
+  lifetimeRange: {x: 0.35, y: 0.6}
+  particleSize: 0.35
+  sizeVariation: {x: 0.7, y: 1.3}
+  maxSpin: 180
+  fadeRatio: 0.6
+  surfaceOffset: 0.05
+  transformOffset: {x: 0, y: 0}
+  trailSortingOffset: -1
+  transformSortingOffset: 1
+--- !u!114 &1409228114899994422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843506291825221947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c6e845d66ff07429513d07b4a19998, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.JumpDustEffect
+  frames:
+  - {fileID: 21300000, guid: e7ec9eb162bbe4a4280eb6e74d39dafc, type: 3}
+  - {fileID: 21300000, guid: 7f40a396f7047274296df272f4d0a243, type: 3}
+  - {fileID: 21300000, guid: f9dbc346483738a46b11bfafa3666181, type: 3}
+  duration: 0.25
+  width: 1.4
+  superFrames:
+  - {fileID: 21300000, guid: 2ea54502c72df7244847d792d1de30e1, type: 3}
+  - {fileID: 21300000, guid: 9053e5796dbbea248813a8da9e9c37a9, type: 3}
+  - {fileID: 21300000, guid: 6ef369905bf662c4fbbdbaf83bd1b4e6, type: 3}
+  - {fileID: 21300000, guid: c60f3f7762acb3748b06e5fafd2c145f, type: 3}
+  superDuration: 0.35
+  superWidth: 2.4
+  positionOffset: {x: 0, y: -0.1}
+  sortingOrderOffset: -1
 --- !u!1 &4132530346668657746
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,6 +27,10 @@ namespace Game
 
         public bool IsSliding { get; private set; }
         public float CurrentSlideSpeed => PlayerRef.Body.linearVelocity.x;
+        public float MaximumSlideSpeed => maximumSlideSpeed;
+
+        // 입력이 없으면 이 속도 아래로는 떨어지지 않는다 — 테스트에서 "가장 느린 상태"를 잡을 때 쓴다.
+        public float MinimumSlideSpeedForTest => minimumSlideSpeed;
 
         // 입력에 따라 매 프레임 갱신되는 부호 있는 가속도. 목표 속도가 아니라
         // 이 값을 속도에 직접 누적한다 (기획 §6.3 SlideAcceleration, §6.4 SlideCounterAcceleration).
