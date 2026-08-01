@@ -17,7 +17,7 @@ namespace Game.EditorTools
         // 플레이어 콜라이더(반지름 0.35)에 맞춰 시각 높이 ~1유닛으로 축소한다.
         private const float ViewScale = 0.08f;
 
-        [MenuItem("Game/Apply Spine Player View")]
+        // 적용 완료됨 — 얼음 스켈레톤 추가, 애니메이션 이름 변경, 스케일 기준 변경 시에만 재실행.
         public static void Apply()
         {
             var defaultData = AssetDatabase.LoadAssetAtPath<SkeletonDataAsset>(DefaultDataPath);
