@@ -47,12 +47,18 @@ TextureImporter:
   - first:
       213: -1766934043599677414
     second: Player_Kameleon_14
+  - first:
+      213: -143249819437059794
+    second: Player_Kameleon_15
+  - first:
+      213: 5128124041485955192
+    second: Player_Kameleon_16
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
-    sRGBTexture: 1
+    sRGBTexture: 0
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -88,7 +94,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 0
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -97,7 +103,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -117,7 +123,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -159,9 +165,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 994
-        width: 437
-        height: 420
+        y: 1210
+        width: 137
+        height: 59
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,10 +186,10 @@ TextureImporter:
       name: Player_Kameleon_1
       rect:
         serializedVersion: 2
-        x: 438
-        y: 994
-        width: 515
-        height: 382
+        x: 138
+        y: 1253
+        width: 158
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,10 +208,10 @@ TextureImporter:
       name: Player_Kameleon_2
       rect:
         serializedVersion: 2
-        x: 953
-        y: 1066
-        width: 415
-        height: 380
+        x: 138
+        y: 1210
+        width: 160
+        height: 43
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,10 +230,10 @@ TextureImporter:
       name: Player_Kameleon_3
       rect:
         serializedVersion: 2
-        x: 1196
-        y: 374
-        width: 1052
-        height: 692
+        x: 298
+        y: 1210
+        width: 70
+        height: 91
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,10 +252,10 @@ TextureImporter:
       name: Player_Kameleon_4
       rect:
         serializedVersion: 2
-        x: 1368
-        y: 1066
-        width: 341
-        height: 315
+        x: 369
+        y: 1210
+        width: 124
+        height: 49
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,10 +274,10 @@ TextureImporter:
       name: Player_Kameleon_5
       rect:
         serializedVersion: 2
-        x: 1709
-        y: 1066
-        width: 327
-        height: 285
+        x: 1701
+        y: 1004
+        width: 779
+        height: 293
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -290,10 +296,10 @@ TextureImporter:
       name: Player_Kameleon_6
       rect:
         serializedVersion: 2
-        x: 2248
-        y: 373
-        width: 631
-        height: 1043
+        x: 2485
+        y: 1004
+        width: 321
+        height: 285
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -312,10 +318,10 @@ TextureImporter:
       name: Player_Kameleon_7
       rect:
         serializedVersion: 2
-        x: 2880
-        y: 977
-        width: 40
-        height: 148
+        x: 2806
+        y: 894
+        width: 421
+        height: 385
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -334,10 +340,10 @@ TextureImporter:
       name: Player_Kameleon_8
       rect:
         serializedVersion: 2
-        x: 2
-        y: 1
-        width: 1193
-        height: 993
+        x: 1
+        y: 2
+        width: 1007
+        height: 1207
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -356,10 +362,10 @@ TextureImporter:
       name: Player_Kameleon_9
       rect:
         serializedVersion: 2
-        x: 2880
-        y: 853
-        width: 49
-        height: 124
+        x: 1008
+        y: 1060
+        width: 258
+        height: 151
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -378,10 +384,10 @@ TextureImporter:
       name: Player_Kameleon_10
       rect:
         serializedVersion: 2
-        x: 2880
-        y: 716
-        width: 59
-        height: 137
+        x: 2480
+        y: 1144
+        width: 6
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -400,10 +406,10 @@ TextureImporter:
       name: Player_Kameleon_11
       rect:
         serializedVersion: 2
-        x: 2880
-        y: 632
-        width: 64
-        height: 84
+        x: 3227
+        y: 808
+        width: 317
+        height: 343
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -422,10 +428,10 @@ TextureImporter:
       name: Player_Kameleon_12
       rect:
         serializedVersion: 2
-        x: 1196
+        x: 1008
         y: 1
-        width: 1812
-        height: 372
+        width: 692
+        height: 1059
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -444,10 +450,10 @@ TextureImporter:
       name: Player_Kameleon_13
       rect:
         serializedVersion: 2
-        x: 2880
-        y: 373
-        width: 151
-        height: 258
+        x: 1701
+        y: 372
+        width: 1043
+        height: 632
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -466,10 +472,10 @@ TextureImporter:
       name: Player_Kameleon_14
       rect:
         serializedVersion: 2
-        x: 3008
-        y: 1
-        width: 35
-        height: 133
+        x: 2745
+        y: 371
+        width: 383
+        height: 523
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -480,6 +486,50 @@ TextureImporter:
       bones: []
       spriteID: a1852b559d69a77e0800000000000000
       internalID: -1766934043599677414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_15
+      rect:
+        serializedVersion: 2
+        x: 3128
+        y: 371
+        width: 411
+        height: 437
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e21b0565c03130ef0800000000000000
+      internalID: -143249819437059794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_16
+      rect:
+        serializedVersion: 2
+        x: 1701
+        y: 1
+        width: 1818
+        height: 370
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87039e055a1ca2740800000000000000
+      internalID: 5128124041485955192
       vertices: []
       indices: 
       edges: []
@@ -505,6 +555,8 @@ TextureImporter:
       Player_Kameleon_12: 5622414541404077040
       Player_Kameleon_13: 7117416240179458393
       Player_Kameleon_14: -1766934043599677414
+      Player_Kameleon_15: -143249819437059794
+      Player_Kameleon_16: 5128124041485955192
       Player_Kameleon_2: -6560016252506897823
       Player_Kameleon_3: -8247058638810503454
       Player_Kameleon_4: 1724624389743235711

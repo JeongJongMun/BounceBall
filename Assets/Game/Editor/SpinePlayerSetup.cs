@@ -43,9 +43,9 @@ namespace Game.EditorTools
 
                 var so = new SerializedObject(view);
                 BindViewSet(so, "defaultView", defaultSkeleton,
-                    "Kameleon_Idle", "Kameleon_Jump", "Kameleon_Uwaa", "");
+                    "Kameleon_Idle", "Kameleon_Jump", "Kameleon_Uwaa", "", "Kameleon_Die");
                 BindViewSet(so, "jellyView", jellySkeleton,
-                    "Kameleon_Jelly_Idle", "Kameleon_Jelly_Jymp", "Kameleon_Jelly_Uwaa", "Kameleon_Jelly_Slime");
+                    "Kameleon_Jelly_Idle", "Kameleon_Jelly_Jymp", "Kameleon_Jelly_Uwaa", "Kameleon_Jelly_Slime", "");
                 so.ApplyModifiedPropertiesWithoutUndo();
 
                 jellySkeleton.gameObject.SetActive(false); // 기본 성질로 시작
@@ -79,13 +79,14 @@ namespace Game.EditorTools
         }
 
         private static void BindViewSet(SerializedObject so, string field,
-            SkeletonAnimation skeleton, string idle, string jump, string eat, string crawl)
+            SkeletonAnimation skeleton, string idle, string jump, string eat, string crawl, string die)
         {
             so.FindProperty($"{field}.skeleton").objectReferenceValue = skeleton;
             so.FindProperty($"{field}.idle").stringValue = idle;
             so.FindProperty($"{field}.jump").stringValue = jump;
             so.FindProperty($"{field}.eat").stringValue = eat;
             so.FindProperty($"{field}.crawl").stringValue = crawl;
+            so.FindProperty($"{field}.die").stringValue = die;
         }
     }
 }

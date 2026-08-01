@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Core.Events;
 using UnityEngine;
@@ -158,10 +159,20 @@ namespace Game
             var player = PlayerRef;
             if (player == null) return;
 
+            StartCoroutine(RespawnRoutine(player));
+        }
+
+        // 사망 연출(Die 애니 또는 스케일 아웃)을 보여준 뒤 복구하고, 부활 팝(0→1.3→1)으로 재등장한다.
+        private IEnumerator RespawnRoutine(Player player)
+        {
             _isRespawning = true;
 
             player.SetDisabled(true); // 입력·자동 바운스 정지 + 속도 0
             onPlayerFailed?.Raise();
+
+            var view = player.GetComponent<PlayerSpineView>();
+            float deathDuration = view != null ? view.PlayDeath() : 0f;
+            if (deathDuration > 0f) yield return new WaitForSeconds(deathDuration);
 
             // 위치 복구. Rigidbody가 Interpolate라 transform만 옮기면 순간이동 잔상이 남는다.
             var body = player.Body;
@@ -183,6 +194,8 @@ namespace Game
             // 카메라를 즉시 이동시킨다. 안 하면 0.15초 동안 맵을 가로질러 스윕한다.
             var follow = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
             if (follow != null) follow.Init(player.transform, this);
+
+            if (view != null) view.PlayRespawnPop(); // 스케일 0 → 1.3 → 1 재등장 연출
 
             player.SetDisabled(false); // 조작·자동 바운스 재개
             _isRespawning = false;

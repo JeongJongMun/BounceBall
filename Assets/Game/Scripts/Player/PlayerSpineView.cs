@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Spine.Unity;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ namespace Game
             public string eat;
             [Tooltip("부착 이동 루프. 없으면 빈 문자열")]
             public string crawl;
+            [Tooltip("사망. 없으면 빈 문자열 (스케일 아웃으로 대체)")]
+            public string die;
         }
 
         [SerializeField] private ViewSet defaultView;
@@ -24,6 +27,15 @@ namespace Game
 
         private ViewSet _active;
         private bool _crawling;
+        private Vector3 _defaultBaseScale = Vector3.one;
+        private Vector3 _jellyBaseScale = Vector3.one;
+
+        private void Awake()
+        {
+            // 부활 팝/스케일 아웃 연출이 원래 크기로 복원할 수 있도록 프리팹 스케일을 기억한다
+            if (defaultView?.skeleton != null) _defaultBaseScale = defaultView.skeleton.transform.localScale;
+            if (jellyView?.skeleton != null) _jellyBaseScale = jellyView.skeleton.transform.localScale;
+        }
 
         public void SetProperty(PlayerPropertyType type, Color tint)
         {
@@ -70,6 +82,56 @@ namespace Game
                 _active.skeleton.AnimationState.SetAnimation(0, _active.crawl, true);
             else
                 PlayIdle();
+        }
+
+        // 사망 연출 재생 후 소요 시간을 돌려준다. 사망 애니가 없는 스켈레톤(젤리)은 스케일 아웃으로 대체.
+        public float PlayDeath()
+        {
+            if (!HasState) return 0f;
+
+            if (!string.IsNullOrEmpty(_active.die))
+            {
+                var animation = _active.skeleton.Skeleton.Data.FindAnimation(_active.die);
+                if (animation != null)
+                {
+                    _active.skeleton.AnimationState.SetAnimation(0, _active.die, false);
+                    return animation.Duration;
+                }
+            }
+
+            var t = _active.skeleton.transform;
+            t.DOKill();
+            t.DOScale(Vector3.zero, 0.15f).SetEase(Ease.InQuad);
+            return 0.15f;
+        }
+
+        // 부활 연출: 스케일 0 → 1.3배 → 원래 크기
+        public void PlayRespawnPop()
+        {
+            // 사망 중 스케일 아웃됐을 수 있으니 양쪽 뷰 모두 원복해 둔다
+            RestoreScale(defaultView, _defaultBaseScale);
+            RestoreScale(jellyView, _jellyBaseScale);
+
+            if (_active?.skeleton == null) return;
+            var t = _active.skeleton.transform;
+            var baseScale = _active == jellyView ? _jellyBaseScale : _defaultBaseScale;
+
+            t.DOKill();
+            t.localScale = Vector3.zero;
+            DOTween.Sequence()
+                .Append(t.DOScale(baseScale * 1.3f, 0.25f).SetEase(Ease.OutQuad))
+                .Append(t.DOScale(baseScale, 0.15f).SetEase(Ease.InOutQuad))
+                .SetTarget(t);
+
+            _crawling = false;
+            PlayIdle();
+        }
+
+        private static void RestoreScale(ViewSet set, Vector3 baseScale)
+        {
+            if (set?.skeleton == null) return;
+            set.skeleton.transform.DOKill();
+            set.skeleton.transform.localScale = baseScale;
         }
 
         private void PlayIdle()
