@@ -529,9 +529,6 @@ Tilemap:
   - serializedVersion: 2
     m_RefCount: 18
     m_Data: {fileID: 11400000, guid: 4bce4c7454add7642bf49afc194f4268, type: 2}
-  - serializedVersion: 2
-    m_RefCount: 0
-    m_Data: {fileID: 11400000, guid: ade58c5efa9305343913d048b074d0ac, type: 2}
   m_TileSpriteArray:
   - serializedVersion: 2
     m_RefCount: 18
@@ -561,9 +558,6 @@ Tilemap:
   - serializedVersion: 2
     m_RefCount: 18
     m_Data: {r: 0.55, g: 0.55, b: 0.6, a: 1}
-  - serializedVersion: 2
-    m_RefCount: 0
-    m_Data: {r: 1, g: 0.55, b: 0.25, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -619,11 +613,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game::Game.StageController
   stageId: Stage02
   startPosition: {fileID: 1201777786}
-  stageMinX: -9
-  stageMaxX: 9
-  stageMinY: -3
-  stageMaxY: -2
+  stageMinX: -12
+  stageMaxX: 12
+  stageMinY: -6
+  stageMaxY: 1
   stageFallLimitY: -5
+  boundsPadding: 3
   totalGoalItemCount: 2
   requiredGoalItemCount: 2
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,

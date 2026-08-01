@@ -5,36 +5,27 @@ namespace Game.Tests
 {
     public class StageRespawnTests
     {
-        private const float MinX = -10f;
-        private const float MaxX = 10f;
         private const float FallLimitY = -8f;
 
+        // 사망은 낙사뿐이다 (기획 §23.1). 좌우는 투명 벽이 막으므로 판정 대상이 아니다.
         [Test]
-        public void 경계_안쪽은_이탈이_아니다()
+        public void 낙사선_위는_낙사가_아니다()
         {
-            Assert.IsFalse(StageController.IsOutOfBounds(new Vector2(0f, 0f), MinX, MaxX, FallLimitY));
-            Assert.IsFalse(StageController.IsOutOfBounds(new Vector2(MinX, 0f), MinX, MaxX, FallLimitY));
-            Assert.IsFalse(StageController.IsOutOfBounds(new Vector2(MaxX, 0f), MinX, MaxX, FallLimitY));
+            Assert.IsFalse(StageController.IsFallen(0f, FallLimitY));
+            Assert.IsFalse(StageController.IsFallen(FallLimitY, FallLimitY));
         }
 
         [Test]
-        public void 좌우_경계를_넘으면_이탈이다()
+        public void 낙사선_아래는_낙사다()
         {
-            Assert.IsTrue(StageController.IsOutOfBounds(new Vector2(MinX - 0.1f, 0f), MinX, MaxX, FallLimitY));
-            Assert.IsTrue(StageController.IsOutOfBounds(new Vector2(MaxX + 0.1f, 0f), MinX, MaxX, FallLimitY));
+            Assert.IsTrue(StageController.IsFallen(FallLimitY - 0.1f, FallLimitY));
         }
 
         [Test]
-        public void 낙사선_아래는_이탈이다()
-        {
-            Assert.IsTrue(StageController.IsOutOfBounds(new Vector2(0f, FallLimitY - 0.1f), MinX, MaxX, FallLimitY));
-        }
-
-        [Test]
-        public void 위쪽으로는_아무리_올라가도_이탈이_아니다()
+        public void 위쪽으로는_아무리_올라가도_낙사가_아니다()
         {
             // 세로로 긴 스테이지를 위해 상단은 판정에서 제외한다 (기획 §23.1)
-            Assert.IsFalse(StageController.IsOutOfBounds(new Vector2(0f, 9999f), MinX, MaxX, FallLimitY));
+            Assert.IsFalse(StageController.IsFallen(9999f, FallLimitY));
         }
 
         [Test]

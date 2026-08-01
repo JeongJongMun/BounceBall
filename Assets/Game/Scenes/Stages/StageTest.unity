@@ -942,11 +942,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game::Game.StageController
   stageId: StageTest
   startPosition: {fileID: 2094529830}
-  stageMinX: -9
-  stageMaxX: 9
-  stageMinY: -3
-  stageMaxY: 0
+  stageMinX: -12
+  stageMaxX: 12
+  stageMinY: -6
+  stageMaxY: 3
   stageFallLimitY: -5
+  boundsPadding: 3
   totalGoalItemCount: 3
   requiredGoalItemCount: 3
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,

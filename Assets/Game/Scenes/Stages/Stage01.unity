@@ -580,7 +580,7 @@ Tilemap:
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -6, y: -3, z: 0}
-  m_Size: {x: 13, y: 3, z: 1}
+  m_Size: {x: 13, y: 1, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -677,11 +677,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game::Game.StageController
   stageId: Stage01
   startPosition: {fileID: 1671743695}
-  stageMinX: -10
+  stageMinX: -9
   stageMaxX: 10
   stageMinY: -6
-  stageMaxY: 6
-  stageFallLimitY: -8
+  stageMaxY: 1
+  stageFallLimitY: -5
+  boundsPadding: 3
   totalGoalItemCount: 1
   requiredGoalItemCount: 1
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,

@@ -21,6 +21,10 @@ namespace Game
         [Header("낙사")]
         [SerializeField] private float stageFallLimitY = -8f;
 
+        [Header("경계 여백")]
+        [Tooltip("타일 끝에서 카메라가 더 보여주는 빈 공간. 이 여백의 바깥이 투명 벽이다.")]
+        [SerializeField] private float boundsPadding = 3f;
+
         [Header("목표 아이템")]
         [SerializeField] private int totalGoalItemCount;
         [SerializeField] private int requiredGoalItemCount;
@@ -54,12 +58,14 @@ namespace Game
         public float StageMinY => stageMinY;
         public float StageMaxY => stageMaxY;
         public float StageFallLimitY => stageFallLimitY;
+        public float BoundsPadding => boundsPadding;
         public int TotalGoalItemCount => totalGoalItemCount;
         public int RequiredGoalItemCount => requiredGoalItemCount;
 
         private void Start()
         {
             SpawnPlayer();
+            CreateBoundaryWalls();
 
             // 스테이지 씬 진입 = 게임 시작. 에디터에서 씬 단독 Play 시에도 동일하게 동작한다.
             if (Core.GameManager.Instance != null && Core.GameManager.Instance.State != Core.GameState.Playing)
@@ -79,14 +85,33 @@ namespace Game
             var player = PlayerRef;
             if (player == null) return;
 
-            if (IsOutOfBounds(player.transform.position, stageMinX, stageMaxX, stageFallLimitY))
+            if (IsFallen(player.transform.position.y, stageFallLimitY))
                 RespawnPlayer();
         }
 
-        // 좌·우 경계와 낙사선만 판정한다. 상단(Y+)은 세로로 긴 스테이지를 위해 제외 (기획 §23.1).
-        public static bool IsOutOfBounds(Vector2 position, float minX, float maxX, float fallLimitY)
+        // 사망은 낙사뿐이다 (기획 §23.1). 좌우는 투명 벽이 막고, 상단(Y+)은 세로로 긴 스테이지를 위해 자유.
+        public static bool IsFallen(float y, float fallLimitY)
         {
-            return position.x < minX || position.x > maxX || position.y < fallLimitY;
+            return y < fallLimitY;
+        }
+
+        // 경계 좌우에 투명 벽을 세워 플레이어가 화면 밖으로 나가지 못하게 한다.
+        // 카메라도 같은 경계에서 멈추므로 벽 안쪽 여백까지가 보이는 플레이 영역이 된다.
+        private void CreateBoundaryWalls()
+        {
+            CreateWall("LeftBoundaryWall", stageMinX - 0.5f);
+            CreateWall("RightBoundaryWall", stageMaxX + 0.5f);
+        }
+
+        private void CreateWall(string wallName, float centerX)
+        {
+            float bottom = stageFallLimitY;
+            float top = stageMaxY + 30f; // 위로는 점프 제한이 없으므로 충분히 높게
+            var wall = new GameObject(wallName);
+            wall.transform.SetParent(transform);
+            wall.transform.position = new Vector3(centerX, (bottom + top) * 0.5f, 0f);
+            var box = wall.AddComponent<BoxCollider2D>();
+            box.size = new Vector2(1f, top - bottom);
         }
 
         // 체크포인트 활성화 (기획 §25.2). 한 번에 하나만 활성이며, 새로 활성화하면 이전 데이터를 덮어쓴다 (§25.6).

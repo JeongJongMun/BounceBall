@@ -36,10 +36,27 @@ namespace Game.EditorTools
             var min = groundTilemap.transform.TransformPoint(local.min);
             var max = groundTilemap.transform.TransformPoint(local.max);
 
+            // 타일 끝에서 여백만큼 더 보여주고 카메라가 멈춘다. 투명 벽도 여백 바깥에 선다.
+            float pad = controller.BoundsPadding;
             Undo.RecordObject(controller, "경계 자동 계산");
-            controller.SetBounds(min.x, max.x, min.y, max.y, min.y - 2f);
+            controller.SetBounds(min.x - pad, max.x + pad, min.y - pad, max.y + pad, min.y - 2f);
             EditorUtility.SetDirty(controller);
-            Debug.Log($"[Game] 경계 설정: X({min.x}~{max.x}) Y({min.y}~{max.y}) 낙사선 {min.y - 2f}");
+            Debug.Log($"[Game] 경계 설정 (여백 {pad}): X({min.x - pad}~{max.x + pad}) Y({min.y - pad}~{max.y + pad}) 낙사선 {min.y - 2f}");
+        }
+
+        // CLI 일괄 재계산: Unity.exe -batchmode -executeMethod Game.EditorTools.StageControllerEditor.RecalcAllStageBounds
+        public static void RecalcAllStageBounds()
+        {
+            foreach (var guid in AssetDatabase.FindAssets("t:Scene", new[] { "Assets/Game/Scenes/Stages" }))
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
+                foreach (var controller in Object.FindObjectsByType<StageController>(FindObjectsSortMode.None))
+                    AutoCalculateBounds(controller);
+                EditorSceneManager.MarkSceneDirty(scene);
+                EditorSceneManager.SaveScene(scene);
+            }
+            Debug.Log("[Game] 전체 스테이지 경계 재계산 완료");
         }
 
         private static void Validate(StageController controller)
@@ -88,6 +105,22 @@ namespace Game.EditorTools
 
             // 타일맵에 남은 마커 타일 (기본 브러시로 칠한 경우) → 실제 프리팹으로 자동 변환
             FixStrayMarkerTiles();
+
+            // 경계 밖 타일: 카메라가 안 보여주고 투명 벽이 막아서 갈 수 없는 영역이 된다
+            var ground = FindGroundTilemap();
+            if (ground != null)
+            {
+                ground.CompressBounds();
+                var local = ground.localBounds;
+                var tileMin = ground.transform.TransformPoint(local.min);
+                var tileMax = ground.transform.TransformPoint(local.max);
+                if (tileMin.x < controller.StageMinX || tileMax.x > controller.StageMaxX ||
+                    tileMax.y > controller.StageMaxY)
+                {
+                    Debug.LogError("[검증] Ground 타일이 경계 밖에 있습니다 — 카메라에 안 보이고 투명 벽에 막혀 갈 수 없는 영역입니다. [경계 자동 계산]을 다시 눌러주세요.");
+                    errors++;
+                }
+            }
 
             // 낙사선 아래 배치물
             warnings += WarnBelowFallLine<PropertyItem>(controller);
