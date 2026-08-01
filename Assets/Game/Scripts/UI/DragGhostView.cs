@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,9 +9,10 @@ namespace Game
     {
         public static DragGhostView Instance { get; private set; }
 
+        private const float IconAlpha = 0.5f;
+
         [SerializeField] private RectTransform rect;
         [SerializeField] private Image iconImage;
-        [SerializeField] private TMP_Text label;
 
         private void Awake()
         {
@@ -34,8 +34,10 @@ namespace Game
             {
                 iconImage.sprite = item.Thumbnail;
                 iconImage.enabled = iconImage.sprite != null;
+                var color = iconImage.color;
+                color.a = IconAlpha;
+                iconImage.color = color;
             }
-            if (label != null) label.text = item.ItemName;
 
             gameObject.SetActive(true);
             transform.SetAsLastSibling(); // 항상 맨 위에
@@ -48,11 +50,10 @@ namespace Game
         public void Hide() => gameObject.SetActive(false);
 
         // 에디터 툴링에서 배선할 때 사용.
-        public void SetReferences(RectTransform ghostRect, Image icon, TMP_Text text)
+        public void SetReferences(RectTransform ghostRect, Image icon)
         {
             rect = ghostRect;
             iconImage = icon;
-            label = text;
         }
     }
 }
