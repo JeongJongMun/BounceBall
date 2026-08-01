@@ -35,12 +35,21 @@ TextureImporter:
   - first:
       213: 6064500287510709532
     second: Player_Kameleon_Jelly_10
+  - first:
+      213: 47644574159318717
+    second: Player_Kameleon_Jelly_11
+  - first:
+      213: -4074838307635607241
+    second: Player_Kameleon_Jelly_12
+  - first:
+      213: -3587435568846235592
+    second: Player_Kameleon_Jelly_13
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
-    sRGBTexture: 1
+    sRGBTexture: 0
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -76,7 +85,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 0
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -85,7 +94,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -105,7 +114,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -139,6 +148,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -146,10 +168,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1553
-        width: 798
-        height: 456
+        x: 2
+        y: 2
+        width: 1315
+        height: 1053
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,10 +190,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_1
       rect:
         serializedVersion: 2
-        x: 800
-        y: 1967
-        width: 147
-        height: 35
+        x: 1317
+        y: 590
+        width: 431
+        height: 408
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,10 +212,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_2
       rect:
         serializedVersion: 2
-        x: 799
-        y: 1554
-        width: 388
-        height: 412
+        x: 1748
+        y: 932
+        width: 145
+        height: 53
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -212,10 +234,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_3
       rect:
         serializedVersion: 2
-        x: 1187
-        y: 1863
-        width: 140
-        height: 44
+        x: 1748
+        y: 590
+        width: 185
+        height: 342
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -234,10 +256,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_4
       rect:
         serializedVersion: 2
-        x: 1187
-        y: 1553
-        width: 323
-        height: 310
+        x: 1936
+        y: 501
+        width: 793
+        height: 456
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -256,10 +278,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_5
       rect:
         serializedVersion: 2
-        x: 1510
-        y: 1553
-        width: 289
-        height: 322
+        x: 3158
+        y: 831
+        width: 321
+        height: 192
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -278,10 +300,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_6
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1051
-        width: 1810
-        height: 502
+        x: 3479
+        y: 828
+        width: 307
+        height: 226
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -300,10 +322,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_7
       rect:
         serializedVersion: 2
-        x: 2
-        y: 2
-        width: 1312
-        height: 1049
+        x: 2729
+        y: 501
+        width: 419
+        height: 405
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -322,10 +344,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_8
       rect:
         serializedVersion: 2
-        x: 1314
-        y: 620
-        width: 402
-        height: 431
+        x: 3149
+        y: 820
+        width: 10
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -344,10 +366,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_9
       rect:
         serializedVersion: 2
-        x: 1314
-        y: 1
-        width: 597
-        height: 619
+        x: 3149
+        y: 501
+        width: 332
+        height: 319
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -366,10 +388,10 @@ TextureImporter:
       name: Player_Kameleon_Jelly_10
       rect:
         serializedVersion: 2
-        x: 1716
-        y: 620
-        width: 206
-        height: 301
+        x: 3481
+        y: 501
+        width: 295
+        height: 327
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -380,6 +402,72 @@ TextureImporter:
       bones: []
       spriteID: c15845161ee692450800000000000000
       internalID: 6064500287510709532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_Jelly_11
+      rect:
+        serializedVersion: 2
+        x: 1317
+        y: 1
+        width: 619
+        height: 589
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbead3edc7449a000800000000000000
+      internalID: 47644574159318717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_Jelly_12
+      rect:
+        serializedVersion: 2
+        x: 1936
+        y: 1
+        width: 1810
+        height: 500
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 739c93c06244377c0800000000000000
+      internalID: -4074838307635607241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_Jelly_13
+      rect:
+        serializedVersion: 2
+        x: 3746
+        y: 2
+        width: 42
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83891507b5ed63ec0800000000000000
+      internalID: -3587435568846235592
       vertices: []
       indices: 
       edges: []
@@ -401,6 +489,9 @@ TextureImporter:
       Player_Kameleon_Jelly_0: 8197669215852149642
       Player_Kameleon_Jelly_1: -7152914588471169794
       Player_Kameleon_Jelly_10: 6064500287510709532
+      Player_Kameleon_Jelly_11: 47644574159318717
+      Player_Kameleon_Jelly_12: -4074838307635607241
+      Player_Kameleon_Jelly_13: -3587435568846235592
       Player_Kameleon_Jelly_2: -4003274082547919385
       Player_Kameleon_Jelly_3: -6289302457038804473
       Player_Kameleon_Jelly_4: 4097653849193112883
