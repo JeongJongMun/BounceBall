@@ -39,6 +39,10 @@ namespace Game
         [Tooltip("맵 전체에서 실제 플레이 화면으로 줌인하는 데 걸리는 시간(초)")]
         [SerializeField] private float introZoomDuration = 1f;
 
+        [Label("맵 여백 배율")]
+        [Tooltip("인트로에서 맵 주변에 얼마나 여백을 둘지. 1이면 맵에 딱 맞고, 클수록 넓게 보인다")]
+        [SerializeField] private float introPadding = 1.2f;
+
         [Label("인트로 최소 확대 비율")]
         [Tooltip("맵이 플레이 화면보다 이 배율 이상 클 때만 인트로를 재생한다. 타일이 이미 다 보이면 연출을 건너뛴다")]
         [SerializeField] private float introMinZoomRatio = 1.1f;
@@ -62,6 +66,7 @@ namespace Game
         public float VerticalSmoothTime => verticalSmoothTime;
         public float IntroHoldDuration => introHoldDuration;
         public float IntroZoomDuration => introZoomDuration;
+        public float IntroPadding => introPadding;
         public float IntroMinZoomRatio => introMinZoomRatio;
         public Ease IntroEase => introEase;
         public bool SnapOnRespawn => snapOnRespawn;

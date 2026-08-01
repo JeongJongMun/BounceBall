@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Game.Tests
 {
@@ -56,6 +57,66 @@ namespace Game.Tests
         public void 한계가_0이면_제한하지_않는다()
         {
             Assert.AreEqual(20f, StageIntroCamera.ComputeFitSize(10f, 40f, Aspect, 1f, 0f), 0.001f);
+        }
+
+        // ComputeIntroBounds(stageBounds, hasTiles, tiles) — 경계 ∩ 타일
+        private static Bounds Rect(float minX, float maxX, float minY, float maxY) =>
+            new Bounds(new Vector3((minX + maxX) * 0.5f, (minY + maxY) * 0.5f, 0f),
+                       new Vector3(maxX - minX, maxY - minY, 0f));
+
+        [Test]
+        public void 타일이_경계_안에_있으면_타일_범위를_쓴다()
+        {
+            // 정상 스테이지: 경계는 타일 끝에서 여백만큼 더 넓다
+            var result = StageIntroCamera.ComputeIntroBounds(
+                Rect(-13f, 13f, -6f, 6f), true, Rect(-10f, 10f, -3f, 3f));
+
+            Assert.AreEqual(20f, result.size.x, 0.001f);
+            Assert.AreEqual(6f, result.size.y, 0.001f);
+        }
+
+        [Test]
+        public void 타일이_없으면_경계를_쓴다()
+        {
+            var stage = Rect(-13f, 13f, -6f, 6f);
+            var result = StageIntroCamera.ComputeIntroBounds(stage, false, default);
+
+            Assert.AreEqual(26f, result.size.x, 0.001f);
+            Assert.AreEqual(12f, result.size.y, 0.001f);
+        }
+
+        [Test]
+        public void 경계가_타일보다_좁으면_경계까지만_담는다()
+        {
+            // 경계를 아직 계산하지 않은 스테이지. 플레이 가능한 영역만 보여준다
+            var result = StageIntroCamera.ComputeIntroBounds(
+                Rect(-10f, 10f, -6f, 6f), true, Rect(-16f, 16f, -3f, 3f));
+
+            Assert.AreEqual(20f, result.size.x, 0.001f);
+            Assert.AreEqual(6f, result.size.y, 0.001f);
+        }
+
+        [Test]
+        public void 축마다_좁은_쪽이_따로_적용된다()
+        {
+            // 가로는 경계가, 세로는 타일이 좁은 경우
+            var result = StageIntroCamera.ComputeIntroBounds(
+                Rect(-8f, 8f, -6f, 6f), true, Rect(-16f, 16f, -2f, 2f));
+
+            Assert.AreEqual(16f, result.size.x, 0.001f);
+            Assert.AreEqual(4f, result.size.y, 0.001f);
+        }
+
+        [Test]
+        public void 겹치는_곳이_없으면_경계로_되돌린다()
+        {
+            // 좌표가 어긋난 스테이지 — 빈 영역을 비추지 않도록 경계를 쓴다
+            var result = StageIntroCamera.ComputeIntroBounds(
+                Rect(-10f, 10f, -6f, 6f), true, Rect(50f, 70f, -3f, 3f));
+
+            Assert.AreEqual(20f, result.size.x, 0.001f);
+            Assert.AreEqual(12f, result.size.y, 0.001f);
+            Assert.AreEqual(0f, result.center.x, 0.001f);
         }
 
         // ShouldPlayIntro(tileWidth, tileHeight, aspect, playSize, minZoomRatio)
