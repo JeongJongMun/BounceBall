@@ -153,6 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64bd754bf0b90a5479f5a392cdaa5578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::Game.DisposablePlatform
-  disableDelay: 0.3
+  disableDelay: 0.125
   respawnTime: 3
   resetOnStageRestart: 1
