@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15a794364c288f44aa2d46e50838f905, type: 3}
-  m_Name: DisposablePlatformMarker
+  m_Name: DisposablePlatformHalfMarker
   m_EditorClassIdentifier: Game::Game.PrefabMarkerTile
-  prefab: {fileID: 2980095382460620313, guid: 7f2e01744d603b042a3b0423123b3283, type: 3}
-  previewSprite: {fileID: 21300000, guid: 7cdcdbccf25fc4c3792e3ce64d930964, type: 3}
+  prefab: {fileID: 1478014788622587878, guid: c600ff133a5b89241a89a6c11d31b051, type: 3}
+  previewSprite: {fileID: 21300000, guid: 07ccfb18dce4045508d7b661716135e6, type: 3}
   previewColor: {r: 1, g: 1, b: 1, a: 1}
