@@ -52,11 +52,7 @@ namespace Game.EditorTools
             var composite = ground.AddComponent<CompositeCollider2D>();
             composite.attachedRigidbody.bodyType = RigidbodyType2D.Static;
 
-            var deco = new GameObject("Deco");
-            deco.transform.SetParent(gridGo.transform, false);
-            deco.AddComponent<Tilemap>();
-            var decoRenderer = deco.AddComponent<TilemapRenderer>();
-            decoRenderer.sortingOrder = -10;
+            // 장식 레이어는 만들지 않는다 — 배경은 SpriteRenderer 오브젝트로 배치한다 (맵 배치 기획 §4).
 
             // 시작용 바닥 타일 (있을 때만)
             var tile = AssetDatabase.LoadAssetAtPath<Tile>(GroundTilePath);

@@ -8,6 +8,13 @@ namespace Game.EditorTools
     // - 일반/특수 타일이면 → 타일 페인트 (GridBrush 기본 동작)
     // - PrefabMarkerTile이면 → 타일 대신 프리팹을 Gimmicks 컨테이너에 스폰 (셀당 1개)
     // 지우개는 해당 셀의 타일과 프리팹을 모두 제거한다.
+    // 커스텀 브러시는 전용 GridBrushEditor가 있어야 Tile Palette의 Active Tilemap 목록이 채워진다.
+    // 없으면 드롭다운에 "Create New Tilemap"만 보이고 씬에 그릴 수 없다.
+    [CustomEditor(typeof(StageBrush))]
+    public class StageBrushEditor : GridBrushEditor
+    {
+    }
+
     [CustomGridBrush(false, true, false, "Stage Brush")]
     [CreateAssetMenu(menuName = "Game/Stage Brush", fileName = "StageBrush")]
     public class StageBrush : GridBrush
