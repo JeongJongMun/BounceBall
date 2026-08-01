@@ -71,6 +71,15 @@ namespace Core.Tests
         }
 
         [Test]
+        public void StageClear_시_timeScale이_0이_된다()
+        {
+            _gm.StartGame();
+            _gm.StageClear();
+            Assert.AreEqual(0f, Time.timeScale);
+            Assert.AreEqual(GameState.Cleared, _gm.State);
+        }
+
+        [Test]
         public void GameOver_시_하이스코어_갱신()
         {
             _gm.StartGame();

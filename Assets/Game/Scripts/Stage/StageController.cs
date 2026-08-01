@@ -423,9 +423,14 @@ namespace Game
             if (IsStageCleared) return;
             IsStageCleared = true;
 
-            // 입력·자동 바운스 정지 + 이동 속도 제거
+            // 입력·자동 바운스 정지 + 속도/중력 제거 → 공중에 멈춘 채 띄워 둔다.
+            // GameManager.StageClear가 timeScale을 0으로 두므로 물리도 함께 멈춘다.
             var player = PlayerRef;
-            if (player != null) player.SetDisabled(true);
+            if (player != null)
+            {
+                player.SetDisabled(true);
+                player.Body.gravityScale = 0f;
+            }
 
             StageProgress.SetCleared(SceneManager.GetActiveScene().name);
 
