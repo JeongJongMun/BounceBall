@@ -23,12 +23,6 @@ namespace Game.EditorTools
             CreateStageScene(path);
         }
 
-        // CLI 검증용: Unity.exe -executeMethod Game.EditorTools.StageScaffolder.CreateStageForTest
-        public static void CreateStageForTest()
-        {
-            CreateStageScene($"{StagesDir}/StageTest.unity");
-        }
-
         private static void CreateStageScene(string path)
         {
             EnsureFolder(StagesDir);

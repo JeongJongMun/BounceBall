@@ -22,7 +22,7 @@ namespace Game
             var database = Resources.Load<StageDatabase>("StageDatabase");
             if (database == null || database.Stages.Count == 0)
             {
-                Debug.LogWarning("[Game] StageDatabase가 비어 있습니다. Game > Sync Stage Database를 실행하세요.");
+                Debug.LogWarning("[Game] StageDatabase가 비어 있습니다. 스테이지 씬을 만들어 저장하면 자동 등록됩니다.");
                 return;
             }
 

@@ -6,8 +6,8 @@ using UnityEngine.TestTools;
 
 namespace Game.Tests
 {
-    // 실제 스테이지 씬을 로드해 바닥 충돌이 동작하는지 검증한다.
-    // (배치 모드 씬 생성 시 컴포지트 콜라이더 지오메트리 누락 회귀 방지)
+    // 실제 스테이지 씬(Stage01)을 로드해 바닥 충돌이 동작하는지 검증한다.
+    // (씬의 컴포지트 콜라이더 지오메트리 누락 회귀 방지)
     public class StageSceneTests
     {
         [UnityTearDown]
@@ -24,7 +24,7 @@ namespace Game.Tests
         [UnityTest]
         public IEnumerator 스테이지_씬에서_공이_바닥을_뚫지_않는다()
         {
-            SceneManager.LoadScene("StageTest");
+            SceneManager.LoadScene("Stage01");
             yield return null;
 
             var systems = GameObject.Find("Systems");
