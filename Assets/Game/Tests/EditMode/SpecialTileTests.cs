@@ -97,6 +97,58 @@ namespace Game.Tests
             Assert.IsTrue(tile.AppliesSurfaceEffectFor(PlayerPropertyType.Default));
         }
 
+        // 가시 타일은 위·옆에만 가시가 돋아 있다 — 밑에서 천장으로 받는 접촉으로는 죽지 않는다.
+        // contactNormal은 타일에서 플레이어를 향하므로 아래를 향하면 아랫면 접촉이다.
+        [Test]
+        public void 아랫면_사망을_끄면_천장으로_받아도_죽지_않는다()
+        {
+            var tile = CreateTile(TilePropertyType.Default);
+            tile.SetDeadly(true, applySurfaceEffect: true, fromBelow: false);
+
+            Assert.IsTrue(tile.IsLethalOnContact(PlayerPropertyType.Default, Vector2.up), "윗면은 죽어야 한다");
+            Assert.IsTrue(tile.IsLethalOnContact(PlayerPropertyType.Default, Vector2.right), "옆면은 죽어야 한다");
+            Assert.IsTrue(tile.IsLethalOnContact(PlayerPropertyType.Default, Vector2.left), "옆면은 죽어야 한다");
+            Assert.IsFalse(tile.IsLethalOnContact(PlayerPropertyType.Default, Vector2.down), "아랫면은 죽으면 안 된다");
+
+            // 경계: 노멀 y가 -0.5보다 위면 아직 옆면으로 본다 (PlayerBounce의 하단 접촉 기준과 동일).
+            Assert.IsTrue(tile.IsLethalOnContact(PlayerPropertyType.Default, new Vector2(0.9f, -0.44f).normalized),
+                "비스듬한 옆면 접촉까지 살려주면 안 된다");
+        }
+
+        // 기믹 문서 §4, §6: 일반 사망 발판은 벽·천장 접촉에서도 사망한다 — 기본값은 그대로여야 한다.
+        [Test]
+        public void 사망_발판은_기본적으로_모든_방향에서_죽는다()
+        {
+            var tile = CreateDeathTile(TilePropertyType.Default);
+            Assert.IsTrue(tile.IsLethalOnContact(PlayerPropertyType.Default, Vector2.up));
+            Assert.IsTrue(tile.IsLethalOnContact(PlayerPropertyType.Default, Vector2.right));
+            Assert.IsTrue(tile.IsLethalOnContact(PlayerPropertyType.Default, Vector2.down));
+        }
+
+        [Test]
+        public void 생존_성질은_접촉_방향과_무관하게_안전하다()
+        {
+            var tile = CreateTile(TilePropertyType.Jelly);
+            tile.SetDeadly(true, applySurfaceEffect: true, fromBelow: false);
+
+            Assert.IsFalse(tile.IsLethalOnContact(PlayerPropertyType.Jelly, Vector2.up));
+            Assert.IsFalse(tile.IsLethalOnContact(PlayerPropertyType.Jelly, Vector2.down));
+        }
+
+        // 실제 스테이지에 깔리는 가시 타일 3종이 아랫면 사망을 꺼둔 채로 유지되는지 확인한다.
+        [TestCase("Assets/Game/Tiles/Default/Tile_Default_DS_01.asset")]
+        [TestCase("Assets/Game/Tiles/Ice/Tile_Ice_DS_01.asset")]
+        [TestCase("Assets/Game/Tiles/Jelly/Tile_Jelly_DS_01.asset")]
+        public void 가시_타일은_아랫면_사망이_꺼져_있다(string assetPath)
+        {
+            var tile = UnityEditor.AssetDatabase.LoadAssetAtPath<SpecialTile>(assetPath);
+            Assert.IsNotNull(tile, $"{assetPath}를 찾을 수 없습니다");
+            Assert.IsTrue(tile.IsDeadly, "가시 타일은 사망 발판이어야 한다");
+
+            Assert.IsTrue(tile.IsLethalOnContact(PlayerPropertyType.Default, Vector2.up), "윗면");
+            Assert.IsFalse(tile.IsLethalOnContact(PlayerPropertyType.Default, Vector2.down), "아랫면");
+        }
+
         [Test]
         public void 월드_좌표로_특수_타일을_조회한다()
         {

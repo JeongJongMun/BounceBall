@@ -29,7 +29,7 @@ namespace Game
             {
                 var contact = collision.GetContact(i);
                 var tile = StageTiles.GetSpecialTileAt(contact.point, contact.normal);
-                if (tile == null || !tile.IsLethalTo(PlayerRef.PropertyType)) continue;
+                if (tile == null || !tile.IsLethalOnContact(PlayerRef.PropertyType, contact.normal)) continue;
 
                 StageRef?.RespawnPlayer();
                 return;
