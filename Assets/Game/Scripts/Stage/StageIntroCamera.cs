@@ -57,6 +57,8 @@ namespace Game
             return needed > playSize * Mathf.Max(minZoomRatio, 1f);
         }
 
+        private float IntroPadding => _settings != null ? _settings.IntroPadding : 1.2f;
+
         private void Awake() => _camera = GetComponent<Camera>();
 
         private void Play(StageController stage, CameraFollow follow, Action onComplete, CameraSettings settings)
@@ -91,7 +93,7 @@ namespace Game
             var introBounds = ComputeIntroBounds();
             float fitSize = Mathf.Max(
                 ComputeFitSize(introBounds.size.x, introBounds.size.y,
-                               _camera.aspect, _stage.IntroPadding, _stage.IntroMaxSize),
+                               _camera.aspect, IntroPadding, _stage.IntroMaxSize),
                 playSize);
 
             _camera.orthographicSize = fitSize;
@@ -121,23 +123,37 @@ namespace Game
             _onComplete?.Invoke();
         }
 
-        // 인트로가 담아야 할 영역 = 스테이지 경계 ∪ 실제 타일 범위.
-        // 경계를 아직 계산하지 않았거나 타일보다 좁게 잡힌 스테이지에서도 타일이 잘리지 않는다.
         private Bounds ComputeIntroBounds()
         {
-            var bounds = new Bounds(
-                new Vector3((_stage.StageMinX + _stage.StageMaxX) * 0.5f,
-                            (_stage.StageMinY + _stage.StageMaxY) * 0.5f, 0f),
-                new Vector3(_stage.StageMaxX - _stage.StageMinX,
-                            _stage.StageMaxY - _stage.StageMinY, 0f));
+            var stageBounds = MakeBounds(_stage.StageMinX, _stage.StageMaxX, _stage.StageMinY, _stage.StageMaxY);
+            bool hasTiles = StageTiles.TryGetWorldBounds(out var tiles);
 
-            if (StageTiles.TryGetWorldBounds(out var tiles))
-            {
-                bounds.Encapsulate(new Vector3(tiles.min.x, tiles.min.y, 0f));
-                bounds.Encapsulate(new Vector3(tiles.max.x, tiles.max.y, 0f));
-            }
+            return ComputeIntroBounds(stageBounds, hasTiles, tiles);
+        }
 
-            return bounds;
+        // 인트로가 담아야 할 영역 = 스테이지 경계 ∩ 실제 타일 범위.
+        // 경계는 타일 끝에서 여백만큼 더 넓으므로, 교집합을 쓰면 빈 공간 없이 맵이 화면을 채운다.
+        // 플레이 영역 밖으로 뻗은 배경 타일맵이 있어도 경계가 잘라 준다.
+        public static Bounds ComputeIntroBounds(Bounds stageBounds, bool hasTiles, Bounds tiles)
+        {
+            if (!hasTiles) return stageBounds;
+
+            float minX = Mathf.Max(stageBounds.min.x, tiles.min.x);
+            float maxX = Mathf.Min(stageBounds.max.x, tiles.max.x);
+            float minY = Mathf.Max(stageBounds.min.y, tiles.min.y);
+            float maxY = Mathf.Min(stageBounds.max.y, tiles.max.y);
+
+            // 좌표가 어긋나 겹치는 곳이 없으면 경계를 쓴다 — 빈 영역을 비추지 않도록
+            if (maxX <= minX || maxY <= minY) return stageBounds;
+
+            return MakeBounds(minX, maxX, minY, maxY);
+        }
+
+        private static Bounds MakeBounds(float minX, float maxX, float minY, float maxY)
+        {
+            return new Bounds(
+                new Vector3((minX + maxX) * 0.5f, (minY + maxY) * 0.5f, 0f),
+                new Vector3(maxX - minX, maxY - minY, 0f));
         }
 
         // 맵 중앙을 비춘다. 축소 한계에 걸려 맵이 다 들어오지 않으면 시작 지점 쪽을 우선한다.

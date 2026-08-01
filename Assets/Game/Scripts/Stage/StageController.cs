@@ -58,10 +58,6 @@ namespace Game
         [Tooltip("스테이지에 들어올 때마다 맵 전체를 한 번 보여주고 플레이 화면으로 줌인한다")]
         [SerializeField] private bool useIntroCamera = true;
 
-        [Label("맵 여백 배율")]
-        [Tooltip("인트로에서 맵 주변에 얼마나 여백을 둘지. 1이면 맵에 딱 맞고, 클수록 넓게 보인다")]
-        [SerializeField] private float introPadding = 1.08f;
-
         [Label("최대 축소 한계")]
         [Tooltip("인트로에서 이 크기보다 더 축소하지 않는다. 0이면 무제한 — 세로로 아주 긴 맵에서 타일이 너무 작아지면 값을 준다")]
         [SerializeField] private float introMaxSize = 0f;
@@ -149,7 +145,6 @@ namespace Game
         public bool LockCameraY => lockCameraY;
         public CameraSettings CameraSettingsOverride => cameraSettingsOverride;
         public bool UseIntroCamera => useIntroCamera;
-        public float IntroPadding => introPadding;
         public float IntroMaxSize => introMaxSize;
 
         public bool UseBoundaryWalls => useBoundaryWalls;
@@ -330,6 +325,7 @@ namespace Game
             // 중력은 Disabled 상태에서도 계속 적용되므로(PlayerBounce) 이후엔 자연히 포물선으로 떨어진다.
             player.Body.linearVelocity = new Vector2(0f, deathBounceForce);
             onPlayerFailed?.Raise();
+            Sound.Play(SoundId.Dead);
 
             var view = player.GetComponent<PlayerSpineView>();
             float deathDuration = view != null ? view.PlayDeath() : 0f;
