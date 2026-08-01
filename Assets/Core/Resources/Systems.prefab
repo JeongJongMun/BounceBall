@@ -8349,6 +8349,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7158888253008429868}
   - component: {fileID: 4147482982842465961}
+  - component: {fileID: 6342515198164933189}
+  - component: {fileID: 2539534627881473069}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -8391,6 +8393,31 @@ MonoBehaviour:
   bgmSourceB: {fileID: 9218351531715584835}
   bgmCrossfadeDuration: 1
   sfxPitchRange: {x: 0.95, y: 1.05}
+--- !u!114 &6342515198164933189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4488276517731275382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc0d0327db147544b31d7e8998b6f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.SceneBgmPlayer
+  menuSceneName: MainMenu
+--- !u!114 &2539534627881473069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4488276517731275382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56829ec85a929754591732c7ee73652d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.UiClickSound
 --- !u!1 &4710832687807556064
 GameObject:
   m_ObjectHideFlags: 0

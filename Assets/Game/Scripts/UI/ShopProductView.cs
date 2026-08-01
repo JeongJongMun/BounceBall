@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace Game
 {
     // 상점 상품 목록의 한 줄. 클릭하면 우측 상세/구매 영역에 표시한다.
-    public class ShopProductView : MonoBehaviour, IPointerClickHandler
+    public class ShopProductView : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
     {
         [SerializeField] private Image iconImage;
         [SerializeField] private TMP_Text nameText;
@@ -35,6 +35,13 @@ namespace Game
         public void SetSelected(bool selected)
         {
             if (selectionOutline != null) selectionOutline.enabled = selected;
+        }
+
+        // 상품 칸은 Selectable이 아니라 UiClickSoundSource가 붙지 않으므로 여기서 직접 낸다.
+        // 누르는 순간에 내야 늦게 들리지 않는다.
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Left) Sound.Play(SoundId.UI_Click);
         }
 
         public void OnPointerClick(PointerEventData eventData) => Clicked?.Invoke(this);

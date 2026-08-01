@@ -78,6 +78,9 @@ namespace Game
         // 아이템 먹기 (혀) — 이동 애니메이션 위에 겹쳐 재생 (트랙 1)
         public void PlayEat()
         {
+            // 스파인 상태와 무관하게 먹는 소리는 낸다 (사운드 기획: Lick)
+            Sound.Play(SoundId.Lick);
+
             if (!HasState || string.IsNullOrEmpty(_active.eat)) return;
             var state = _active.skeleton.AnimationState;
             state.SetAnimation(1, _active.eat, false);

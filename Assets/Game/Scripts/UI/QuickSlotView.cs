@@ -145,7 +145,11 @@ namespace Game
         // 우클릭으로 해제한다 (문서 §5.6.3의 "별도의 해제 동작")
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.button == PointerEventData.InputButton.Right) QuickSlots.Clear(SlotIndex);
+            if (eventData.button != PointerEventData.InputButton.Right) return;
+            if (QuickSlots.IsEmpty(SlotIndex)) return;
+
+            QuickSlots.Clear(SlotIndex);
+            Sound.Play(SoundId.UI_Click); // 우클릭은 전역 클릭음(좌클릭) 대상이 아니다
         }
 
         // 등록된 아이템을 칸 밖으로 끌어내면 해제한다 (문서 §5.6.3)

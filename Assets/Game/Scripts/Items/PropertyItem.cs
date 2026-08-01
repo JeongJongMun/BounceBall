@@ -46,6 +46,7 @@ namespace Game
 
             // 동일 성질이면 Apply가 no-op이지만 아이템은 정상적으로 소모된다 (기획 §11.4, §7.3)
             playerProperty.Apply(propertyData);
+            Sound.Play(SoundId.Property_Change);
 
             IsAcquired = true;
             if (ColliderRef != null) ColliderRef.enabled = false;
