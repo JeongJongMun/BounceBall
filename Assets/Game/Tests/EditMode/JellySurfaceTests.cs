@@ -39,14 +39,34 @@ namespace Game.Tests
             Assert.AreEqual(new Vector2(1f, 0f), JellySurface.MoveDirection(JellyAttachDirection.Ceiling, 1f));
         }
 
+        // enum 이름은 "벽이 플레이어의 어느 쪽에 있는가"다. RightWall = 벽이 오른쪽 = 플레이어는 벽의 좌측면.
         [Test]
-        public void 좌우_벽_모두_A는_아래_D는_위다()
+        public void 벽_좌측면에서는_A가_아래_D가_위다()
         {
-            // 기획 §5.4: 벽의 좌우 위치에 따라 입력이 반전되지 않는다
-            Assert.AreEqual(new Vector2(0f, -1f), JellySurface.MoveDirection(JellyAttachDirection.LeftWall, -1f));
-            Assert.AreEqual(new Vector2(0f, 1f), JellySurface.MoveDirection(JellyAttachDirection.LeftWall, 1f));
             Assert.AreEqual(new Vector2(0f, -1f), JellySurface.MoveDirection(JellyAttachDirection.RightWall, -1f));
             Assert.AreEqual(new Vector2(0f, 1f), JellySurface.MoveDirection(JellyAttachDirection.RightWall, 1f));
+        }
+
+        [Test]
+        public void 벽_우측면에서는_A가_위_D가_아래다()
+        {
+            Assert.AreEqual(new Vector2(0f, 1f), JellySurface.MoveDirection(JellyAttachDirection.LeftWall, -1f));
+            Assert.AreEqual(new Vector2(0f, -1f), JellySurface.MoveDirection(JellyAttachDirection.LeftWall, 1f));
+        }
+
+        // 바닥에서 모서리를 돌아 벽으로 올라탈 때, 같은 키를 누른 채로 진행 방향이 이어져야 한다.
+        // 벽 두 면이 같은 식을 쓰면 왼쪽으로 기어가다 모서리를 도는 순간 역주행한다.
+        [TestCase(1f, TestName = "D로 오른쪽 벽을 타고 올라간다")]
+        [TestCase(-1f, TestName = "A로 왼쪽 벽을 타고 올라간다")]
+        public void 바닥에서_벽으로_돌아도_계속_올라간다(float input)
+        {
+            var move = JellySurface.MoveDirection(JellyAttachDirection.Floor, input);
+            JellySurface.TurnConcaveCorner(Vector2.up, move, out var newNormal, out _);
+            var wall = JellySurface.FromNormal(newNormal);
+
+            var next = JellySurface.MoveDirection(wall, input);
+            Assert.AreEqual(new Vector2(0f, 1f), next,
+                "모서리를 돈 뒤 같은 키로 계속 올라가야 하는데 " + wall + "에서 " + next + "로 갔습니다.");
         }
 
         [Test]
