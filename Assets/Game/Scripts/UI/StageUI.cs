@@ -12,6 +12,8 @@ namespace Game
         [SerializeField] private Transform stageButtonContainer;
         [SerializeField] private Button stageButtonTemplate;
         [SerializeField] private Button backButton;
+        [Tooltip("잠긴 스테이지를 눌렀을 때 표시할 안내 팝업")]
+        [SerializeField] private LockedStagePopup lockedStagePopup;
 
         [SerializeField] Canvas mainCanvas;
 
@@ -59,18 +61,28 @@ namespace Game
             {
                 // 미클리어는 가장 앞선 하나만 열어 준다 (그 앞은 모두 클리어된 상태다).
                 bool unlocked = cleared[i] || i == firstUncleared;
+                var state = cleared[i] ? StageButtonState.Cleared
+                    : unlocked ? StageButtonState.Playable
+                    : StageButtonState.Locked;
 
                 var button = Instantiate(stageButtonTemplate, stageButtonContainer);
                 button.gameObject.SetActive(true);
-                button.interactable = unlocked;
 
                 var view = button.GetComponent<StageButtonView>();
-                if (view != null) view.SetDisplay(i + 1, cleared[i]);
+                if (view != null) view.SetDisplay(i + 1, state);
 
                 if (unlocked)
                 {
                     var sceneName = database.Stages[i].sceneName;
                     button.onClick.AddListener(() => SceneLoader.Instance.Load(sceneName));
+                }
+                else
+                {
+                    // 잠긴 스테이지는 시작하지 않고 안내 팝업만 띄운다 (UI 기획서 §2.6)
+                    button.onClick.AddListener(() =>
+                    {
+                        if (lockedStagePopup != null) lockedStagePopup.Show();
+                    });
                 }
 
                 _spawnedButtons.Add(button.gameObject);

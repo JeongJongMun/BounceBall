@@ -29,6 +29,14 @@ namespace Game
             {
                 settingsButton.onClick.AddListener(() =>
                 {
+                    // 설정 창은 인게임과 공용이다. 없을 때만 씬의 설정 캔버스로 넘어간다.
+                    var window = FindSettingsWindow();
+                    if (window != null)
+                    {
+                        window.Open();
+                        return;
+                    }
+
                     stageCanvas.gameObject.SetActive(false);
                     settingsCanvas.gameObject.SetActive(true);
                     gameObject.SetActive(false);
@@ -39,6 +47,24 @@ namespace Game
             {
                 quitButton.onClick.AddListener(QuitGame);
             }
+        }
+
+        // 스테이지에서 돌아온 경우에는 메인 화면을 건너뛰고 스테이지 선택 화면을 연다.
+        private void Start()
+        {
+            if (!MenuNavigation.ConsumeStageSelectRequest()) return;
+            if (stageCanvas == null) return;
+
+            stageCanvas.gameObject.SetActive(true);
+            if (settingsCanvas != null) settingsCanvas.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
+
+        // 설정 창은 평소 꺼져 있으므로 비활성 오브젝트까지 찾는다.
+        private static SettingsWindow FindSettingsWindow()
+        {
+            var windows = FindObjectsByType<SettingsWindow>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            return windows.Length > 0 ? windows[0] : null;
         }
 
         private void QuitGame()

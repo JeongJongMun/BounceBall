@@ -31,6 +31,10 @@ namespace Game
         [SerializeField] private int totalGoalItemCount;
         [SerializeField] private int requiredGoalItemCount;
 
+        [Header("보상")]
+        [Tooltip("스테이지 클리어 시 지급할 코인 (인벤토리 문서 §6.2)")]
+        [SerializeField] private int clearRewardCoin = 50;
+
         [Header("이벤트")]
         [SerializeField] private StringEventChannel onGoalProgressChanged;
         [SerializeField] private VoidEventChannel onStageCleared;
@@ -63,6 +67,10 @@ namespace Game
         public float BoundsPadding => boundsPadding;
         public int TotalGoalItemCount => totalGoalItemCount;
         public int RequiredGoalItemCount => requiredGoalItemCount;
+        public int ClearRewardCoin => clearRewardCoin;
+
+        // 이번 스테이지에서 주운 코인 (클리어 화면 표시용, UI 기획서 §6.2)
+        public int StageCoinEarned { get; private set; }
 
         private void Start()
         {
@@ -149,7 +157,15 @@ namespace Game
                 if (item.IsCollected) collected.Add(item);
             }
 
-            _checkpoint = new CheckpointState(position, property, collected);
+            // 코인도 같은 시점 상태를 저장한다 (인벤토리 문서 §6.5)
+            var collectedCoins = new List<CoinItem>();
+            foreach (var coin in FindObjectsByType<CoinItem>(FindObjectsSortMode.None))
+            {
+                if (coin.IsCollected) collectedCoins.Add(coin);
+            }
+
+            _checkpoint = new CheckpointState(position, property, collected,
+                collectedCoins, CurrencyWallet.Coin, StageCoinEarned);
         }
 
         // 맵 이탈 부활 (기획 §23.2, §24.3). 게임 오버가 아니므로 GameState는 Playing을 유지한다.
@@ -191,6 +207,7 @@ namespace Game
             if (interaction != null) interaction.ClearRange();
 
             RestoreGoalItems();
+            RestoreCoins();
 
             // 카메라를 즉시 이동시킨다. 안 하면 0.15초 동안 맵을 가로질러 스윕한다.
             var follow = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
@@ -212,6 +229,24 @@ namespace Game
 
             AcquiredGoalItemCount = _checkpoint.AcquiredGoalItemCount;
             onGoalProgressChanged?.Raise(GoalProgressText);
+        }
+
+        // 코인도 저장 시점 상태로 되돌린다 — 안 그러면 같은 코인을 반복 획득할 수 있다 (인벤토리 문서 §6.5)
+        private void RestoreCoins()
+        {
+            foreach (var coin in FindObjectsByType<CoinItem>(FindObjectsSortMode.None))
+            {
+                if (!_checkpoint.CollectedCoins.Contains(coin)) coin.Restore();
+            }
+
+            CurrencyWallet.RestoreTo(_checkpoint.CoinBalance);
+            StageCoinEarned = _checkpoint.StageCoinEarned;
+        }
+
+        // 코인 획득 집계 (클리어 화면에서 "스테이지 획득 골드"로 표시)
+        public void NotifyCoinCollected(int amount)
+        {
+            StageCoinEarned += amount;
         }
 
         // 목표 아이템이 획득될 때 호출된다 (기획 §21.3)
@@ -237,6 +272,9 @@ namespace Game
 
             StageProgress.SetCleared(SceneManager.GetActiveScene().name);
 
+            // 클리어 보상 지급 (인벤토리 문서 §6.2)
+            CurrencyWallet.Add(clearRewardCoin);
+
             onStageCleared?.Raise();
 
             if (Core.GameManager.Instance != null) Core.GameManager.Instance.StageClear();
@@ -251,7 +289,7 @@ namespace Game
             var prefab = Resources.Load<GameObject>("Player");
             if (prefab == null)
             {
-                Debug.LogWarning("[Game] Resources/Player.prefab이 없습니다. Game > Setup Stage Tooling을 실행하세요.");
+                Debug.LogWarning("[Game] Resources/Player.prefab이 없습니다. 삭제됐다면 git으로 복구하세요.");
                 return;
             }
 
