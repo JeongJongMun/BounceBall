@@ -18,6 +18,7 @@ MonoBehaviour:
   verticalSmoothTime: 0.15
   introHoldDuration: 1
   introZoomDuration: 1
+  introMinZoomRatio: 1.1
   introEase: 10
   snapOnRespawn: 1
   showDeadzoneGizmo: 1

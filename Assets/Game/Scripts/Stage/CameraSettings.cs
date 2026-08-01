@@ -41,7 +41,7 @@ namespace Game
 
         [Label("인트로 최소 확대 비율")]
         [Tooltip("맵이 플레이 화면보다 이 배율 이상 클 때만 인트로를 재생한다. 타일이 이미 다 보이면 연출을 건너뛴다")]
-        [SerializeField] private float introMinZoomRatio = 1.2f;
+        [SerializeField] private float introMinZoomRatio = 1.1f;
 
         [Label("전환 곡선")]
         [Tooltip("줌인이 가감속하는 방식. InOutCubic이면 천천히 시작해 천천히 멈춘다")]
