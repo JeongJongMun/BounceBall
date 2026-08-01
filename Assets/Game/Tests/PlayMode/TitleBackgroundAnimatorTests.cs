@@ -10,6 +10,7 @@ namespace Game.Tests
     public class TitleBackgroundAnimatorTests
     {
         private const int IntroLastFrame = 16;
+        private const int StartTransitionFrame = 22; // 혀가 한창인 중간 프레임
         private const int FrameCount = 28; // Title_0000 ~ Title_0027
         private const float Fps = 100f;    // 테스트를 빨리 끝내기 위해 실제 값보다 크게 잡는다
 
@@ -29,7 +30,7 @@ namespace Game.Tests
             _go.SetActive(false);
             image = _go.AddComponent<Image>();
             var anim = _go.AddComponent<TitleBackgroundAnimator>();
-            anim.SetData(image, frames, IntroLastFrame, Fps);
+            anim.SetData(image, frames, IntroLastFrame, Fps, StartTransitionFrame);
             _go.SetActive(true);
             return anim;
         }
@@ -60,7 +61,7 @@ namespace Game.Tests
         }
 
         [UnityTest]
-        public IEnumerator 시작_연출은_도입부_다음_프레임부터_끝까지_재생한다()
+        public IEnumerator 시작_연출은_중간_프레임에서_스테이지_선택으로_넘어간다()
         {
             var frames = CreateFrames(FrameCount);
             Image image;
@@ -71,12 +72,13 @@ namespace Game.Tests
             anim.PlayStart(() => done = true);
 
             Assert.AreSame(frames[IntroLastFrame + 1], image.sprite, "시작 연출은 17번 프레임부터 시작해야 합니다.");
-            Assert.IsFalse(done, "연출이 끝나기 전에 게임이 시작되면 안 됩니다.");
+            Assert.IsFalse(done, "중간 프레임에 도달하기 전에 게임이 시작되면 안 됩니다.");
 
             yield return new WaitForSecondsRealtime(0.6f);
 
-            Assert.IsTrue(done, "시작 연출이 끝났는데 완료가 전달되지 않았습니다.");
-            Assert.AreSame(frames[FrameCount - 1], image.sprite, "마지막 프레임까지 재생해야 합니다.");
+            Assert.IsTrue(done, "중간 프레임에 도달했는데 완료가 전달되지 않았습니다.");
+            Assert.AreSame(frames[StartTransitionFrame], image.sprite,
+                "혀가 한창인 " + StartTransitionFrame + "번 프레임에서 넘어가야 합니다.");
         }
 
         // 배선이 빠져도 게임은 시작돼야 한다 — 여기서 콜백을 빠뜨리면 시작 버튼이 먹통이 된다.
@@ -104,7 +106,7 @@ namespace Game.Tests
 
             anim.PlayStart(null);
             yield return new WaitForSecondsRealtime(0.6f);
-            Assert.AreSame(frames[FrameCount - 1], image.sprite);
+            Assert.AreSame(frames[StartTransitionFrame], image.sprite);
 
             // 스테이지 선택으로 넘어갔다가 되돌아오는 상황
             _go.SetActive(false);
