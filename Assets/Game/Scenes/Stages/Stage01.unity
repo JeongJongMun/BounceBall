@@ -3521,23 +3521,6 @@ MonoBehaviour:
     verticalFactor: 0.95
     autoScrollSpeed: -0.35
     sortingOrder: -250
-  - layerName: "\uB098\uBB34"
-    sprites:
-    - {fileID: 21300000, guid: 2730fdca990c3554abaec782421a623b, type: 3}
-    - {fileID: 21300000, guid: 5c559d51e7e98b348af2bf00196142a2, type: 3}
-    - {fileID: 21300000, guid: 6cfd4612e9324dd46b55b9228277a7f5, type: 3}
-    - {fileID: 21300000, guid: 7548141c580f045438c245b19ab52813, type: 3}
-    - {fileID: 21300000, guid: 7abdb938c7a7ff74984208c15bb263d4, type: 3}
-    - {fileID: 21300000, guid: bab7f3b23bc272b4d9e073c4635b64a9, type: 3}
-    count: 9
-    repeatWidth: 34
-    baseY: 0
-    yJitter: 0
-    baseScale: 1
-    horizontalFactor: 0.45
-    verticalFactor: 0.6
-    autoScrollSpeed: 0
-    sortingOrder: -200
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

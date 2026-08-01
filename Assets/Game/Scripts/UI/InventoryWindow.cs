@@ -165,8 +165,8 @@ namespace Game
         // 더블 클릭으로 사용 (문서 §5.4). 인게임이 아니면 ItemUseService가 막는다.
         private void HandleSlotDoubleClicked(InventorySlotView slot)
         {
-            // 사용에 실패하면 퀵슬롯과 동일하게 알림음을 낸다 (사운드 기획: UI_Error "사용 불가")
-            if (!ItemUseService.TryUse(slot.ItemId)) Sound.Play(SoundId.UI_Error);
+            // 실패 시 알림음·안내 토스트는 ItemUseService가 사유에 맞게 처리한다
+            ItemUseService.TryUse(slot.ItemId);
         }
 
         private void ShowDetail(string itemId)
