@@ -41,7 +41,8 @@ namespace Game
             {
                 var slot = Instantiate(slotTemplate, slotContainer);
                 slot.gameObject.SetActive(true);
-                slot.Setup(i);
+                // HUD는 표시·사용 전용이다. 등록은 인벤토리 창의 퀵슬롯에서 한다 (문서 §11)
+                slot.Setup(i, acceptsDrop: false);
                 _slots.Add(slot);
             }
         }
