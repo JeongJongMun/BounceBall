@@ -11,7 +11,7 @@ namespace Game.EditorTools
     {
         public const string MenuScenePath = "Assets/Game/Scenes/MainMenu.unity";
 
-        [MenuItem("Game/Create Main Menu Scene")]
+        // 초기 셋업 완료 — MainMenu.unity가 이미 존재한다. 재생성 시 GameFlowSetup.ApplyAll 또는 직접 호출.
         public static void CreateMenuScene()
         {
             if (System.IO.File.Exists(MenuScenePath))

@@ -19,8 +19,8 @@ namespace Game.EditorTools
         private const string PlayerFailedChannelPath = EventsDir + "/OnPlayerFailed.asset";
         private const string CheckpointActivatedChannelPath = EventsDir + "/OnCheckpointActivated.asset";
 
+        // 초기 셋업은 완료됨 — 이벤트 채널을 새로 추가했을 때만 재실행하면 된다.
         // CLI 진입점: Unity.exe -batchmode -executeMethod Game.EditorTools.GameFlowSetup.ApplyAll
-        [MenuItem("Game/Apply Game Flow Setup")]
         public static void ApplyAll()
         {
             CreateEventChannels();
