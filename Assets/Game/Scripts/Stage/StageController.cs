@@ -24,8 +24,43 @@ namespace Game
         [SerializeField] private float stageFallLimitY = -8f;
 
         [Header("경계 여백")]
-        [Tooltip("타일 끝에서 카메라가 더 보여주는 빈 공간. 이 여백의 바깥이 투명 벽이다.")]
+        [Tooltip("타일 끝에서 카메라가 더 보여주는 빈 공간")]
         [SerializeField] private float boundsPadding = 3f;
+
+        [Header("카메라 (이 스테이지 전용)")]
+        [Tooltip("화면에 얼마나 넓게 보일지. 세로 절반 크기 기준 — 5면 위아래로 10칸이 보인다")]
+        [SerializeField] private float cameraZoom = 5f;
+
+        [Tooltip("값을 올리면 캐릭터가 화면 아래쪽에 놓여 위쪽이 더 보인다")]
+        [SerializeField] private float cameraVerticalOffset = 0f;
+
+        [Tooltip("켜면 카메라가 좌우로 움직이지 않는다 (한 화면 스테이지, 세로 전용 스테이지)")]
+        [SerializeField] private bool lockCameraX = false;
+
+        [Tooltip("켜면 카메라가 위아래로 움직이지 않는다 (가로로만 진행하는 평지 스테이지)")]
+        [SerializeField] private bool lockCameraY = false;
+
+        [Tooltip("이 스테이지만 조작감을 다르게 할 때 지정. 비우면 글로벌 CameraSettings를 쓴다")]
+        [SerializeField] private CameraSettings cameraSettingsOverride;
+
+        [Header("투명 벽")]
+        [Tooltip("끄면 플레이어가 화면 밖으로 나갈 수 있다")]
+        [SerializeField] private bool useBoundaryWalls = true;
+
+        [Tooltip("경계 기준: 카메라 경계에서 자동 계산 / 직접 지정: 좌우 X를 손으로 입력")]
+        [SerializeField] private BoundaryWallMode wallMode = BoundaryWallMode.FromBounds;
+
+        [Tooltip("(경계 기준) 벽을 경계선보다 얼마나 더 바깥에 세울지. 0이면 화면 끝까지 갈 수 있다")]
+        [SerializeField] private float wallOffsetFromBounds = 0f;
+
+        [Tooltip("(직접 지정) 왼쪽 벽의 X 좌표")]
+        [SerializeField] private float leftWallX = -12f;
+
+        [Tooltip("(직접 지정) 오른쪽 벽의 X 좌표")]
+        [SerializeField] private float rightWallX = 12f;
+
+        [Tooltip("낙사선부터 위로 얼마나 높게 세울지. 세로로 긴 스테이지에서 위로 빠져나가면 키운다")]
+        [SerializeField] private float wallHeadroom = 30f;
 
         [Header("목표 아이템")]
         [SerializeField] private int totalGoalItemCount;
@@ -65,6 +100,23 @@ namespace Game
         public float StageMaxY => stageMaxY;
         public float StageFallLimitY => stageFallLimitY;
         public float BoundsPadding => boundsPadding;
+        public float CameraZoom => cameraZoom;
+        public float CameraVerticalOffset => cameraVerticalOffset;
+        public bool LockCameraX => lockCameraX;
+        public bool LockCameraY => lockCameraY;
+        public CameraSettings CameraSettingsOverride => cameraSettingsOverride;
+
+        public bool UseBoundaryWalls => useBoundaryWalls;
+        // 벽 안쪽 면의 X 좌표. 플레이어는 여기까지 갈 수 있다.
+        public float LeftWallX => ComputeWallX(true, wallMode, stageMinX, stageMaxX, wallOffsetFromBounds, leftWallX, rightWallX);
+        public float RightWallX => ComputeWallX(false, wallMode, stageMinX, stageMaxX, wallOffsetFromBounds, leftWallX, rightWallX);
+
+        public static float ComputeWallX(bool leftSide, BoundaryWallMode mode,
+            float minX, float maxX, float offset, float explicitLeft, float explicitRight)
+        {
+            if (mode == BoundaryWallMode.Explicit) return leftSide ? explicitLeft : explicitRight;
+            return leftSide ? minX - offset : maxX + offset;
+        }
         public int TotalGoalItemCount => totalGoalItemCount;
         public int RequiredGoalItemCount => requiredGoalItemCount;
         public int ClearRewardCoin => clearRewardCoin;
@@ -105,23 +157,30 @@ namespace Game
             return y < fallLimitY;
         }
 
-        // 경계 좌우에 투명 벽을 세워 플레이어가 화면 밖으로 나가지 못하게 한다.
-        // 카메라도 같은 경계에서 멈추므로 벽 안쪽 여백까지가 보이는 플레이 영역이 된다.
+        // 좌우에 투명 벽을 세워 플레이어가 화면 밖으로 나가지 못하게 한다.
         private void CreateBoundaryWalls()
         {
-            CreateWall("LeftBoundaryWall", stageMinX - 0.5f);
-            CreateWall("RightBoundaryWall", stageMaxX + 0.5f);
+            if (!useBoundaryWalls) return;
+
+            CreateWall("LeftBoundaryWall", LeftWallX, true);
+            CreateWall("RightBoundaryWall", RightWallX, false);
         }
 
-        private void CreateWall(string wallName, float centerX)
+        // innerFaceX가 플레이어가 닿는 면이 되도록 두께 절반만큼 바깥으로 밀어 배치한다.
+        private void CreateWall(string wallName, float innerFaceX, bool leftSide)
         {
+            const float thickness = 1f;
             float bottom = stageFallLimitY;
-            float top = stageMaxY + 30f; // 위로는 점프 제한이 없으므로 충분히 높게
+            float top = stageMaxY + wallHeadroom;
+
             var wall = new GameObject(wallName);
             wall.transform.SetParent(transform);
-            wall.transform.position = new Vector3(centerX, (bottom + top) * 0.5f, 0f);
+            wall.transform.position = new Vector3(
+                innerFaceX + (leftSide ? -thickness * 0.5f : thickness * 0.5f),
+                (bottom + top) * 0.5f, 0f);
+
             var box = wall.AddComponent<BoxCollider2D>();
-            box.size = new Vector2(1f, top - bottom);
+            box.size = new Vector2(thickness, top - bottom);
             box.sharedMaterial = new PhysicsMaterial2D("BoundaryWall") { friction = 0f, bounciness = 0f };
         }
 
@@ -209,9 +268,9 @@ namespace Game
             RestoreGoalItems();
             RestoreCoins();
 
-            // 카메라를 즉시 이동시킨다. 안 하면 0.15초 동안 맵을 가로질러 스윕한다.
+            // 기본은 즉시 이동. 끄면 맵을 가로질러 부드럽게 따라간다 (CameraSettings.snapOnRespawn)
             var follow = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
-            if (follow != null) follow.Init(player.transform, this);
+            if (follow != null && follow.SnapOnRespawn) follow.Init(player.transform, this);
 
             if (view != null) view.PlayRespawnPop(); // 스케일 0 → 1.3 → 1 재등장 연출
 
@@ -330,6 +389,15 @@ namespace Game
             var center = new Vector3((stageMinX + stageMaxX) * 0.5f, (stageMinY + stageMaxY) * 0.5f);
             var size = new Vector3(stageMaxX - stageMinX, stageMaxY - stageMinY);
             Gizmos.DrawWireCube(center, size);
+
+            // 투명 벽 (플레이어가 닿는 면)
+            if (useBoundaryWalls)
+            {
+                Gizmos.color = Color.magenta;
+                float wallTop = stageMaxY + wallHeadroom;
+                Gizmos.DrawLine(new Vector3(LeftWallX, stageFallLimitY), new Vector3(LeftWallX, wallTop));
+                Gizmos.DrawLine(new Vector3(RightWallX, stageFallLimitY), new Vector3(RightWallX, wallTop));
+            }
 
             // 낙사선
             Gizmos.color = Color.red;
