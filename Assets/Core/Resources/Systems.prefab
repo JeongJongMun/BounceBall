@@ -107,12 +107,12 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9020128390714530203}
   - {fileID: 2232882304461412856}
   - {fileID: 1436040536917727698}
   - {fileID: 4466685318049029657}
   - {fileID: 7178070504934621326}
   - {fileID: 6404755679749138274}
+  - {fileID: 9020128390714530203}
   - {fileID: 5022136442208585810}
   - {fileID: 7096339156763301726}
   m_Father: {fileID: 3006225516904337506}
@@ -1634,6 +1634,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Clear
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702151208602622929, guid: 769905c5bc380d74d8a53581862dd672,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
