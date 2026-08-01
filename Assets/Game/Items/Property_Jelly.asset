@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Property_Jelly
   m_EditorClassIdentifier: Game::Game.ItemData
   itemId: Property_Jelly
-  itemName: "\uC824\uB9AC \uC131\uC9C8 \uC544\uC774\uD15C"
+  itemName: "\uC131\uC9C8 \uBCC0\uD654 \uC544\uC774\uD15C (\uC824\uB9AC)"
   description: "\uC0AC\uC6A9\uD558\uBA74 \uC824\uB9AC \uC131\uC9C8\uB85C \uBC14\uB01D\uB2C8\uB2E4.
     \uC824\uB9AC \uD0C0\uC77C\uC5D0 \uBD99\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
-  thumbnail: {fileID: 0}
+  thumbnail: {fileID: 21300000, guid: 9849e1ea6fc7ef248a9da555ba42efe8, type: 3}
   category: 0
-  price: 40
+  price: 7
   grantedProperty: {fileID: 11400000, guid: f97616b749e45bf49ad40126e88285fd, type: 2}

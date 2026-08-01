@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Property_Ice
   m_EditorClassIdentifier: Game::Game.ItemData
   itemId: Property_Ice
-  itemName: "\uC5BC\uC74C \uC131\uC9C8 \uC544\uC774\uD15C"
+  itemName: "\uC131\uC9C8 \uBCC0\uD654 \uC544\uC774\uD15C (\uC5BC\uC74C)"
   description: "\uC0AC\uC6A9\uD558\uBA74 \uC5BC\uC74C \uC131\uC9C8\uB85C \uBC14\uB01D\uB2C8\uB2E4.
     \uC5BC\uC74C \uD0C0\uC77C\uC5D0\uC11C \uBBF8\uB044\uB7EC\uC9D1\uB2C8\uB2E4."
-  thumbnail: {fileID: 0}
+  thumbnail: {fileID: 21300000, guid: 0416e01e7845a194a8c1d91ecd35f7b1, type: 3}
   category: 0
-  price: 40
+  price: 7
   grantedProperty: {fileID: 11400000, guid: 3dbd331c73781444d853f8dbdc269400, type: 2}

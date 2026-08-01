@@ -127,6 +127,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1998912232}
     m_Modifications:
+    - target: {fileID: 8637813874630498030, guid: 8c188f12d7069204ba1ada345921698e,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8867948408819232915, guid: 8c188f12d7069204ba1ada345921698e,
         type: 3}
       propertyPath: m_Name
@@ -859,6 +864,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2387655474992220806, guid: 200805fe9b0d7434a86785d170841373,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6577777613987685907, guid: 200805fe9b0d7434a86785d170841373,
         type: 3}
       propertyPath: m_Name
@@ -923,7 +933,6 @@ MonoBehaviour:
   lockCameraX: 0
   lockCameraY: 0
   useIntroCamera: 1
-  introPadding: 1.08
   introMaxSize: 0
   cameraSettingsOverride: {fileID: 0}
   useBoundaryWalls: 0
@@ -934,7 +943,7 @@ MonoBehaviour:
   wallHeadroom: 30
   totalGoalItemCount: 1
   requiredGoalItemCount: 1
-  clearRewardCoin: 50
+  clearRewardCoin: 3
   deathBounceForce: 6
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,
     type: 2}
@@ -1231,6 +1240,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387655474992220806, guid: 200805fe9b0d7434a86785d170841373,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6577777613987685907, guid: 200805fe9b0d7434a86785d170841373,
         type: 3}
@@ -1615,6 +1629,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387655474992220806, guid: 200805fe9b0d7434a86785d170841373,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6577777613987685907, guid: 200805fe9b0d7434a86785d170841373,
         type: 3}

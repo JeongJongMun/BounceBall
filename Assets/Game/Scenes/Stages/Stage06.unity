@@ -376,6 +376,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2387655474992220806, guid: 200805fe9b0d7434a86785d170841373,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6577777613987685907, guid: 200805fe9b0d7434a86785d170841373,
         type: 3}
       propertyPath: m_Name
@@ -490,7 +495,7 @@ MonoBehaviour:
   wallHeadroom: 30
   totalGoalItemCount: 2
   requiredGoalItemCount: 2
-  clearRewardCoin: 50
+  clearRewardCoin: 6
   deathBounceForce: 6
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,
     type: 2}
