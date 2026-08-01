@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: e13a6a154090a2041bfe754af7aac1c6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5526744271201772707
+    second: Player_Kameleon_0
+  - first:
+      213: -3420151518689979221
+    second: Player_Kameleon_1
+  - first:
+      213: -6560016252506897823
+    second: Player_Kameleon_2
+  - first:
+      213: -8247058638810503454
+    second: Player_Kameleon_3
+  - first:
+      213: 1724624389743235711
+    second: Player_Kameleon_4
+  - first:
+      213: -274533273272838580
+    second: Player_Kameleon_5
+  - first:
+      213: -7442012091108222687
+    second: Player_Kameleon_6
+  - first:
+      213: -4841321282609091415
+    second: Player_Kameleon_7
+  - first:
+      213: 7647371181984019933
+    second: Player_Kameleon_8
+  - first:
+      213: 8022370959360869144
+    second: Player_Kameleon_9
+  - first:
+      213: -1492741837601340574
+    second: Player_Kameleon_10
+  - first:
+      213: 7162131146288862664
+    second: Player_Kameleon_11
+  - first:
+      213: 5622414541404077040
+    second: Player_Kameleon_12
+  - first:
+      213: 7117416240179458393
+    second: Player_Kameleon_13
+  - first:
+      213: -1766934043599677414
+    second: Player_Kameleon_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Player_Kameleon_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 994
+        width: 437
+        height: 420
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5bd7960e5f0d43b0800000000000000
+      internalID: -5526744271201772707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_1
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 994
+        width: 515
+        height: 382
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba49872805e2980d0800000000000000
+      internalID: -3420151518689979221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_2
+      rect:
+        serializedVersion: 2
+        x: 953
+        y: 1066
+        width: 415
+        height: 380
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 162898c89f326f4a0800000000000000
+      internalID: -6560016252506897823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_3
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 374
+        width: 1052
+        height: 692
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e622efdcdf8c8d80800000000000000
+      internalID: -8247058638810503454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_4
+      rect:
+        serializedVersion: 2
+        x: 1368
+        y: 1066
+        width: 341
+        height: 315
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f72de99beb81fe710800000000000000
+      internalID: 1724624389743235711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_5
+      rect:
+        serializedVersion: 2
+        x: 1709
+        y: 1066
+        width: 327
+        height: 285
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c461c874179a03cf0800000000000000
+      internalID: -274533273272838580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_6
+      rect:
+        serializedVersion: 2
+        x: 2248
+        y: 373
+        width: 631
+        height: 1043
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 129155fbe69a8b890800000000000000
+      internalID: -7442012091108222687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_7
+      rect:
+        serializedVersion: 2
+        x: 2880
+        y: 977
+        width: 40
+        height: 148
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aceb82a1fb20dcb0800000000000000
+      internalID: -4841321282609091415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_8
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1
+        width: 1193
+        height: 993
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd577bf829be02a60800000000000000
+      internalID: 7647371181984019933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_9
+      rect:
+        serializedVersion: 2
+        x: 2880
+        y: 853
+        width: 49
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8134d1912ef255f60800000000000000
+      internalID: 8022370959360869144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_10
+      rect:
+        serializedVersion: 2
+        x: 2880
+        y: 716
+        width: 59
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26388642537b84be0800000000000000
+      internalID: -1492741837601340574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_11
+      rect:
+        serializedVersion: 2
+        x: 2880
+        y: 632
+        width: 64
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c51f49b450056360800000000000000
+      internalID: 7162131146288862664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_12
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 1
+        width: 1812
+        height: 372
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fb71609c34d60e40800000000000000
+      internalID: 5622414541404077040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_13
+      rect:
+        serializedVersion: 2
+        x: 2880
+        y: 373
+        width: 151
+        height: 258
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9513e7a5c5426c260800000000000000
+      internalID: 7117416240179458393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Kameleon_14
+      rect:
+        serializedVersion: 2
+        x: 3008
+        y: 1
+        width: 35
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1852b559d69a77e0800000000000000
+      internalID: -1766934043599677414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Player_Kameleon_0: -5526744271201772707
+      Player_Kameleon_1: -3420151518689979221
+      Player_Kameleon_10: -1492741837601340574
+      Player_Kameleon_11: 7162131146288862664
+      Player_Kameleon_12: 5622414541404077040
+      Player_Kameleon_13: 7117416240179458393
+      Player_Kameleon_14: -1766934043599677414
+      Player_Kameleon_2: -6560016252506897823
+      Player_Kameleon_3: -8247058638810503454
+      Player_Kameleon_4: 1724624389743235711
+      Player_Kameleon_5: -274533273272838580
+      Player_Kameleon_6: -7442012091108222687
+      Player_Kameleon_7: -4841321282609091415
+      Player_Kameleon_8: 7647371181984019933
+      Player_Kameleon_9: 8022370959360869144
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
