@@ -1,0 +1,9 @@
+CheckPoint.png
+size:408,122
+filter:Linear,Linear
+Flag
+bounds:259,2,147,118
+Pillar
+bounds:2,7,113,255
+offsets:0,0,113,256
+rotate:90
