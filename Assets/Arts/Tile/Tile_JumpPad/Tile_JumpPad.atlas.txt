@@ -1,0 +1,16 @@
+Tile_JumpPad.png
+size:478,266
+filter:Linear,Linear
+Spring_Back
+bounds:2,52,211,212
+offsets:0,1,212,214
+Spring_Front
+bounds:215,52,211,212
+offsets:1,1,212,214
+Step_Bottom
+bounds:428,9,255,48
+offsets:1,1,257,51
+rotate:90
+Step_Top
+bounds:2,2,255,48
+offsets:1,2,257,51

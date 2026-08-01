@@ -7,13 +7,25 @@ namespace Game
     [RequireComponent(typeof(Collider2D))]
     public class SuperJumpPlatform : MonoBehaviour
     {
-        [Tooltip("일반 점프 대비 배율")]
-        [SerializeField] private float jumpMultiplier = 1.8f;
+        [Tooltip("기본 점프력(PlayerStats.NormalJumpForce) 대비 배율. 성질별 점프력과는 무관하다")]
+        [SerializeField] private float jumpMultiplier = 2f;
         [Tooltip("끄면 튕겨 오를 때 수평 속도를 버린다")]
         [SerializeField] private bool preserveHorizontalVelocity = true;
 
+        private SuperJumpPlatformSpineView _view;
+
         public float JumpMultiplier => jumpMultiplier;
         public bool PreserveHorizontalVelocity => preserveHorizontalVelocity;
+
+        // Awake 타이밍에 의존하지 않도록 지연 해석한다 (테스트에서는 뷰 없이 컴포넌트만 붙인다).
+        private SuperJumpPlatformSpineView ViewRef => _view != null ? _view : (_view = GetComponentInChildren<SuperJumpPlatformSpineView>(true));
+
+        // 튕겨 올린 순간 PlayerBounce가 호출한다 — 연출만 담당하고 물리에는 관여하지 않는다.
+        public void PlayLaunch()
+        {
+            var view = ViewRef;
+            if (view != null) view.PlayLaunch();
+        }
 
         // 에디터 툴링/테스트에서 수치를 지정할 때 사용.
         public void SetData(float multiplier, bool preserveHorizontal = true)
