@@ -13,7 +13,7 @@ namespace Game.EditorTools
         private const string StagesDir = "Assets/Game/Scenes/Stages";
         private const string MenuScenePath = "Assets/Game/Scenes/MainMenu.unity";
 
-        [MenuItem("Game/Sync Stage Database")]
+        // StageAssetPostprocessor가 씬 변경 시 자동 호출한다. 수동 실행: CLI -executeMethod
         public static void Sync()
         {
             var database = GetOrCreateDatabase();

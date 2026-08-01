@@ -16,7 +16,8 @@ namespace Game.EditorTools
         private const string GroundTilePath = "Assets/Game/Tiles/GroundTile.asset";
         private const string PalettePath = "Assets/Game/Tiles/StagePalette.prefab";
 
-        [MenuItem("Game/Setup Stage Tooling")]
+        // 에셋은 레포에 커밋되어 있어 평소 실행할 일이 없다. 복구는 git, 재생성은 CLI:
+        // Unity.exe -batchmode -executeMethod Game.EditorTools.StageToolingGenerator.GenerateAll
         public static void GenerateAll()
         {
             EnsureFolder(TilesDir);

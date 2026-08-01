@@ -86,8 +86,8 @@ namespace Game.EditorTools
                 errors++;
             }
 
-            // 타일맵에 남은 마커 타일 (기본 브러시로 칠한 경우)
-            errors += ReportStrayMarkerTiles();
+            // 타일맵에 남은 마커 타일 (기본 브러시로 칠한 경우) → 실제 프리팹으로 자동 변환
+            FixStrayMarkerTiles();
 
             // 낙사선 아래 배치물
             warnings += WarnBelowFallLine<PropertyItem>(controller);
@@ -97,26 +97,26 @@ namespace Game.EditorTools
             Debug.Log($"[검증] 완료 — 오류 {errors}건, 경고 {warnings}건");
         }
 
-        // 마커 타일은 StageBrush로 칠해야 프리팹이 스폰된다. 기본 브러시로 칠하면 타일만 남는데,
-        // PrefabMarkerTile은 콜라이더도 컴포넌트도 없어 게임에서 아무 동작을 하지 않는다 (무언 실패).
-        private static int ReportStrayMarkerTiles()
+        // 마커 타일은 StageBrush로 칠해야 프리팹이 스폰된다. 기본 브러시로 칠하면 기능 없는 타일만 남는다.
+        // 배치 의도는 명확하므로 타일을 지우고 그 자리에 실제 프리팹을 스폰해 준다.
+        private static void FixStrayMarkerTiles()
         {
-            int count = 0;
             foreach (var tilemap in Object.FindObjectsByType<Tilemap>(FindObjectsSortMode.None))
             {
+                tilemap.CompressBounds();
                 foreach (var cell in tilemap.cellBounds.allPositionsWithin)
                 {
                     if (tilemap.GetTile(cell) is not PrefabMarkerTile marker) continue;
 
-                    Debug.LogError(
-                        $"[검증] '{tilemap.name}' 타일맵 {cell}에 마커 타일 '{marker.name}'이 타일로 남아 있습니다. " +
-                        "장식 타일일 뿐이라 게임에서 아무 동작도 하지 않습니다. " +
-                        "Tile Palette 창 상단 브러시를 'StageBrush'로 바꾼 뒤 지우고 다시 칠하세요.",
+                    tilemap.SetTile(cell, null);
+                    StageBrush.SpawnPrefab(tilemap.layoutGrid, marker, cell);
+                    EditorSceneManager.MarkSceneDirty(tilemap.gameObject.scene);
+                    Debug.Log(
+                        $"[검증] '{tilemap.name}' {cell}의 마커 타일 '{marker.name}'을 실제 아이템으로 변환했습니다. " +
+                        "(기본 브러시로 칠해진 실수 — Tile Palette 브러시를 'StageBrush'로 바꿔주세요)",
                         tilemap);
-                    count++;
                 }
             }
-            return count;
         }
 
         private static int WarnBelowFallLine<T>(StageController controller) where T : MonoBehaviour

@@ -53,7 +53,8 @@ namespace Game.EditorTools
             return cellCount == 1 ? cells[0].tile as PrefabMarkerTile : null;
         }
 
-        private static void SpawnPrefab(GridLayout gridLayout, PrefabMarkerTile marker, Vector3Int cell)
+        // 검증 버튼의 "마커 타일 → 실제 프리팹" 자동 변환에서도 재사용한다.
+        internal static void SpawnPrefab(GridLayout gridLayout, PrefabMarkerTile marker, Vector3Int cell)
         {
             if (marker.Prefab == null) return;
             if (FindInstanceAtCell(gridLayout, cell) != null) return; // 셀당 1개
