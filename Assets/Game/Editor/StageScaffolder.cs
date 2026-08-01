@@ -10,6 +10,7 @@ namespace Game.EditorTools
     {
         private const string StagesDir = "Assets/Game/Scenes/Stages";
         private const string GroundTilePath = "Assets/Game/Tiles/GroundTile.asset";
+        private const string BackgroundPrefabPath = "Assets/Game/Prefabs/Background.prefab";
 
         // 스테이지 배경색 (#EBE8DD)
         private static readonly Color BackgroundColor = new Color32(0xEB, 0xE8, 0xDD, 0xFF);
@@ -74,6 +75,9 @@ namespace Game.EditorTools
             tilemapCollider.ProcessTilemapChanges();
             composite.GenerateGeometry();
 
+            // 패럴랙스 배경. 지평선은 실행 시 스테이지 경계에 맞춰 자동 정렬된다.
+            CreateBackground();
+
             // 기믹 컨테이너
             var gimmicks = new GameObject("Gimmicks");
             gimmicks.AddComponent<GimmickContainer>();
@@ -94,6 +98,32 @@ namespace Game.EditorTools
 
             EditorSceneManager.SaveScene(scene, path);
             Debug.Log($"[Game] 스테이지 씬 생성 완료: {path}");
+        }
+
+        // 배경을 랜덤 시드로 다시 생성해 스테이지마다 다른 배치가 나오게 한다.
+        // 프리팹에 연결된 채로는 생성된 프롭(자식)을 지울 수 없으므로 연결을 해제하고 굽는다.
+        private static void CreateBackground()
+        {
+            var backgroundPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(BackgroundPrefabPath);
+            if (backgroundPrefab == null)
+            {
+                Debug.LogWarning($"[Game] 배경 프리팹을 찾을 수 없습니다: {BackgroundPrefabPath}");
+                return;
+            }
+
+            var background = (GameObject)PrefabUtility.InstantiatePrefab(backgroundPrefab);
+            PrefabUtility.UnpackPrefabInstance(background, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+
+            var parallax = background.GetComponent<ParallaxBackground>();
+            if (parallax == null) return;
+
+            int seed = Random.Range(1, 100000);
+            var backgroundSo = new SerializedObject(parallax);
+            backgroundSo.FindProperty("seed").intValue = seed;
+            backgroundSo.ApplyModifiedPropertiesWithoutUndo();
+
+            ParallaxBackgroundEditor.Rebuild(parallax);
+            Debug.Log($"[Game] 배경 생성 (시드 {seed})");
         }
 
         private static void EnsureFolder(string path)
