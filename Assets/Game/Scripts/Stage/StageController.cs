@@ -241,6 +241,7 @@ namespace Game
             float top = stageMaxY + wallHeadroom;
 
             var wall = new GameObject(wallName);
+            wall.AddComponent<BoundaryWall>(); // 맵 크기를 잴 때 제외하기 위한 표식
             wall.transform.SetParent(transform);
             wall.transform.position = new Vector3(
                 innerFaceX + (leftSide ? -thickness * 0.5f : thickness * 0.5f),
@@ -321,6 +322,11 @@ namespace Game
             _isRespawning = true;
 
             player.SetDisabled(true); // 입력·자동 바운스 정지 + 속도 0
+
+            // 낙사·비방어 사망은 실드가 막지 못하고 제거만 된다 (상점 소비형 문서 §5.5).
+            // 방어에 성공한 접촉은 애초에 여기로 오지 않는다.
+            player.GetComponent<PlayerShield>()?.Deactivate();
+
             // SetDisabled가 방금 0으로 만든 속도를 위로 튕겨 덮어쓴다.
             // 중력은 Disabled 상태에서도 계속 적용되므로(PlayerBounce) 이후엔 자연히 포물선으로 떨어진다.
             player.Body.linearVelocity = new Vector2(0f, deathBounceForce);
@@ -422,9 +428,17 @@ namespace Game
             if (IsStageCleared) return;
             IsStageCleared = true;
 
-            // 입력·자동 바운스 정지 + 이동 속도 제거
+            // 입력·자동 바운스 정지 + 속도/중력 제거 → 공중에 멈춘 채 띄워 둔다.
+            // GameManager.StageClear가 timeScale을 0으로 두므로 물리도 함께 멈춘다.
             var player = PlayerRef;
-            if (player != null) player.SetDisabled(true);
+            if (player != null)
+            {
+                player.SetDisabled(true);
+                player.Body.gravityScale = 0f;
+            }
+
+            // 클리어 시 실드 제거 (상점 소비형 문서 §5.8). 소비한 아이템은 반환하지 않는다.
+            if (player != null) player.GetComponent<PlayerShield>()?.Deactivate();
 
             StageProgress.SetCleared(SceneManager.GetActiveScene().name);
 

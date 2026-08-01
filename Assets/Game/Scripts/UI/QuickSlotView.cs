@@ -13,7 +13,6 @@ namespace Game
         IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [SerializeField] private TMP_Text keyText;
-        [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text countText;
         [SerializeField] private Image iconImage;
 
@@ -67,7 +66,6 @@ namespace Game
                 iconImage.sprite = item != null ? item.Thumbnail : null;
                 iconImage.enabled = iconImage.sprite != null;
             }
-            if (nameText != null) nameText.text = item != null ? item.ItemName : "";
 
             int count = item != null ? Inventory.GetCount(item.ItemId) : 0;
             if (countText != null) countText.text = count > 0 ? count.ToString() : "";
@@ -186,10 +184,9 @@ namespace Game
         }
 
         // 에디터 툴링에서 배선할 때 사용.
-        public void SetReferences(TMP_Text key, TMP_Text itemName, TMP_Text count, Image icon)
+        public void SetReferences(TMP_Text key, TMP_Text count, Image icon)
         {
             keyText = key;
-            nameText = itemName;
             countText = count;
             iconImage = icon;
         }

@@ -88,8 +88,8 @@ namespace Game
             var itemId = QuickSlots.GetItemId(index);
             if (string.IsNullOrEmpty(itemId)) return; // 빈 슬롯이면 조용히 무시 (문서 §5.4)
 
-            // 사용에 실패하면 알림음을 낸다 (사운드 기획: UI_Error "사용 불가")
-            if (!ItemUseService.TryUse(itemId)) Sound.Play(SoundId.UI_Error);
+            // 실패 시 알림음·안내 토스트는 ItemUseService가 사유에 맞게 처리한다
+            ItemUseService.TryUse(itemId);
         }
 
         // 에디터 툴링에서 배선할 때 사용.

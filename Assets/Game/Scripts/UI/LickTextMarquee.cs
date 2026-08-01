@@ -45,7 +45,7 @@ namespace Game
 
             var image = lickTextTemplate.GetComponent<Image>();
             var color = image.color;
-            color.a = 0.5f;
+            color.a = 0.75f;
             image.color = color;
 
             _cellW = lickTextTemplate.rect.width + spacing.x;

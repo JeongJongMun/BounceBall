@@ -61,11 +61,12 @@ namespace Core
             SetState(GameState.GameOver);
         }
 
-        // 스테이지 클리어. GameOver와 달리 실패가 아니므로 하이스코어를 저장하지 않는다.
+        // 스테이지 클리어. 플레이어·물리를 멈춰 공중에 띄운 상태로 두고, 클리어 UI를 띄운다.
+        // GameOver와 달리 실패가 아니므로 하이스코어를 저장하지 않는다.
         public void StageClear()
         {
             if (State != GameState.Playing) return;
-            Time.timeScale = 1f;
+            Time.timeScale = 0f;
             SetState(GameState.Cleared);
         }
 

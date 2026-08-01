@@ -21,6 +21,7 @@ namespace Game
         [SerializeField] private bool readKeyboard = true;
 
         private Player _player;
+        private PlayerDash _dash;
         private float _input;
 
         private Player PlayerRef => _player != null ? _player : (_player = GetComponent<Player>());
@@ -86,6 +87,11 @@ namespace Game
         private void FixedUpdate()
         {
             if (!IsSliding) return;
+
+            // 대시 중에는 대시 속도가 우선한다. 미끄러짐 상태는 유지되어
+            // 대시가 끝나면 그 시점의 수평 속도를 이어받는다 (상점 소비형 문서 §4.7)
+            if (_dash == null) _dash = GetComponent<PlayerDash>();
+            if (_dash != null && _dash.IsDashing) return;
 
             // 성질 변경(기획 §7.2) · 사망/부활(§12) · 부착 상태는 즉시 해제
             if (PlayerRef.PropertyType != PlayerPropertyType.Ice
