@@ -1,40 +1,53 @@
-using Core;
-using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game
 {
-    // 메인 메뉴 씬 UI. StageDatabase를 읽어 스테이지 버튼을 런타임 생성한다.
     public class MainMenuUI : MonoBehaviour
     {
-        [SerializeField] private Transform buttonContainer;
-        [SerializeField] private Button stageButtonTemplate;
+        [SerializeField] private Button startButton;
+        [SerializeField] private Button settingsButton;
         [SerializeField] private Button quitButton;
+        
+        [SerializeField] private Canvas stageCanvas;
+        [SerializeField] private Canvas settingsCanvas;
 
         private void Awake()
         {
-            quitButton.onClick.AddListener(Application.Quit);
+            if (startButton)
+            {
+                startButton.onClick.AddListener(() =>
+                {
+                    stageCanvas.gameObject.SetActive(true);
+                    settingsCanvas.gameObject.SetActive(false);
+                    gameObject.SetActive(false);
+                });
+            }
+
+            if (settingsButton)
+            {
+                settingsButton.onClick.AddListener(() =>
+                {
+                    stageCanvas.gameObject.SetActive(false);
+                    settingsCanvas.gameObject.SetActive(true);
+                    gameObject.SetActive(false);
+                });
+            }
+            
+            if (quitButton != null)
+            {
+                quitButton.onClick.AddListener(QuitGame);
+            }
         }
 
-        private void Start()
+        private void QuitGame()
         {
-            var database = Resources.Load<StageDatabase>("StageDatabase");
-            if (database == null || database.Stages.Count == 0)
-            {
-                Debug.LogWarning("[Game] StageDatabase가 비어 있습니다. 스테이지 씬을 만들어 저장하면 자동 등록됩니다.");
-                return;
-            }
-
-            stageButtonTemplate.gameObject.SetActive(false);
-            foreach (var stage in database.Stages)
-            {
-                var button = Instantiate(stageButtonTemplate, buttonContainer);
-                button.gameObject.SetActive(true);
-                button.GetComponentInChildren<TMP_Text>().text = stage.displayName;
-                string sceneName = stage.sceneName;
-                button.onClick.AddListener(() => SceneLoader.Instance.Load(sceneName));
-            }
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
     }
 }
