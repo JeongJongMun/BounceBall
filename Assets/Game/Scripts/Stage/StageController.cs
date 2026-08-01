@@ -54,6 +54,18 @@ namespace Game
         [Tooltip("켜면 카메라가 위아래로 움직이지 않는다 (가로로만 진행하는 평지 스테이지)")]
         [SerializeField] private bool lockCameraY = false;
 
+        [Label("인트로 카메라 사용")]
+        [Tooltip("스테이지에 들어올 때마다 맵 전체를 한 번 보여주고 플레이 화면으로 줌인한다")]
+        [SerializeField] private bool useIntroCamera = true;
+
+        [Label("맵 여백 배율")]
+        [Tooltip("인트로에서 맵 주변에 얼마나 여백을 둘지. 1이면 맵에 딱 맞고, 클수록 넓게 보인다")]
+        [SerializeField] private float introPadding = 1.08f;
+
+        [Label("최대 축소 한계")]
+        [Tooltip("인트로에서 이 크기보다 더 축소하지 않는다. 0이면 무제한 — 세로로 아주 긴 맵에서 타일이 너무 작아지면 값을 준다")]
+        [SerializeField] private float introMaxSize = 0f;
+
         [Label("카메라 설정 덮어쓰기")]
         [Tooltip("이 스테이지만 조작감을 다르게 할 때 지정. 비우면 글로벌 CameraSettings를 쓴다")]
         [SerializeField] private CameraSettings cameraSettingsOverride;
@@ -136,6 +148,9 @@ namespace Game
         public bool LockCameraX => lockCameraX;
         public bool LockCameraY => lockCameraY;
         public CameraSettings CameraSettingsOverride => cameraSettingsOverride;
+        public bool UseIntroCamera => useIntroCamera;
+        public float IntroPadding => introPadding;
+        public float IntroMaxSize => introMaxSize;
 
         public bool UseBoundaryWalls => useBoundaryWalls;
         // 벽 안쪽 면의 X 좌표. 플레이어는 여기까지 갈 수 있다.
@@ -157,17 +172,43 @@ namespace Game
 
         private void Start()
         {
+            // 이전 스테이지의 클리어 화면 등을 먼저 내린다 — 시작 연출 동안 남아 있으면 안 된다
+            if (Core.GameManager.Instance != null) Core.GameManager.Instance.EnterStage();
+
             SpawnPlayer();
             CreateBoundaryWalls();
+            WarnIfBoundsExcludeTiles();
 
-            // 스테이지 씬 진입 = 게임 시작. 에디터에서 씬 단독 Play 시에도 동일하게 동작한다.
-            if (Core.GameManager.Instance != null && Core.GameManager.Instance.State != Core.GameState.Playing)
-                Core.GameManager.Instance.StartGame();
+            // 인트로 카메라가 켜져 있으면 연출이 끝난 뒤에 게임을 시작한다.
+            // 연출 동안에는 Ready 상태로 남아 HUD가 가려지고 일시정지도 열리지 않는다.
+            if (!StageIntroCamera.TryPlay(this, StartPlaying)) StartPlaying();
 
             onGoalProgressChanged?.Raise(GoalProgressText);
 
             // 시작 지점을 기본 체크포인트로 등록 (기획 §24.1)
             SaveCheckpoint(startPosition != null ? startPosition.position : Vector3.zero);
+        }
+
+        // 경계가 타일보다 좁으면 카메라가 맵 끝을 안 비추고 투명 벽이 갈 수 있는 곳을 막는다.
+        // 조용히 잘려 보이기만 해서 원인을 찾기 어려우므로 실행 시점에 알린다.
+        private void WarnIfBoundsExcludeTiles()
+        {
+            if (!StageTiles.TryGetWorldBounds(out var tiles)) return;
+
+            if (tiles.min.x >= stageMinX && tiles.max.x <= stageMaxX &&
+                tiles.min.y >= stageMinY && tiles.max.y <= stageMaxY) return;
+
+            Debug.LogWarning($"[Game] '{stageId}'의 스테이지 경계가 타일 범위보다 좁습니다. " +
+                $"타일 X({tiles.min.x:F1}~{tiles.max.x:F1}) Y({tiles.min.y:F1}~{tiles.max.y:F1}) / " +
+                $"경계 X({stageMinX:F1}~{stageMaxX:F1}) Y({stageMinY:F1}~{stageMaxY:F1}). " +
+                "Stage 오브젝트의 [경계 자동 계산]을 눌러주세요.");
+        }
+
+        // 스테이지 씬 진입 = 게임 시작. 에디터에서 씬 단독 Play 시에도 동일하게 동작한다.
+        private void StartPlaying()
+        {
+            if (Core.GameManager.Instance != null && Core.GameManager.Instance.State != Core.GameState.Playing)
+                Core.GameManager.Instance.StartGame();
         }
 
         // 맵 이탈 감시 (기획 §23.1). 물리로 움직이는 위치라 FixedUpdate에서 본다.

@@ -17,6 +17,14 @@ namespace Core
         public int Score { get; private set; }
         public int HighScore => SaveData.HighScore;
 
+        // 스테이지 씬에 막 들어온 시점. 이전 상태에서 떠 있던 화면(클리어·결과)을 정리한다.
+        // 시작 연출이 있으면 Playing이 될 때까지 시간이 걸리므로, 그동안 이전 화면이 남지 않도록 한다.
+        public void EnterStage()
+        {
+            Time.timeScale = 1f;
+            if (State != GameState.Ready) SetState(GameState.Ready);
+        }
+
         public void StartGame()
         {
             Time.timeScale = 1f;
