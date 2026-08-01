@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Core;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ namespace Game
         [SerializeField] private Transform stageButtonContainer;
         [SerializeField] private Button stageButtonTemplate;
         [SerializeField] private Button backButton;
+        [SerializeField] private TMP_Text ownedCoinText;
 
         [SerializeField] Canvas mainCanvas;
 
@@ -40,15 +42,23 @@ namespace Game
         // 스테이지를 클리어하고 돌아왔을 때도 최신 상태가 보이도록 화면이 열릴 때마다 다시 그린다.
         private void OnEnable()
         {
+            CurrencyWallet.OnCoinChanged += RefreshOwnedCoin;
+            RefreshOwnedCoin(CurrencyWallet.Coin);
             Refresh();
             PlayDropIntro();
         }
 
         private void OnDisable()
         {
+            CurrencyWallet.OnCoinChanged -= RefreshOwnedCoin;
             _content.DOKill();
             _content.anchoredPosition = Vector2.zero;
             _content.localRotation = Quaternion.identity;
+        }
+
+        private void RefreshOwnedCoin(int coin)
+        {
+            if (ownedCoinText != null) ownedCoinText.text = coin.ToString();
         }
 
         // Overlay 루트 Canvas는 위치가 매 프레임 덮어써지므로, 자식을 감싼 콘텐츠를 떨어뜨린다.
