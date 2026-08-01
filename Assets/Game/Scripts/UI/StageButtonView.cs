@@ -1,4 +1,4 @@
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,54 +8,46 @@ namespace Game
     public enum StageButtonState { Cleared, Playable, Locked }
 
     // 스테이지 선택 버튼 하나의 표시를 담당한다.
-    // 번호와 상태를 각각의 텍스트에 넣고, 상태별 문구와 색상은 인스펙터에서 조정한다.
+    // 번호는 자리수 이미지로 넣고, Clear/Lock 아이콘과 루트 색으로 상태를 표현한다.
     public class StageButtonView : MonoBehaviour
     {
-        [SerializeField] private TMP_Text numberText;
-        [SerializeField] private TMP_Text statusText;
-        [Tooltip("잠김 상태에만 표시할 자물쇠 아이콘 (비워둬도 동작한다)")]
+        [SerializeField] private Image rootImage;
+        [SerializeField] private Image digitImage1;
+        [SerializeField] private Image digitImage2;
+        [SerializeField] private GameObject stageNumberRoot;
         [SerializeField] private GameObject lockIcon;
+        [SerializeField] private GameObject clearIcon;
 
-        [Header("클리어")]
-        [SerializeField] private string clearedText = "클리어";
-        [SerializeField] private Color clearedColor = new(0.30f, 0.69f, 0.31f);
+        [Tooltip("0~9 순서의 숫자 스프라이트 (Img_Stage_Slot_No_0 ~ No_9)")]
+        [SerializeField] private List<Sprite> digitSprites = new();
 
-        [Header("미클리어")]
-        [SerializeField] private string unclearedText = "미클리어";
-        [SerializeField] private Color unclearedColor = new(0.62f, 0.62f, 0.62f);
+        [SerializeField] private Color lockedRootColor = new Color32(0x9a, 0x9a, 0x9a, 0xff);
 
-        [Header("잠김")]
-        [SerializeField] private string lockedText = "잠김";
-        [SerializeField] private Color lockedColor = new(0.45f, 0.45f, 0.45f);
+        private Color _normalRootColor;
+        private bool _hasNormalRootColor;
 
         public void SetDisplay(int stageNumber, StageButtonState state)
         {
-            if (numberText != null) numberText.text = stageNumber.ToString();
+            ApplyStageNumber(stageNumber);
 
-            if (statusText != null)
+            bool locked = state == StageButtonState.Locked;
+            stageNumberRoot.SetActive(!locked);
+            lockIcon.SetActive(locked);
+            clearIcon.SetActive(state == StageButtonState.Cleared);
+
+            if (!_hasNormalRootColor)
             {
-                statusText.text = state switch
-                {
-                    StageButtonState.Cleared => clearedText,
-                    StageButtonState.Playable => unclearedText,
-                    _ => lockedText
-                };
-                statusText.color = state switch
-                {
-                    StageButtonState.Cleared => clearedColor,
-                    StageButtonState.Playable => unclearedColor,
-                    _ => lockedColor
-                };
+                _normalRootColor = rootImage.color;
+                _hasNormalRootColor = true;
             }
-
-            if (lockIcon != null) lockIcon.SetActive(state == StageButtonState.Locked);
+            rootImage.color = locked ? lockedRootColor : _normalRootColor;
 
             // 잠긴 버튼은 눌리긴 해야 안내 팝업을 띄울 수 있으므로 interactable을 끄지 않는다.
             // 대신 Hover 색 변화를 없애 "선택 불가"임을 알린다 (UI 기획서 §2.4).
             if (TryGetComponent<Button>(out var button))
             {
                 var colors = button.colors;
-                colors.highlightedColor = state == StageButtonState.Locked
+                colors.highlightedColor = locked
                     ? colors.normalColor
                     : Color.white;
                 colors.selectedColor = colors.highlightedColor;
@@ -63,11 +55,20 @@ namespace Game
             }
         }
 
-        // 에디터 툴링에서 배선할 때 사용.
-        public void SetReferences(TMP_Text number, TMP_Text status)
+        private void ApplyStageNumber(int stageNumber)
         {
-            numberText = number;
-            statusText = status;
+            if (stageNumber < 10)
+            {
+                digitImage1.sprite = digitSprites[stageNumber];
+                digitImage1.gameObject.SetActive(true);
+                digitImage2.gameObject.SetActive(false);
+                return;
+            }
+
+            digitImage1.sprite = digitSprites[stageNumber / 10];
+            digitImage2.sprite = digitSprites[stageNumber % 10];
+            digitImage1.gameObject.SetActive(true);
+            digitImage2.gameObject.SetActive(true);
         }
     }
 }
