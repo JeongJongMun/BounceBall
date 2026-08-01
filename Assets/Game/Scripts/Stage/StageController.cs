@@ -289,7 +289,7 @@ namespace Game
             var prefab = Resources.Load<GameObject>("Player");
             if (prefab == null)
             {
-                Debug.LogWarning("[Game] Resources/Player.prefab이 없습니다. Game > Setup Stage Tooling을 실행하세요.");
+                Debug.LogWarning("[Game] Resources/Player.prefab이 없습니다. 삭제됐다면 git으로 복구하세요.");
                 return;
             }
 
