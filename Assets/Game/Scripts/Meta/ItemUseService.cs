@@ -34,7 +34,10 @@ namespace Game
 
             // 6. 효과 적용 → 성공했을 때만 수량 차감
             if (!ApplyEffect(item, player)) return false;
-            return Inventory.TryConsume(itemId);
+            if (!Inventory.TryConsume(itemId)) return false;
+
+            ToastManager.Show($"{KoreanParticle.WithObject(item.ItemName)} 사용하였습니다.");
+            return true;
         }
 
         private static bool ApplyEffect(ItemData item, Player player)

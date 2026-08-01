@@ -183,6 +183,7 @@ namespace Game
                 return;
             }
 
+            ToastManager.Show($"{KoreanParticle.WithObject(_selected.ItemName)} 구매하였습니다.");
             _quantity = 1;
             RefreshDetail(); // 보유 금액·색상 즉시 갱신 (문서 §7.5)
         }
