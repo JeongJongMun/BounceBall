@@ -27,6 +27,7 @@ namespace Game
         {
             if (IsCollected) return;
             if (other.GetComponent<Player>() == null) return;
+            other.GetComponent<PlayerSpineView>()?.PlayEat();
             Collect();
         }
 

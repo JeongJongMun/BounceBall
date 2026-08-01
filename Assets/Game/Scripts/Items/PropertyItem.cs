@@ -62,6 +62,8 @@ namespace Game
         {
             if (!IsActive || propertyData == null) return;
 
+            // 혀로 먹는 연출 — 동일 성질 재획득이라도 아이템은 먹으므로 항상 재생 (기획 §7.3)
+            playerProperty.GetComponent<PlayerSpineView>()?.PlayEat();
             playerProperty.Apply(propertyData);
             onAcquired?.Raise();
 

@@ -97,6 +97,7 @@ namespace Game
 
             AttachDirection = direction;
             PlayerRef.SetAttached(true);
+            GetComponent<PlayerSpineView>()?.SetCrawling(true);
 
             SnapToSurface();
         }
@@ -110,6 +111,7 @@ namespace Game
             _lastReleaseTime = Time.time;
             PlayerRef.Body.gravityScale = _cachedGravityScale;
             PlayerRef.SetAttached(false);
+            GetComponent<PlayerSpineView>()?.SetCrawling(false);
         }
 
         private void FixedUpdate()

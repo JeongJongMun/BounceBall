@@ -13,9 +13,14 @@ namespace Game
         [SerializeField] private VoidEventChannel onPlayerLanded;
 
         private Player _player;
+        private PlayerSpineView _view;
         private float _lastBounceTime = -999f;
 
-        private void Awake() => _player = GetComponent<Player>();
+        private void Awake()
+        {
+            _player = GetComponent<Player>();
+            _view = GetComponent<PlayerSpineView>();
+        }
 
         private void Start()
         {
@@ -92,6 +97,7 @@ namespace Game
             _player.Body.linearVelocity = new Vector2(velocity.x, jumpForce);
             _lastBounceTime = Time.time;
             _player.SetGrounded(false);
+            if (_view != null) _view.PlayJump();
             onPlayerBounced?.Raise();
         }
     }

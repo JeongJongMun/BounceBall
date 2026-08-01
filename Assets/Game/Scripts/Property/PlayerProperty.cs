@@ -12,10 +12,12 @@ namespace Game
 
         private Player _player;
         private SpriteRenderer _renderer;
+        private PlayerSpineView _view;
 
         // GetComponent 시점을 Awake 타이밍에 의존하지 않도록 지연 해석한다 (EditMode 테스트에서 Awake 전에 Apply를 호출할 수 있음).
         private Player PlayerRef => _player != null ? _player : (_player = GetComponent<Player>());
         private SpriteRenderer RendererRef => _renderer != null ? _renderer : (_renderer = GetComponent<SpriteRenderer>());
+        private PlayerSpineView ViewRef => _view != null ? _view : (_view = GetComponent<PlayerSpineView>());
 
         public PropertyData Current { get; private set; }
         public PropertyData DefaultProperty => defaultProperty;
@@ -39,6 +41,7 @@ namespace Game
             PlayerRef.PropertyType = data.PropertyType;
 
             if (RendererRef != null) RendererRef.color = data.CharacterColor;
+            if (ViewRef != null) ViewRef.SetProperty(data.PropertyType, data.CharacterColor);
 
             onPropertyChanged?.Raise(data.PropertyType.ToString());
         }

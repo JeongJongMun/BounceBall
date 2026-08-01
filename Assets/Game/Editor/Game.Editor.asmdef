@@ -5,7 +5,9 @@
         "Game",
         "Core",
         "Unity.2D.Tilemap.Editor",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "spine-unity",
+        "spine-csharp"
     ],
     "includePlatforms": [
         "Editor"
