@@ -112,6 +112,7 @@ namespace Game
             wall.transform.position = new Vector3(centerX, (bottom + top) * 0.5f, 0f);
             var box = wall.AddComponent<BoxCollider2D>();
             box.size = new Vector2(1f, top - bottom);
+            box.sharedMaterial = new PhysicsMaterial2D("BoundaryWall") { friction = 0f, bounciness = 0f };
         }
 
         // 체크포인트 활성화 (기획 §25.2). 한 번에 하나만 활성이며, 새로 활성화하면 이전 데이터를 덮어쓴다 (§25.6).
