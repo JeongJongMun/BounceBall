@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Core.Events;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game
 {
@@ -233,6 +234,8 @@ namespace Game
             // 입력·자동 바운스 정지 + 이동 속도 제거
             var player = PlayerRef;
             if (player != null) player.SetDisabled(true);
+
+            StageProgress.SetCleared(SceneManager.GetActiveScene().name);
 
             onStageCleared?.Raise();
 
