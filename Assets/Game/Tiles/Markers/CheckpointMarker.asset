@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CheckpointMarker
   m_EditorClassIdentifier: Game::Game.PrefabMarkerTile
   prefab: {fileID: 8867948408819232915, guid: 8c188f12d7069204ba1ada345921698e, type: 3}
-  previewSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  previewColor: {r: 1, g: 0.4, b: 0.75, a: 1}
+  previewSprite: {fileID: 21300000, guid: 263eaea8e40899d4caaae4c2ab307d2b, type: 3}
+  previewColor: {r: 1, g: 1, b: 1, a: 1}
