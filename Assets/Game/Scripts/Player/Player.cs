@@ -20,6 +20,10 @@ namespace Game
         // 현재 성질. 성질 시스템(PlayerProperty)이 설정하며, 타일 상호작용 조회에 쓰인다 (기획 §10.5).
         public PlayerPropertyType PropertyType { get; set; } = PlayerPropertyType.Default;
 
+        // 바라보는 방향 (-1 / +1). 얼음 미끄러짐에서 입력이 없을 때의 이동 방향이 된다 (기획 §6.5, §10.5).
+        // 일반 이동에서는 마지막 입력 방향, 미끄러짐 중에는 실제 수평 이동 방향으로 갱신한다.
+        public float FacingDirection { get; set; } = 1f;
+
         public void SetGrounded(bool grounded)
         {
             // 부착·조작 제한 중에는 접지 판정이 상태를 덮어쓰지 않는다.

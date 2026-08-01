@@ -38,14 +38,15 @@ namespace Game
         public float Deceleration => deceleration;
         public float DirectionChangePower => directionChangePower;
 
-        // 상호작용 결과에 대응하는 공용 점프력. Attach/Slide는 점프력을 직접 쓰지 않는다.
+        // 상호작용 결과에 대응하는 공용 점프력.
+        // Attach와 Slide는 자동 점프 자체가 없으므로 이 값을 쓰지 않는다 (기획 §2.2, §2.3).
         public float GetJumpForce(PropertyInteractionType interaction)
         {
             switch (interaction)
             {
                 case PropertyInteractionType.LowJump: return lowJumpForce;
                 case PropertyInteractionType.HighJump: return highJumpForce;
-                default: return normalJumpForce; // NormalJump, Slide
+                default: return normalJumpForce;
             }
         }
     }
