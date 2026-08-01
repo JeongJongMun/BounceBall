@@ -37,3 +37,4 @@ MonoBehaviour:
   tileProperty: 1
   isDeadly: 1
   applySurfaceEffectWhenSafe: 1
+  lethalFromBelow: 0
