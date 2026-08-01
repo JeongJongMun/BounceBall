@@ -723,12 +723,14 @@ MonoBehaviour:
   stageMaxX: 8.46
   stageMinY: -4.35
   stageMaxY: 4.78
-  stageFallLimitY: -4.35
+  stageFallLimitY: -6.03
   boundsPadding: 3
   cameraZoom: 5
   cameraVerticalOffset: 0
   lockCameraX: 0
   lockCameraY: 0
+  useIntroCamera: 1
+  introMaxSize: 0
   cameraSettingsOverride: {fileID: 0}
   useBoundaryWalls: 0
   wallMode: 0
