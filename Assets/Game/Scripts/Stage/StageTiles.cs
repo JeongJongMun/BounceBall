@@ -32,6 +32,37 @@ namespace Game
             return null;
         }
 
+        // 씬에 깔린 타일 전체를 감싸는 월드 영역. 타일이 하나도 없으면 false.
+        // 스테이지 경계(여백 포함)와 달리 실제로 타일이 있는 범위만 잡는다.
+        public static bool TryGetWorldBounds(out Bounds bounds)
+        {
+            bounds = default;
+            bool found = false;
+
+            foreach (var tilemap in GetTilemaps())
+            {
+                if (tilemap == null) continue;
+
+                tilemap.CompressBounds(); // 지운 타일까지 세지 않도록 실제 범위로 줄인다
+                var local = tilemap.localBounds;
+                if (local.size.x <= 0f || local.size.y <= 0f) continue;
+
+                var min = tilemap.transform.TransformPoint(local.min);
+                var max = tilemap.transform.TransformPoint(local.max);
+
+                if (!found)
+                {
+                    bounds = new Bounds(min, Vector3.zero);
+                    found = true;
+                }
+
+                bounds.Encapsulate(min);
+                bounds.Encapsulate(max);
+            }
+
+            return found;
+        }
+
         private static List<Tilemap> GetTilemaps()
         {
             if (!_cacheValid)

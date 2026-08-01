@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 namespace Game
@@ -29,6 +30,23 @@ namespace Game
         [Tooltip("세로를 조금 느리게 하면 점프가 부드러워 보인다")]
         [SerializeField] private float verticalSmoothTime = 0.15f;
 
+        [Header("스테이지 인트로 — 시작할 때 맵 전체를 한 번 보여주는 연출")]
+        [Label("전체 맵 유지 시간")]
+        [Tooltip("맵 전체를 보여준 채 멈춰 있는 시간(초)")]
+        [SerializeField] private float introHoldDuration = 1f;
+
+        [Label("플레이 화면 전환 시간")]
+        [Tooltip("맵 전체에서 실제 플레이 화면으로 줌인하는 데 걸리는 시간(초)")]
+        [SerializeField] private float introZoomDuration = 1f;
+
+        [Label("인트로 최소 확대 비율")]
+        [Tooltip("맵이 플레이 화면보다 이 배율 이상 클 때만 인트로를 재생한다. 타일이 이미 다 보이면 연출을 건너뛴다")]
+        [SerializeField] private float introMinZoomRatio = 1.1f;
+
+        [Label("전환 곡선")]
+        [Tooltip("줌인이 가감속하는 방식. InOutCubic이면 천천히 시작해 천천히 멈춘다")]
+        [SerializeField] private Ease introEase = Ease.InOutCubic;
+
         [Header("기타")]
         [Label("부활 시 즉시 이동")]
         [Tooltip("부활할 때 카메라를 즉시 옮긴다. 끄면 맵을 가로질러 부드럽게 이동한다")]
@@ -42,6 +60,10 @@ namespace Game
         public float VerticalDeadzone => verticalDeadzone;
         public float HorizontalSmoothTime => horizontalSmoothTime;
         public float VerticalSmoothTime => verticalSmoothTime;
+        public float IntroHoldDuration => introHoldDuration;
+        public float IntroZoomDuration => introZoomDuration;
+        public float IntroMinZoomRatio => introMinZoomRatio;
+        public Ease IntroEase => introEase;
         public bool SnapOnRespawn => snapOnRespawn;
         public bool ShowDeadzoneGizmo => showDeadzoneGizmo;
 
