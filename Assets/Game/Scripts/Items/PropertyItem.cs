@@ -74,6 +74,8 @@ namespace Game
             Complete(playerProperty);
         }
 
+        // 혀 끝이 닿는 순간 — 아이템이 사라지고 성질이 적용된다.
+        // 획득 상태와 콜라이더는 접촉 시점에 이미 처리했으므로 여기서는 외형만 끈다.
         private void Complete(PlayerProperty playerProperty)
         {
             if (RendererRef != null) RendererRef.enabled = false;
@@ -82,10 +84,6 @@ namespace Game
             // 동일 성질이면 Apply가 no-op이지만 아이템은 정상적으로 소모된다 (기획 §11.4, §7.3)
             playerProperty.Apply(propertyData);
             Sound.Play(SoundId.Property_Change);
-
-            IsAcquired = true;
-            if (ColliderRef != null) ColliderRef.enabled = false;
-            if (RendererRef != null) RendererRef.enabled = false;
 
             onAcquired?.Raise();
         }
