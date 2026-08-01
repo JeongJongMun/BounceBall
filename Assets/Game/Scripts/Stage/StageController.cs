@@ -316,7 +316,7 @@ namespace Game
         }
 
         // 사망 시 살짝 튀어 올랐다가 중력으로 떨어지며 사망 연출(Die 애니 또는 스케일 아웃)을 보여준 뒤
-        // 복구하고, 부활 팝(0→1.3→1)으로 재등장한다.
+        // 아이리스 암전 → 체크포인트 복구 → 아이리스 개방 → 부활 팝(0→1.3→1)으로 재등장한다.
         private IEnumerator RespawnRoutine(Player player)
         {
             _isRespawning = true;
@@ -337,6 +337,9 @@ namespace Game
             float deathDuration = view != null ? view.PlayDeath() : 0f;
             if (deathDuration > 0f) yield return new WaitForSeconds(deathDuration);
 
+            // 원이 좁아지며 화면을 가린 뒤, 완전 암전 상태에서 위치를 되돌린다.
+            yield return IrisTransition.Instance.Close();
+
             // 위치 복구. Rigidbody가 Interpolate라 transform만 옮기면 순간이동 잔상이 남는다.
             var body = player.Body;
             body.linearVelocity = Vector2.zero;
@@ -346,7 +349,7 @@ namespace Game
 
             // 부착·미끄러짐 같은 성질 전용 상태는 저장하지 않고 초기화한다 (기획 §12, §6.7)
             player.GetComponent<PlayerJellyAttach>()?.Release();
-            player.GetComponent<PlayerIceSlide>()?.Exit();  
+            player.GetComponent<PlayerIceSlide>()?.Exit();
 
             // 저장된 성질 복구 (기획 §25.5)
             var playerProperty = player.GetComponent<PlayerProperty>();
@@ -362,7 +365,9 @@ namespace Game
             var follow = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
             if (follow != null && follow.SnapOnRespawn) follow.Init(player.transform, this);
 
-            if (view != null) view.PlayRespawnPop(); // 스케일 0 → 1.3 → 1 재등장 연출
+            // 암전 중에 스폰 준비 후, 전체 페이드로 화면을 밝힌다.
+            if (view != null) view.PlayRespawnPop();
+            yield return IrisTransition.Instance.Open();
 
             player.SetDisabled(false); // 조작·자동 바운스 재개
             _isRespawning = false;

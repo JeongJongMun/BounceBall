@@ -584,6 +584,7 @@ Transform:
   - {fileID: 6665916954197128974}
   - {fileID: 8399421975128637455}
   - {fileID: 2063322049937991268}
+  - {fileID: 9123456789012345002}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6354977624665110076
@@ -2069,3 +2070,53 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 9197279547949722919}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9123456789012345001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9123456789012345002}
+  - component: {fileID: 9123456789012345003}
+  m_Layer: 0
+  m_Name: IrisTransition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9123456789012345002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123456789012345001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3006225516904337506}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9123456789012345003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123456789012345001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62cd2d4d9794d8bb4836a3ed2f32956, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.IrisTransition
+  maskTexture: {fileID: 2800000, guid: 687d4fb4809048048da3cc49396fa860, type: 3}
+  invertMask: 0
+  closeDuration: 0.75
+  openDuration: 0.75
+  blackHoldDuration: 0.45
+  openScale: 3
