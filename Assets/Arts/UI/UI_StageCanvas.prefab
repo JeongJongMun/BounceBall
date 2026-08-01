@@ -324,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -967,6 +967,12 @@ PrefabInstance:
       propertyPath: m_text
       value: I
       objectReference: {fileID: 0}
+    - target: {fileID: 1591146540067099373, guid: cbcfb944f26174fc8bb4847dbc4b635c,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5261538764330850965, guid: 63a6aa3fcc800ea4b8186bbed1181294,
+        type: 2}
     - target: {fileID: 5289638005588753849, guid: cbcfb944f26174fc8bb4847dbc4b635c,
         type: 3}
       propertyPath: m_Color.b
@@ -1139,6 +1145,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button_Shop
       objectReference: {fileID: 0}
+    - target: {fileID: 1591146540067099373, guid: cbcfb944f26174fc8bb4847dbc4b635c,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5261538764330850965, guid: 63a6aa3fcc800ea4b8186bbed1181294,
+        type: 2}
     - target: {fileID: 5289638005588753849, guid: cbcfb944f26174fc8bb4847dbc4b635c,
         type: 3}
       propertyPath: m_Color.b
