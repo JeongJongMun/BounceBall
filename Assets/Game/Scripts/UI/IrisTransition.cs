@@ -63,6 +63,17 @@ namespace Game
             base.OnDestroy();
         }
 
+        // 완전 암전을 즉시 표시한다. 스테이지 시작 페이드인 직전에 쓴다.
+        public void ShowBlack()
+        {
+            EnsureReady();
+            ApplyMaskSettings();
+            _tween?.Kill();
+            _canvas.enabled = true;
+            SetScale(0f);
+            _group.alpha = 1f;
+        }
+
         // 구멍이 좁아지며 화면을 완전히 가린 뒤, 잠깐 암전을 유지한다.
         // 스케일이 클수록 빠르고, 작아질수록 느려진다 (OutQuad).
         public IEnumerator Close()

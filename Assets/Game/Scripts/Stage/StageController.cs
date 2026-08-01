@@ -174,14 +174,32 @@ namespace Game
             CreateBoundaryWalls();
             WarnIfBoundsExcludeTiles();
 
-            // 인트로 카메라가 켜져 있으면 연출이 끝난 뒤에 게임을 시작한다.
-            // 연출 동안에는 Ready 상태로 남아 HUD가 가려지고 일시정지도 열리지 않는다.
-            if (!StageIntroCamera.TryPlay(this, StartPlaying)) StartPlaying();
+            // 리스폰과 같이 암전 → 페이드인으로 시작한 뒤, 인트로/플레이로 이어진다.
+            StartCoroutine(StartWithFadeIn());
 
             onGoalProgressChanged?.Raise(GoalProgressText);
 
             // 시작 지점을 기본 체크포인트로 등록 (기획 §24.1)
             SaveCheckpoint(startPosition != null ? startPosition.position : Vector3.zero);
+        }
+
+        // 부활 Open과 동일: 암전 유지 → 팝 등장 → 페이드인 → 인트로 또는 플레이 시작.
+        private IEnumerator StartWithFadeIn()
+        {
+            IrisTransition.Instance.ShowBlack();
+
+            var player = PlayerRef;
+            player.SetDisabled(true);
+
+            var view = player.GetComponent<PlayerSpineView>();
+            if (view != null) view.PlayRespawnPop();
+            yield return IrisTransition.Instance.Open();
+
+            player.SetDisabled(false);
+
+            // 인트로 카메라가 켜져 있으면 연출이 끝난 뒤에 게임을 시작한다.
+            // 연출 동안에는 Ready 상태로 남아 HUD가 가려지고 일시정지도 열리지 않는다.
+            if (!StageIntroCamera.TryPlay(this, StartPlaying)) StartPlaying();
         }
 
         // 경계가 타일보다 좁으면 카메라가 맵 끝을 안 비추고 투명 벽이 갈 수 있는 곳을 막는다.
