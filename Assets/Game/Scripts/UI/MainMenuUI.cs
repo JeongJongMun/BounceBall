@@ -9,9 +9,8 @@ namespace Game
         [SerializeField] private Button startButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button quitButton;
-        
+
         [SerializeField] private Canvas stageCanvas;
-        [SerializeField] private Canvas settingsCanvas;
 
         [Tooltip("시작 버튼 연출을 재생할 타이틀 배경. 비워두면 연출 없이 바로 넘어간다")]
         [SerializeField] private TitleBackgroundAnimator titleAnimator;
@@ -45,20 +44,11 @@ namespace Game
             {
                 settingsButton.onClick.AddListener(() =>
                 {
-                    // 설정 창은 인게임과 공용이다. 없을 때만 씬의 설정 캔버스로 넘어간다.
                     var window = FindSettingsWindow();
-                    if (window != null)
-                    {
-                        window.Open();
-                        return;
-                    }
-
-                    stageCanvas.gameObject.SetActive(false);
-                    settingsCanvas.gameObject.SetActive(true);
-                    gameObject.SetActive(false);
+                    if (window != null) window.Open();
                 });
             }
-            
+
             if (quitButton != null)
             {
                 quitButton.onClick.AddListener(QuitGame);
@@ -72,7 +62,6 @@ namespace Game
             if (stageCanvas == null) return;
 
             stageCanvas.gameObject.SetActive(true);
-            if (settingsCanvas != null) settingsCanvas.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
 
@@ -80,7 +69,6 @@ namespace Game
         private void EnterStageSelect()
         {
             if (stageCanvas != null) stageCanvas.gameObject.SetActive(true);
-            if (settingsCanvas != null) settingsCanvas.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
 
