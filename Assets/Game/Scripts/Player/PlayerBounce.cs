@@ -128,7 +128,21 @@ namespace Game
             _lastBounceTime = Time.time;
             _player.SetGrounded(false);
             if (_view != null) _view.PlayJump();
+
+            // 슈퍼 점프는 전용 사운드로 대체한다 (사운드 기획: 기믹 SuperJump)
+            Sound.Play(superJump != null ? SoundId.SuperJump : BounceSound(_player.PropertyType));
             onPlayerBounced?.Raise();
+        }
+
+        // 성질별 바운스 사운드 (사운드 기획: 플레이어)
+        private static SoundId BounceSound(PlayerPropertyType property)
+        {
+            switch (property)
+            {
+                case PlayerPropertyType.Jelly: return SoundId.Bounce_Jelly;
+                case PlayerPropertyType.Ice: return SoundId.Bounce_Ice;
+                default: return SoundId.Bounce_Normal;
+            }
         }
     }
 }

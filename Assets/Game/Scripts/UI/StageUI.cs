@@ -78,7 +78,11 @@ namespace Game
                 }
                 else
                 {
-                    // 잠긴 스테이지는 시작하지 않고 안내 팝업만 띄운다 (UI 기획서 §2.6)
+                    // 잠긴 스테이지는 시작하지 않고 안내 팝업만 띄운다 (UI 기획서 §2.6).
+                    // 실패 알림이므로 클릭음 대신 UI_Error를 낸다 (누르는 순간).
+                    var soundSource = UiClickSound.Ensure(button.gameObject);
+                    if (soundSource != null) soundSource.sound = SoundId.UI_Error;
+
                     button.onClick.AddListener(() =>
                     {
                         if (lockedStagePopup != null) lockedStagePopup.Show();

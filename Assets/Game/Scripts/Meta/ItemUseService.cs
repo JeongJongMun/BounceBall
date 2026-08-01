@@ -50,6 +50,7 @@ namespace Game
 
             player.GetComponent<PlayerSpineView>()?.PlayEat();
             playerProperty.Apply(item.GrantedProperty);
+            Sound.Play(SoundId.Property_Change);
             return true;
         }
     }

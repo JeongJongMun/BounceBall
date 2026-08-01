@@ -34,6 +34,8 @@ namespace Game
         public void Show()
         {
             if (messageText != null) messageText.text = message;
+            // UI_Error는 잠긴 버튼을 누르는 순간 버튼 쪽에서 낸다 (StageUI).
+            // 팝업이 뜨는 시점은 버튼을 뗀 뒤라 여기서 내면 늦게 들린다.
             if (root != null) root.SetActive(true);
         }
 

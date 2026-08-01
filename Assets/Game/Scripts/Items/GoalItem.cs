@@ -40,6 +40,7 @@ namespace Game
             if (ColliderRef != null) ColliderRef.enabled = false;
             if (RendererRef != null) RendererRef.enabled = false;
 
+            Sound.Play(SoundId.Goal_Item);
             onCollected?.Raise();
 
             var stage = StageRef;

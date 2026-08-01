@@ -9,7 +9,7 @@ namespace Game
     // 인벤토리 슬롯 하나. 클릭하면 선택(상세 표시), 더블 클릭하면 사용을 요청한다 (인벤토리 문서 §5.4).
     // 퀵슬롯으로 끌어다 놓아 등록할 수도 있다 (§5.6.3).
     public class InventorySlotView : MonoBehaviour,
-        IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+        IPointerDownHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [SerializeField] private Image iconImage;
         [SerializeField] private TMP_Text nameText;
@@ -41,6 +41,16 @@ namespace Game
         public void SetSelected(bool selected)
         {
             if (selectionOutline != null) selectionOutline.enabled = selected;
+        }
+
+        // 슬롯은 Selectable이 아니라 UiClickSoundSource가 붙지 않으므로 여기서 직접 낸다.
+        // 누르는 순간에 내야 늦게 들리지 않는다.
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (eventData.button != PointerEventData.InputButton.Left) return;
+
+            // 두 번째 클릭은 사용(성공음·실패음)이 알려 주므로 클릭음을 겹치지 않는다
+            if (eventData.clickCount < 2) Sound.Play(SoundId.UI_Click);
         }
 
         public void OnPointerClick(PointerEventData eventData)

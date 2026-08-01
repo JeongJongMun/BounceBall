@@ -119,18 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &29749439 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5540395442836999082, guid: b4845ff576c9043d28870232a322a24d,
-    type: 3}
-  m_PrefabInstance: {fileID: 9181676355800213785}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &112564583
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,18 +631,6 @@ Material:
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &313185003 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9197472813226941575, guid: b4845ff576c9043d28870232a322a24d,
-    type: 3}
-  m_PrefabInstance: {fileID: 9181676355800213785}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &474679147
 GameObject:
   m_ObjectHideFlags: 0
@@ -3314,16 +3290,6 @@ PrefabInstance:
       propertyPath: stageCanvas
       value: 
       objectReference: {fileID: 706203814}
-    - target: {fileID: 5756797943040125250, guid: b4845ff576c9043d28870232a322a24d,
-        type: 3}
-      propertyPath: startButton
-      value: 
-      objectReference: {fileID: 29749439}
-    - target: {fileID: 5756797943040125250, guid: b4845ff576c9043d28870232a322a24d,
-        type: 3}
-      propertyPath: settingsButton
-      value: 
-      objectReference: {fileID: 313185003}
     - target: {fileID: 5756797943040125250, guid: b4845ff576c9043d28870232a322a24d,
         type: 3}
       propertyPath: settingsCanvas

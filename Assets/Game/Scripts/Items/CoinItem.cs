@@ -40,6 +40,7 @@ namespace Game
             if (RendererRef != null) RendererRef.enabled = false;
 
             CurrencyWallet.Add(amount);
+            Sound.Play(SoundId.Coin);
             onCollected?.Raise();
 
             var stage = StageRef;
