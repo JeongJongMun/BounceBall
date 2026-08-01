@@ -822,7 +822,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game::Game.QuickSlotView
   keyText: {fileID: 7107739745005874435}
-  nameText: {fileID: 8896363181981185485}
   countText: {fileID: 480747401643157324}
   iconImage: {fileID: 2119878574399584296}
   highlightScale: 1.12
