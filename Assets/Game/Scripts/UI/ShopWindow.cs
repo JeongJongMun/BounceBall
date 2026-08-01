@@ -18,12 +18,8 @@ namespace Game
         [Header("상세 · 구매")]
         [SerializeField] private TMP_Text detailNameText;
         [SerializeField] private TMP_Text detailDescriptionText;
-        [SerializeField] private TMP_Text unitPriceText;
-        [SerializeField] private TMP_Text quantityText;
-        [SerializeField] private TMP_Text totalPriceText;
+        [SerializeField] private TMP_Text priceText;
         [SerializeField] private TMP_Text ownedCoinText;
-        [SerializeField] private Button minusButton;
-        [SerializeField] private Button plusButton;
         [SerializeField] private Button buyButton;
 
         [Header("금액 색상 (문서 §7.5)")]
@@ -33,7 +29,6 @@ namespace Game
         private readonly List<ShopProductView> _products = new();
         private ItemDatabase _database;
         private ItemData _selected;
-        private int _quantity = 1;
         private UiClickSoundSource _buySound;
 
         public bool IsOpen => root != null && root.activeSelf;
@@ -45,8 +40,6 @@ namespace Game
 
             _database = ItemDatabase.Load();
             if (closeButton != null) closeButton.onClick.AddListener(Close);
-            if (minusButton != null) minusButton.onClick.AddListener(() => ChangeQuantity(-1));
-            if (plusButton != null) plusButton.onClick.AddListener(() => ChangeQuantity(1));
             if (buyButton != null) buyButton.onClick.AddListener(Purchase);
             if (root != null) root.SetActive(false);
         }
@@ -127,17 +120,8 @@ namespace Game
         private void Select(ItemData item)
         {
             _selected = item;
-            _quantity = 1;
 
             foreach (var view in _products) view.SetSelected(view.Item == item);
-            RefreshDetail();
-        }
-
-        // 최소 구매 수량은 1개, 최대값은 두지 않는다 (문서 §7.4)
-        private void ChangeQuantity(int delta)
-        {
-            if (_selected == null) return;
-            _quantity = Mathf.Max(1, _quantity + delta);
             RefreshDetail();
         }
 
@@ -151,28 +135,23 @@ namespace Game
             {
                 if (detailNameText != null) detailNameText.text = "";
                 if (detailDescriptionText != null) detailDescriptionText.text = "";
-                if (unitPriceText != null) unitPriceText.text = "";
-                if (quantityText != null) quantityText.text = "";
-                if (totalPriceText != null) totalPriceText.text = "";
+                if (priceText != null) priceText.text = "";
                 return;
             }
 
-            int total = Shop.TotalPrice(_selected, _quantity);
-            bool affordable = Shop.CanAfford(_selected, _quantity);
+            bool affordable = Shop.CanAfford(_selected, 1);
 
             // 살 수 없는 상태면 구매 버튼이 클릭음 대신 UI_Error를 낸다
             SetBuySound(affordable ? SoundId.UI_Click : SoundId.UI_Error);
 
             if (detailNameText != null) detailNameText.text = _selected.ItemName;
             if (detailDescriptionText != null) detailDescriptionText.text = _selected.Description;
-            if (unitPriceText != null) unitPriceText.text = _selected.Price.ToString();
-            if (quantityText != null) quantityText.text = _quantity.ToString();
 
-            // 보유 금액보다 크면 총액을 빨간색으로 표시한다 (문서 §7.5)
-            if (totalPriceText != null)
+            // 보유 금액보다 비싸면 가격을 빨간색으로 표시한다 (문서 §7.5)
+            if (priceText != null)
             {
-                totalPriceText.text = total.ToString();
-                totalPriceText.color = affordable ? affordableColor : insufficientColor;
+                priceText.text = _selected.Price.ToString();
+                priceText.color = affordable ? affordableColor : insufficientColor;
             }
         }
 
@@ -184,12 +163,12 @@ namespace Game
             if (_buySound != null) _buySound.sound = sound;
         }
 
-        // 버튼을 누르면 바로 구매한다. 코인이 모자라면 토스트로 알린다.
+        // 버튼을 누르면 바로 1개 구매한다. 코인이 모자라면 토스트로 알린다.
         private void Purchase()
         {
             if (_selected == null) return;
 
-            if (!Shop.TryPurchase(_selected, _quantity))
+            if (!Shop.TryPurchase(_selected, 1))
             {
                 // UI_Error는 버튼을 누르는 순간 이미 났다 (SetBuySound)
                 ToastManager.Show("돈이 부족합니다");
@@ -197,7 +176,6 @@ namespace Game
             }
 
             ToastManager.Show($"{KoreanParticle.WithObject(_selected.ItemName)} 구매하였습니다.");
-            _quantity = 1;
             RefreshDetail(); // 보유 금액·색상 즉시 갱신 (문서 §7.5)
         }
 
@@ -210,17 +188,13 @@ namespace Game
             closeButton = close;
         }
 
-        public void SetDetailReferences(TMP_Text detailName, TMP_Text detailDescription, TMP_Text unitPrice,
-            TMP_Text quantity, TMP_Text totalPrice, TMP_Text ownedCoin, Button minus, Button plus, Button buy)
+        public void SetDetailReferences(TMP_Text detailName, TMP_Text detailDescription,
+            TMP_Text price, TMP_Text ownedCoin, Button buy)
         {
             detailNameText = detailName;
             detailDescriptionText = detailDescription;
-            unitPriceText = unitPrice;
-            quantityText = quantity;
-            totalPriceText = totalPrice;
+            priceText = price;
             ownedCoinText = ownedCoin;
-            minusButton = minus;
-            plusButton = plus;
             buyButton = buy;
         }
     }
