@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +18,17 @@ namespace Game
 
         [SerializeField] Canvas mainCanvas;
 
+        [SerializeField] private float introDuration = 0.65f;
+        [SerializeField] private float introDropMultiplier = 1.15f;
+        [SerializeField] private float introTiltAngle = 8f;
+
         private readonly List<GameObject> _spawnedButtons = new();
+        private RectTransform _content;
 
         private void Awake()
         {
+            _content = EnsureDropContent();
+
             if (backButton)
             {
                 backButton.onClick.AddListener(() =>
@@ -32,7 +40,69 @@ namespace Game
         }
 
         // 스테이지를 클리어하고 돌아왔을 때도 최신 상태가 보이도록 화면이 열릴 때마다 다시 그린다.
-        private void OnEnable() => Refresh();
+        private void OnEnable()
+        {
+            Refresh();
+            PlayDropIntro();
+        }
+
+        private void OnDisable()
+        {
+            _content.DOKill();
+            _content.anchoredPosition = Vector2.zero;
+            _content.localRotation = Quaternion.identity;
+        }
+
+        // Overlay 루트 Canvas는 위치가 매 프레임 덮어써지므로, 자식을 감싼 콘텐츠를 떨어뜨린다.
+        private RectTransform EnsureDropContent()
+        {
+            var root = (RectTransform)transform;
+            var existing = root.Find("DropContent") as RectTransform;
+            if (existing != null) return existing;
+
+            var go = new GameObject("DropContent", typeof(RectTransform));
+            var content = (RectTransform)go.transform;
+            content.SetParent(root, false);
+            content.anchorMin = Vector2.zero;
+            content.anchorMax = Vector2.one;
+            content.offsetMin = Vector2.zero;
+            content.offsetMax = Vector2.zero;
+            content.pivot = new Vector2(0.5f, 0.5f);
+            content.anchoredPosition = Vector2.zero;
+            content.localScale = Vector3.one;
+
+            var children = new List<Transform>(root.childCount);
+            for (int i = 0; i < root.childCount; i++)
+            {
+                var child = root.GetChild(i);
+                if (child != content) children.Add(child);
+            }
+
+            for (int i = 0; i < children.Count; i++)
+                children[i].SetParent(content, false);
+
+            return content;
+        }
+
+        // 살짝 기울어진 채로 수직 낙하한 뒤, 튕기며 바로 선다.
+        private void PlayDropIntro()
+        {
+            _content.DOKill();
+            Canvas.ForceUpdateCanvases();
+
+            float height = ((RectTransform)transform).rect.height;
+            if (height < 1f) height = 1080f;
+
+            float tilt = introTiltAngle * (Random.value < 0.5f ? -1f : 1f);
+            _content.anchoredPosition = new Vector2(0f, height * introDropMultiplier);
+            _content.localRotation = Quaternion.Euler(0f, 0f, tilt);
+
+            DOTween.Sequence()
+                .SetTarget(_content)
+                .SetUpdate(true)
+                .Append(_content.DOAnchorPosY(0f, introDuration).SetEase(Ease.OutBounce))
+                .Join(_content.DOLocalRotate(Vector3.zero, introDuration).SetEase(Ease.OutBounce));
+        }
 
         private void Refresh()
         {
