@@ -159,5 +159,34 @@ namespace Game.Tests
             Assert.Greater(peak, normalJump * 1.5f,
                 $"슈퍼 점프 배율이 적용되지 않았습니다 (일반 {normalJump}, 관측 최고 {peak}) (기믹 문서 §3.2).");
         }
+
+        // 기믹 문서 §3.2: 성질과 무관하게 모든 플레이어에게 동일한 결과를 준다.
+        // 성질별 점프력(감소/일반/증가)에 배율을 곱하면 얼음·젤리가 서로 다른 높이로 튄다.
+        [UnityTest]
+        public IEnumerator 슈퍼_점프_발판은_성질과_무관하게_같은_높이로_튕긴다(
+            [Values(PlayerPropertyType.Default, PlayerPropertyType.Jelly, PlayerPropertyType.Ice)]
+            PlayerPropertyType property)
+        {
+            _platformGo = new GameObject("SuperJumpPlatform");
+            _platformGo.AddComponent<BoxCollider2D>().size = Vector2.one;
+            var superJump = _platformGo.AddComponent<SuperJumpPlatform>();
+            superJump.SetData(2f);
+
+            var player = CreatePlayerAbove(_platformGo.transform.position);
+            player.PropertyType = property;
+            _playerGo.AddComponent<PlayerBounce>();
+
+            float expected = player.Stats.NormalJumpForce * 2f;
+
+            float peak = 0f;
+            for (int i = 0; i < 120; i++)
+            {
+                yield return new WaitForFixedUpdate();
+                peak = Mathf.Max(peak, player.Body.linearVelocity.y);
+            }
+
+            Assert.AreEqual(expected, peak, 0.01f,
+                $"{property} 성질의 슈퍼 점프 높이가 기본 성질과 다릅니다 (기대 {expected}, 관측 {peak}) (기믹 문서 §3.2).");
+        }
     }
 }

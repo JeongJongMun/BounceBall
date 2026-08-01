@@ -116,12 +116,15 @@ namespace Game
 
             var velocity = _player.Body.linearVelocity;
 
-            // 슈퍼 점프 발판은 성질과 무관하게 배율을 곱한다 (기믹 문서 §3.2)
+            // 슈퍼 점프 발판은 성질과 무관하게 같은 높이로 띄운다 (기믹 문서 §3.2).
+            // 성질별로 갈린 jumpForce를 곱하지 않고 기본 점프력에 배율을 걸어 덮어쓴다 —
+            // 곱하면 얼음/젤리가 각각 낮고 높게 튀어 스테이지 높이 설계가 성질에 따라 무너진다.
             var superJump = collision.gameObject.GetComponent<SuperJumpPlatform>();
             if (superJump != null)
             {
-                jumpForce *= superJump.JumpMultiplier;
+                jumpForce = _player.Stats.NormalJumpForce * superJump.JumpMultiplier;
                 if (!superJump.PreserveHorizontalVelocity) velocity.x = 0f;
+                superJump.PlayLaunch();
             }
 
             _player.Body.linearVelocity = new Vector2(velocity.x, jumpForce);
