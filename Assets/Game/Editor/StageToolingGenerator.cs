@@ -34,6 +34,11 @@ namespace Game.EditorTools
             var jellyTile = CreatePropertyTile("JellyTile", TilePropertyType.Jelly, JellyColor);
             var iceTile = CreatePropertyTile("IceTile", TilePropertyType.Ice, IceColor);
 
+            // 사망 발판 3종 (기믹 문서 §4). 성질별로 면제 대상이 다르다.
+            var deathTile = CreateDeathTile("DeathTile_Default", TilePropertyType.Default, DeathDefaultColor);
+            var jellyDeathTile = CreateDeathTile("DeathTile_Jelly", TilePropertyType.Jelly, DeathTint(JellyColor));
+            var iceDeathTile = CreateDeathTile("DeathTile_Ice", TilePropertyType.Ice, DeathTint(IceColor));
+
             // 기존 PropertyItem.prefab을 젤리용으로 개명한다. GUID가 보존되어 이미 배치된 인스턴스가 살아남는다.
             RenameLegacyPropertyItem();
 
@@ -45,15 +50,23 @@ namespace Game.EditorTools
             var checkpoint = CreateItemPrefab("Checkpoint", CheckpointColor, typeof(Checkpoint));
             RecolorItemPrefab(checkpoint, CheckpointColor);
 
+            // 기믹 발판 2종 (기믹 문서 §3.1, §3.2)
+            var disposable = CreatePlatformPrefab("DisposablePlatform", DisposableColor, typeof(DisposablePlatform));
+            var superJump = CreatePlatformPrefab("SuperJumpPlatform", SuperJumpColor, typeof(SuperJumpPlatform));
+
             var defaultItemMarker = CreateMarkerTile("PropertyItemDefaultMarker", defaultItem, DefaultColor);
             var jellyItemMarker = CreateMarkerTile("PropertyItemJellyMarker", jellyItem, JellyColor);
             var iceItemMarker = CreateMarkerTile("PropertyItemIceMarker", iceItem, IceColor);
             var goalMarker = CreateMarkerTile("GoalItemMarker", goalItem, GoalColor);
             var checkpointMarker = CreateMarkerTile("CheckpointMarker", checkpoint, CheckpointColor);
+            var disposableMarker = CreateMarkerTile("DisposablePlatformMarker", disposable, DisposableColor);
+            var superJumpMarker = CreateMarkerTile("SuperJumpPlatformMarker", superJump, SuperJumpColor);
 
             CreateStageBrushAsset();
             UpdatePalette(tile, jellyTile, iceTile,
-                defaultItemMarker, jellyItemMarker, iceItemMarker, goalMarker, checkpointMarker);
+                deathTile, jellyDeathTile, iceDeathTile,
+                defaultItemMarker, jellyItemMarker, iceItemMarker, goalMarker, checkpointMarker,
+                disposableMarker, superJumpMarker);
 
             CreatePlayerPrefab(defaultProperty);
 
@@ -100,6 +113,14 @@ namespace Game.EditorTools
         // 기본 성질 아이템이 초록이라 체크포인트는 분홍으로 구분한다 (팔레트에서 헷갈리지 않도록).
         private static readonly Color CheckpointColor = new(1f, 0.4f, 0.75f);
 
+        // 사망 발판은 성질 색을 붉게 눌러 "같은 성질이지만 위험"이라는 걸 팔레트에서 바로 읽히게 한다.
+        private static readonly Color DeathDefaultColor = new(0.8f, 0.15f, 0.15f);
+        private static Color DeathTint(Color property) => Color.Lerp(property, DeathDefaultColor, 0.55f);
+
+        // 기믹 발판은 성질 색과 겹치지 않는 주황/청록으로 잡는다.
+        private static readonly Color DisposableColor = new(0.95f, 0.6f, 0.2f);
+        private static readonly Color SuperJumpColor = new(0.2f, 0.9f, 0.7f);
+
         private static PropertyData CreateProperty(string name, PlayerPropertyType type, string displayName, Color color)
         {
             var path = $"{PropertiesDir}/{name}.asset";
@@ -139,6 +160,32 @@ namespace Game.EditorTools
             return tile;
         }
 
+        // 접촉 시 사망하는 발판 (기믹 문서 §4). 면제 성질은 타일 자신의 성질에서 나온다.
+        private static SpecialTile CreateDeathTile(string name, TilePropertyType tileProperty, Color color)
+        {
+            var path = $"{TilesDir}/{name}.asset";
+            var existing = AssetDatabase.LoadAssetAtPath<SpecialTile>(path);
+            if (existing != null)
+            {
+                // 사망 플래그가 빠진 채 만들어진 에셋 보정
+                if (!existing.IsDeadly)
+                {
+                    existing.SetDeadly(true);
+                    EditorUtility.SetDirty(existing);
+                }
+                return existing;
+            }
+
+            var tile = ScriptableObject.CreateInstance<SpecialTile>();
+            tile.sprite = AssetDatabase.LoadAssetAtPath<Sprite>(WhiteTexPath);
+            tile.color = color;
+            tile.colliderType = Tile.ColliderType.Grid;
+            tile.SetTileProperty(tileProperty);
+            tile.SetDeadly(true);
+            AssetDatabase.CreateAsset(tile, path);
+            return tile;
+        }
+
         // 성질이 3종이 되면서 아이템도 3종으로 갈라졌다. 기존 단일 프리팹을 젤리용으로 개명해
         // 이미 스테이지에 배치된 인스턴스를 살린다 (RenameAsset은 GUID를 보존한다).
         private static void RenameLegacyPropertyItem()
@@ -158,8 +205,8 @@ namespace Game.EditorTools
             Debug.Log("[Game] PropertyItem.prefab → PropertyItem_Jelly.prefab 개명 (배치된 인스턴스 유지)");
         }
 
-        // 접촉이 아니라 '다가가면' 반응해야 하므로 아이템 시각/충돌 크기(0.35)보다 넓게 잡는다 (기획 §11.3).
-        private const float PropertyItemDetectionRadius = 1.2f;
+        // 접촉 즉시 획득이므로 아이템 시각 크기와 같은 충돌 범위를 쓴다 (기획 §11.1).
+        private const float PropertyItemContactRadius = 0.35f;
 
         private static GameObject CreatePropertyItemPrefab(string name, PropertyData property, Color color)
         {
@@ -168,7 +215,8 @@ namespace Game.EditorTools
             return prefab;
         }
 
-        // PropertyItem 프리팹에 'E' 프롬프트 자식과 성질 데이터를 연결하고, 감지 콜라이더를 감지 범위 크기로 넓힌다.
+        // PropertyItem 프리팹에 성질 데이터를 연결하고, 접촉 콜라이더와 색을 맞춘다.
+        // E 프롬프트를 쓰던 시절의 자식과 넓은 감지 반경이 남아 있으면 함께 걷어낸다.
         private static void ConfigurePropertyItem(GameObject propertyItemPrefabAsset, PropertyData itemProperty, Color color)
         {
             var path = AssetDatabase.GetAssetPath(propertyItemPrefabAsset);
@@ -178,9 +226,9 @@ namespace Game.EditorTools
                 bool changed = false;
 
                 var collider = contents.GetComponent<CircleCollider2D>();
-                if (collider.radius < PropertyItemDetectionRadius)
+                if (!Mathf.Approximately(collider.radius, PropertyItemContactRadius))
                 {
-                    collider.radius = PropertyItemDetectionRadius;
+                    collider.radius = PropertyItemContactRadius;
                     changed = true;
                 }
 
@@ -191,35 +239,22 @@ namespace Game.EditorTools
                     changed = true;
                 }
 
-                if (contents.transform.Find("Prompt") != null)
+                var legacyPrompt = contents.transform.Find("Prompt");
+                if (legacyPrompt != null)
                 {
-                    // 성질 데이터가 비어 있으면(개명된 레거시 프리팹 등) 채워준다.
-                    var existingItem = contents.GetComponent<PropertyItem>();
-                    if (existingItem.PropertyData == null)
-                    {
-                        existingItem.SetData(itemProperty, contents.transform.Find("Prompt").gameObject);
-                        changed = true;
-                    }
-                    if (changed) PrefabUtility.SaveAsPrefabAsset(contents, path);
-                    return;
+                    Object.DestroyImmediate(legacyPrompt.gameObject);
+                    changed = true;
                 }
 
-                var promptGo = new GameObject("Prompt");
-                promptGo.transform.SetParent(contents.transform, false);
-                promptGo.transform.localPosition = new Vector3(0f, 0.6f, 0f);
-                var textMesh = promptGo.AddComponent<TextMesh>();
-                textMesh.text = "E";
-                textMesh.characterSize = 0.15f;
-                textMesh.fontSize = 48;
-                textMesh.anchor = TextAnchor.MiddleCenter;
-                textMesh.alignment = TextAlignment.Center;
-                textMesh.color = Color.white;
-                promptGo.GetComponent<MeshRenderer>().sortingOrder = 30;
-                promptGo.SetActive(false);
+                // 성질 데이터가 비어 있으면(개명된 레거시 프리팹 등) 채워준다.
+                var item = contents.GetComponent<PropertyItem>();
+                if (item.PropertyData == null)
+                {
+                    item.SetData(itemProperty);
+                    changed = true;
+                }
 
-                contents.GetComponent<PropertyItem>().SetData(itemProperty, promptGo);
-
-                PrefabUtility.SaveAsPrefabAsset(contents, path);
+                if (changed) PrefabUtility.SaveAsPrefabAsset(contents, path);
             }
             finally
             {
@@ -229,10 +264,13 @@ namespace Game.EditorTools
 
         // 팔레트를 만들고(없으면), 배치 가능한 전 항목을 항상 등록한다.
         // 1행: 타일(기본/젤리/얼음) / 2행: 프리팹 마커(성질 아이템 3종/목표/체크포인트)
+        // 3행: 사망 발판(기본/젤리/얼음) + 기믹 발판(일회성/슈퍼점프)
         private static void UpdatePalette(
             Tile ground, SpecialTile jellyTile, SpecialTile iceTile,
+            SpecialTile deathTile, SpecialTile jellyDeathTile, SpecialTile iceDeathTile,
             PrefabMarkerTile defaultItemMarker, PrefabMarkerTile jellyItemMarker, PrefabMarkerTile iceItemMarker,
-            PrefabMarkerTile goalMarker, PrefabMarkerTile checkpointMarker)
+            PrefabMarkerTile goalMarker, PrefabMarkerTile checkpointMarker,
+            PrefabMarkerTile disposableMarker, PrefabMarkerTile superJumpMarker)
         {
             if (AssetDatabase.LoadAssetAtPath<GameObject>(PalettePath) == null)
             {
@@ -269,6 +307,11 @@ namespace Game.EditorTools
                 tilemap.SetTile(new Vector3Int(2, 1, 0), iceItemMarker);
                 tilemap.SetTile(new Vector3Int(3, 1, 0), goalMarker);
                 tilemap.SetTile(new Vector3Int(4, 1, 0), checkpointMarker);
+                tilemap.SetTile(new Vector3Int(0, -1, 0), deathTile);
+                tilemap.SetTile(new Vector3Int(1, -1, 0), jellyDeathTile);
+                tilemap.SetTile(new Vector3Int(2, -1, 0), iceDeathTile);
+                tilemap.SetTile(new Vector3Int(3, -1, 0), disposableMarker);
+                tilemap.SetTile(new Vector3Int(4, -1, 0), superJumpMarker);
 
                 tilemap.RefreshAllTiles();
                 PrefabUtility.SaveAsPrefabAsset(contents, PalettePath);
@@ -321,6 +364,28 @@ namespace Game.EditorTools
             const string path = "Assets/Game/Tiles/Brushes/StageBrush.asset";
             if (AssetDatabase.LoadAssetAtPath<StageBrush>(path) != null) return;
             AssetDatabase.CreateAsset(ScriptableObject.CreateInstance<StageBrush>(), path);
+        }
+
+        // 기믹 발판 (기믹 문서 §3). 타일이 아니라 프리팹이어야 칸마다 재생성 시간·배율을 따로 줄 수 있다.
+        // 흰 타일 텍스처가 PPU 16의 16×16이라 스프라이트 한 장이 정확히 한 셀을 채운다.
+        private static GameObject CreatePlatformPrefab(string name, Color color, System.Type gimmickComponent)
+        {
+            var path = $"{PrefabsDir}/{name}.prefab";
+            var existing = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (existing != null) return existing;
+
+            var go = new GameObject(name);
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = AssetDatabase.LoadAssetAtPath<Sprite>(WhiteTexPath);
+            sr.color = color;
+            sr.sortingOrder = 5; // 타일 위, 아이템 아래
+            var box = go.AddComponent<BoxCollider2D>();
+            box.size = Vector2.one; // 발판이므로 트리거가 아니다
+            go.AddComponent(gimmickComponent);
+
+            var prefab = PrefabUtility.SaveAsPrefabAsset(go, path);
+            Object.DestroyImmediate(go);
+            return prefab;
         }
 
         private static GameObject CreateItemPrefab(string name, Color color, System.Type shellComponent)
@@ -387,8 +452,9 @@ namespace Game.EditorTools
 
             var property = go.AddComponent<PlayerProperty>();
             property.SetDefaultProperty(defaultProperty);
-            go.AddComponent<PlayerInteraction>();
             go.AddComponent<PlayerJellyAttach>();
+            go.AddComponent<PlayerIceSlide>();
+            go.AddComponent<PlayerHazardContact>();
 
             PrefabUtility.SaveAsPrefabAsset(go, playerPath);
             Object.DestroyImmediate(go);
@@ -415,15 +481,24 @@ namespace Game.EditorTools
                     changed = true;
                 }
 
-                if (contents.GetComponent<PlayerInteraction>() == null)
-                {
-                    contents.AddComponent<PlayerInteraction>();
-                    changed = true;
-                }
+                // E키 상호작용 컴포넌트를 쓰던 시절의 잔재 정리 (접촉 즉시 획득으로 전환, 기획 §11.1)
+                if (GameObjectUtility.RemoveMonoBehavioursWithMissingScript(contents) > 0) changed = true;
 
                 if (contents.GetComponent<PlayerJellyAttach>() == null)
                 {
                     contents.AddComponent<PlayerJellyAttach>();
+                    changed = true;
+                }
+
+                if (contents.GetComponent<PlayerIceSlide>() == null)
+                {
+                    contents.AddComponent<PlayerIceSlide>();
+                    changed = true;
+                }
+
+                if (contents.GetComponent<PlayerHazardContact>() == null)
+                {
+                    contents.AddComponent<PlayerHazardContact>();
                     changed = true;
                 }
 

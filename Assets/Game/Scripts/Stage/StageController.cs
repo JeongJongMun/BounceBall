@@ -30,6 +30,10 @@ namespace Game
         [SerializeField] private int totalGoalItemCount;
         [SerializeField] private int requiredGoalItemCount;
 
+        [Header("사망 연출")]
+        [Tooltip("사망 순간 위로 튀어 오르는 속도")]
+        [SerializeField] private float deathBounceForce = 6f;
+
         [Header("이벤트")]
         [SerializeField] private StringEventChannel onGoalProgressChanged;
         [SerializeField] private VoidEventChannel onStageCleared;
@@ -148,7 +152,13 @@ namespace Game
                 if (item.IsCollected) collected.Add(item);
             }
 
-            _checkpoint = new CheckpointState(position, property, collected);
+            var acquiredProperties = new List<PropertyItem>();
+            foreach (var item in FindObjectsByType<PropertyItem>(FindObjectsSortMode.None))
+            {
+                if (item.IsAcquired) acquiredProperties.Add(item);
+            }
+
+            _checkpoint = new CheckpointState(position, property, collected, acquiredProperties);
         }
 
         // 맵 이탈 부활 (기획 §23.2, §24.3). 게임 오버가 아니므로 GameState는 Playing을 유지한다.
@@ -162,12 +172,16 @@ namespace Game
             StartCoroutine(RespawnRoutine(player));
         }
 
-        // 사망 연출(Die 애니 또는 스케일 아웃)을 보여준 뒤 복구하고, 부활 팝(0→1.3→1)으로 재등장한다.
+        // 사망 시 살짝 튀어 올랐다가 중력으로 떨어지며 사망 연출(Die 애니 또는 스케일 아웃)을 보여준 뒤
+        // 복구하고, 부활 팝(0→1.3→1)으로 재등장한다.
         private IEnumerator RespawnRoutine(Player player)
         {
             _isRespawning = true;
 
             player.SetDisabled(true); // 입력·자동 바운스 정지 + 속도 0
+            // SetDisabled가 방금 0으로 만든 속도를 위로 튕겨 덮어쓴다.
+            // 중력은 Disabled 상태에서도 계속 적용되므로(PlayerBounce) 이후엔 자연히 포물선으로 떨어진다.
+            player.Body.linearVelocity = new Vector2(0f, deathBounceForce);
             onPlayerFailed?.Raise();
 
             var view = player.GetComponent<PlayerSpineView>();
@@ -181,15 +195,15 @@ namespace Game
             player.transform.position = _checkpoint.Position;
             body.position = _checkpoint.Position;
 
+            // 부착·미끄러짐 같은 성질 전용 상태는 저장하지 않고 초기화한다 (기획 §12, §6.7)
+            player.GetComponent<PlayerJellyAttach>()?.Release();
+            player.GetComponent<PlayerIceSlide>()?.Exit();
+
             // 저장된 성질 복구 (기획 §25.5)
             var playerProperty = player.GetComponent<PlayerProperty>();
             if (playerProperty != null) playerProperty.Restore(_checkpoint.Property);
 
-            // 상호작용 대상·E UI 초기화 (기획 §24.3)
-            var interaction = player.GetComponent<PlayerInteraction>();
-            if (interaction != null) interaction.ClearRange();
-
-            RestoreGoalItems();
+            RestoreItems();
 
             // 카메라를 즉시 이동시킨다. 안 하면 0.15초 동안 맵을 가로질러 스윕한다.
             var follow = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
@@ -201,12 +215,25 @@ namespace Game
             _isRespawning = false;
         }
 
-        // 체크포인트 저장 이후 획득한 목표 아이템을 되살린다 (기획 §2.4)
-        private void RestoreGoalItems()
+        // 부활 시 스테이지 요소를 되돌린다.
+        // 아이템은 체크포인트 저장 시점 기준으로 (목표 아이템 §2.4, 성질 아이템 §11.5),
+        // 일회성 발판은 체크포인트와 무관하게 전부 초기 활성 상태로 복구한다 —
+        // 밟아 없앤 발판이 그대로 남으면 부활 지점에서 진행이 막힐 수 있다.
+        private void RestoreItems()
         {
             foreach (var item in FindObjectsByType<GoalItem>(FindObjectsSortMode.None))
             {
                 if (!_checkpoint.CollectedGoals.Contains(item)) item.Restore();
+            }
+
+            foreach (var item in FindObjectsByType<PropertyItem>(FindObjectsSortMode.None))
+            {
+                if (!_checkpoint.AcquiredPropertyItems.Contains(item)) item.Restore();
+            }
+
+            foreach (var platform in FindObjectsByType<DisposablePlatform>(FindObjectsSortMode.None))
+            {
+                platform.ResetPlatform();
             }
 
             AcquiredGoalItemCount = _checkpoint.AcquiredGoalItemCount;

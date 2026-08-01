@@ -107,6 +107,31 @@ namespace Game.Tests
             CollectionAssert.Contains(walls, "RightBoundaryWall");
         }
 
+        // 밟아 없앤 발판이 남아 있으면 부활 지점에서 진행이 막힐 수 있다
+        [UnityTest]
+        public IEnumerator 부활하면_일회성_발판이_되살아난다()
+        {
+            var platformGo = new GameObject("DisposablePlatform");
+            platformGo.AddComponent<SpriteRenderer>();
+            platformGo.AddComponent<BoxCollider2D>().size = Vector2.one;
+            var platform = platformGo.AddComponent<DisposablePlatform>();
+            platform.SetData(delay: 0f, respawn: -1f); // 스스로는 절대 돌아오지 않는 발판
+
+            platform.Trigger();
+            yield return null;
+            Assert.AreEqual(DisposablePlatform.PlatformState.Disabled, platform.State);
+
+            _playerGo.transform.position = new Vector3(0f, -20f, 0f);
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.AreEqual(DisposablePlatform.PlatformState.Active, platform.State,
+                "부활했는데 일회성 발판이 사라진 채로 남아 있습니다.");
+            Assert.IsTrue(platformGo.GetComponent<BoxCollider2D>().enabled);
+
+            Object.Destroy(platformGo);
+        }
+
         [UnityTest]
         public IEnumerator 위로_높이_올라가도_부활하지_않는다()
         {

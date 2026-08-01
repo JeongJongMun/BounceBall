@@ -14,12 +14,14 @@ namespace Game
 
         private Player _player;
         private PlayerSpineView _view;
+        private PlayerIceSlide _slide;
         private float _lastBounceTime = -999f;
 
         private void Awake()
         {
             _player = GetComponent<Player>();
             _view = GetComponent<PlayerSpineView>();
+            _slide = GetComponent<PlayerIceSlide>();
         }
 
         private void Start()
@@ -84,16 +86,44 @@ namespace Game
             var tileProperty = tile != null ? tile.TileProperty : TilePropertyType.Default;
             var interaction = PropertyInteractionTable.Resolve(_player.PropertyType, tileProperty);
 
+            // 사망 발판 중 표면 효과를 끈 것은 부착·미끄러짐 대신 일반 점프로 처리한다 (기믹 문서 §4.3, §4.4).
+            // 여기 도달했다는 것은 이미 사망 면제 성질이라는 뜻이다 — 아니면 PlayerHazardContact가 먼저 잡는다.
+            if (tile != null && !tile.AppliesSurfaceEffectFor(_player.PropertyType))
+                interaction = PropertyInteractionType.NormalJump;
+
             // 부착 조합에서는 자동 점프만 하지 않는다 (기획 §8 Attach).
             // 속도 0·중력 해제·표면 밀착 같은 실제 부착 처리는 PlayerJellyAttach가 담당한다 —
             // 여기서 속도를 건드리면 부착 해제 후에도 낙하하지 못한다.
             if (interaction == PropertyInteractionType.Attach) return;
 
-            // Slide는 일반 점프력을 쓰고 수평 속도를 유지한다 (기획 §8 Slide).
-            // 미끄러짐 이동 자체는 얼음 작업에서 구현한다.
+            // 얼음 타일에 착지하면 미끄러짐 진입, 다른 타일에 착지하면 해제 (기획 §6.1, §6.7)
+            if (_slide != null)
+            {
+                if (interaction == PropertyInteractionType.Slide) _slide.Enter();
+                else _slide.Exit();
+            }
+
+            // Slide 조합에서는 자동 점프하지 않는다 — 바닥에 붙어 미끄러진다 (기획 §2.3 "미끄러짐, 자동 점프 없음").
+            // 수직 속도만 죽여 표면에 얹어두고, 수평 이동은 PlayerIceSlide가 맡는다.
+            if (interaction == PropertyInteractionType.Slide)
+            {
+                var sliding = _player.Body.linearVelocity;
+                _player.Body.linearVelocity = new Vector2(sliding.x, 0f);
+                return;
+            }
+
             float jumpForce = _player.Stats.GetJumpForce(interaction);
 
             var velocity = _player.Body.linearVelocity;
+
+            // 슈퍼 점프 발판은 성질과 무관하게 배율을 곱한다 (기믹 문서 §3.2)
+            var superJump = collision.gameObject.GetComponent<SuperJumpPlatform>();
+            if (superJump != null)
+            {
+                jumpForce *= superJump.JumpMultiplier;
+                if (!superJump.PreserveHorizontalVelocity) velocity.x = 0f;
+            }
+
             _player.Body.linearVelocity = new Vector2(velocity.x, jumpForce);
             _lastBounceTime = Time.time;
             _player.SetGrounded(false);
