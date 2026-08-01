@@ -30,12 +30,12 @@ namespace Game
                 ? stage.CameraSettingsOverride
                 : CameraSettings.Load();
 
-            // 타일이 이미 플레이 화면에 다 들어오면 보여줄 게 없으므로 연출을 건너뛴다.
+            // 맵이 이미 플레이 화면에 다 들어오면 보여줄 게 없으므로 연출을 건너뛴다.
             // 여기서 빠지면 코루틴도 timeScale 조작도 일어나지 않는다.
-            var tileSize = StageTiles.TryGetWorldBounds(out var tileBounds) ? tileBounds.size : Vector3.zero;
+            var contentSize = StageContentBounds.TryGet(out var content) ? content.size : Vector3.zero;
             float minZoomRatio = settings != null ? settings.IntroMinZoomRatio : 1.2f;
 
-            if (!ShouldPlayIntro(tileSize.x, tileSize.y, cam.aspect, stage.CameraZoom, minZoomRatio))
+            if (!ShouldPlayIntro(contentSize.x, contentSize.y, cam.aspect, stage.CameraZoom, minZoomRatio))
                 return false;
 
             if (!cam.TryGetComponent<StageIntroCamera>(out var intro))
@@ -126,22 +126,22 @@ namespace Game
         private Bounds ComputeIntroBounds()
         {
             var stageBounds = MakeBounds(_stage.StageMinX, _stage.StageMaxX, _stage.StageMinY, _stage.StageMaxY);
-            bool hasTiles = StageTiles.TryGetWorldBounds(out var tiles);
+            bool hasContent = StageContentBounds.TryGet(out var content);
 
-            return ComputeIntroBounds(stageBounds, hasTiles, tiles);
+            return ComputeIntroBounds(stageBounds, hasContent, content);
         }
 
-        // 인트로가 담아야 할 영역 = 스테이지 경계 ∩ 실제 타일 범위.
-        // 경계는 타일 끝에서 여백만큼 더 넓으므로, 교집합을 쓰면 빈 공간 없이 맵이 화면을 채운다.
+        // 인트로가 담아야 할 영역 = 스테이지 경계 ∩ 실제 배치물 범위.
+        // 경계는 배치물 끝에서 여백만큼 더 넓으므로, 교집합을 쓰면 빈 공간 없이 맵이 화면을 채운다.
         // 플레이 영역 밖으로 뻗은 배경 타일맵이 있어도 경계가 잘라 준다.
-        public static Bounds ComputeIntroBounds(Bounds stageBounds, bool hasTiles, Bounds tiles)
+        public static Bounds ComputeIntroBounds(Bounds stageBounds, bool hasContent, Bounds content)
         {
-            if (!hasTiles) return stageBounds;
+            if (!hasContent) return stageBounds;
 
-            float minX = Mathf.Max(stageBounds.min.x, tiles.min.x);
-            float maxX = Mathf.Min(stageBounds.max.x, tiles.max.x);
-            float minY = Mathf.Max(stageBounds.min.y, tiles.min.y);
-            float maxY = Mathf.Min(stageBounds.max.y, tiles.max.y);
+            float minX = Mathf.Max(stageBounds.min.x, content.min.x);
+            float maxX = Mathf.Min(stageBounds.max.x, content.max.x);
+            float minY = Mathf.Max(stageBounds.min.y, content.min.y);
+            float maxY = Mathf.Min(stageBounds.max.y, content.max.y);
 
             // 좌표가 어긋나 겹치는 곳이 없으면 경계를 쓴다 — 빈 영역을 비추지 않도록
             if (maxX <= minX || maxY <= minY) return stageBounds;

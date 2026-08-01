@@ -241,6 +241,7 @@ namespace Game
             float top = stageMaxY + wallHeadroom;
 
             var wall = new GameObject(wallName);
+            wall.AddComponent<BoundaryWall>(); // 맵 크기를 잴 때 제외하기 위한 표식
             wall.transform.SetParent(transform);
             wall.transform.position = new Vector3(
                 innerFaceX + (leftSide ? -thickness * 0.5f : thickness * 0.5f),
