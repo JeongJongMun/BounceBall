@@ -21,7 +21,12 @@ namespace Game
         [SerializeField] private TMP_Text detailDescriptionText;
         [SerializeField] private TMP_Text emptyText;
 
+        [Header("퀵슬롯 등록 (문서 §11 — 등록 UI는 인벤토리 창)")]
+        [SerializeField] private Transform quickSlotContainer;
+        [SerializeField] private QuickSlotView quickSlotTemplate;
+
         private readonly List<InventorySlotView> _slots = new();
+        private readonly List<QuickSlotView> _quickSlots = new();
         private ItemDatabase _database;
         private string _selectedItemId;
 
@@ -37,8 +42,17 @@ namespace Game
             if (root != null) root.SetActive(false);
         }
 
-        private void OnEnable() => Inventory.OnChanged += Refresh;
-        private void OnDisable() => Inventory.OnChanged -= Refresh;
+        private void OnEnable()
+        {
+            Inventory.OnChanged += Refresh;
+            QuickSlots.OnChanged += RefreshQuickSlots;
+        }
+
+        private void OnDisable()
+        {
+            Inventory.OnChanged -= Refresh;
+            QuickSlots.OnChanged -= RefreshQuickSlots;
+        }
 
         protected override void OnDestroy()
         {
@@ -66,6 +80,7 @@ namespace Game
             if (root == null) return;
             root.SetActive(true);
             UIPopupState.SetOpen(this, true);
+            BuildQuickSlots();
             Refresh();
         }
 
@@ -102,6 +117,7 @@ namespace Game
             }
 
             if (emptyText != null) emptyText.gameObject.SetActive(_slots.Count == 0);
+            RefreshQuickSlots();
 
             // 선택이 사라졌으면(수량 0으로 제거) 상세를 비운다
             if (!string.IsNullOrEmpty(_selectedItemId) && Inventory.GetCount(_selectedItemId) <= 0)
@@ -109,6 +125,34 @@ namespace Game
 
             ShowDetail(_selectedItemId);
             foreach (var slot in _slots) slot.SetSelected(slot.ItemId == _selectedItemId);
+        }
+
+        // 등록용 퀵슬롯 칸. 인게임 HUD와 같은 QuickSlots 데이터를 보므로 양쪽이 자동으로 맞춰진다.
+        private void BuildQuickSlots()
+        {
+            if (quickSlotTemplate == null || quickSlotContainer == null) return;
+            if (_quickSlots.Count == QuickSlots.SlotCount)
+            {
+                RefreshQuickSlots();
+                return;
+            }
+
+            foreach (var slot in _quickSlots) Destroy(slot.gameObject);
+            _quickSlots.Clear();
+
+            quickSlotTemplate.gameObject.SetActive(false);
+            for (int i = 0; i < QuickSlots.SlotCount; i++)
+            {
+                var slot = Instantiate(quickSlotTemplate, quickSlotContainer);
+                slot.gameObject.SetActive(true);
+                slot.Setup(i, acceptsDrop: true);
+                _quickSlots.Add(slot);
+            }
+        }
+
+        private void RefreshQuickSlots()
+        {
+            foreach (var slot in _quickSlots) slot.Refresh();
         }
 
         private void HandleSlotClicked(InventorySlotView slot)
@@ -132,6 +176,12 @@ namespace Game
         }
 
         // 에디터 툴링에서 배선할 때 사용.
+        public void SetQuickSlotReferences(Transform container, QuickSlotView template)
+        {
+            quickSlotContainer = container;
+            quickSlotTemplate = template;
+        }
+
         public void SetReferences(GameObject windowRoot, Transform container, InventorySlotView template,
             Button close, TMP_Text detailName, TMP_Text detailDescription, TMP_Text empty)
         {

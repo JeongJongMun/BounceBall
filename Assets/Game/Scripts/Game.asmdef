@@ -6,7 +6,8 @@
         "Unity.InputSystem",
         "Unity.TextMeshPro",
         "spine-unity",
-        "spine-csharp"
+        "spine-csharp",
+        "DOTween.Modules"
     ],
     "autoReferenced": true
 }

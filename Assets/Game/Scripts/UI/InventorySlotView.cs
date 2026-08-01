@@ -50,19 +50,34 @@ namespace Game
         }
 
         // 드래그 이벤트를 구현해야 퀵슬롯의 OnDrop이 호출된다.
-        // 끄는 동안에는 반투명 아이콘 대신 슬롯 자체를 살짝 흐리게 해 잡고 있음을 알린다.
+        // 끄는 동안 원본은 흐려지고, 커서에는 고스트가 따라붙는다.
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (string.IsNullOrEmpty(ItemId)) return;
+
             if (_canvasGroup == null) _canvasGroup = gameObject.AddComponent<CanvasGroup>();
             _canvasGroup.alpha = 0.5f;
             _canvasGroup.blocksRaycasts = false; // 아래의 퀵슬롯이 드롭을 받도록
+
+            // 퀵슬롯 칸들이 강조 상태로 들어가게 알린다
+            QuickSlotDragState.Begin(ItemId);
+
+            var database = ItemDatabase.Load();
+            var item = database != null ? database.Find(ItemId) : null;
+            if (item != null && DragGhostView.Instance != null)
+                DragGhostView.Instance.Show(item, eventData.position);
         }
 
-        public void OnDrag(PointerEventData eventData) { }
+        public void OnDrag(PointerEventData eventData)
+        {
+            if (DragGhostView.Instance != null) DragGhostView.Instance.Move(eventData.position);
+        }
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (DragGhostView.Instance != null) DragGhostView.Instance.Hide();
+            QuickSlotDragState.End();
+
             if (_canvasGroup == null) return;
             _canvasGroup.alpha = 1f;
             _canvasGroup.blocksRaycasts = true;
