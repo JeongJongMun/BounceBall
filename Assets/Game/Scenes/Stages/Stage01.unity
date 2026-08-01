@@ -2189,20 +2189,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game::Game.StageController
   stageId: Stage01
   startPosition: {fileID: 1671743695}
-  stageMinX: -8.98
-  stageMaxX: 8.91
+  stageMinX: -8.56
+  stageMaxX: 8.46
   stageMinY: -4.35
   stageMaxY: 4.78
-  stageFallLimitY: -4.85
+  stageFallLimitY: -4.35
   boundsPadding: 3
   cameraZoom: 5
   cameraVerticalOffset: 0
   lockCameraX: 0
   lockCameraY: 0
   cameraSettingsOverride: {fileID: 0}
-  useBoundaryWalls: 1
+  useBoundaryWalls: 0
   wallMode: 0
-  wallOffsetFromBounds: 0
+  wallOffsetFromBounds: 2.12
   leftWallX: -12
   rightWallX: 12
   wallHeadroom: 32.9
@@ -2451,7 +2451,7 @@ Transform:
   m_GameObject: {fileID: 1671743694}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.64, y: -0.58, z: 0}
+  m_LocalPosition: {x: -6.17, y: -0.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
