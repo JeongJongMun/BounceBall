@@ -150,9 +150,10 @@ GameObject:
   - component: {fileID: 4506365759296888543}
   - component: {fileID: 863239501045667196}
   - component: {fileID: 8371669652415473926}
-  - component: {fileID: 2552269633990665898}
   - component: {fileID: 6878519923600047725}
   - component: {fileID: 8621931243942346258}
+  - component: {fileID: 8361329329186711336}
+  - component: {fileID: 1131591135147823217}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -320,19 +321,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game::Game.PlayerProperty
   defaultProperty: {fileID: 11400000, guid: 7d1eaba3a1568b842b98c2d3c1dfb4e8, type: 2}
   onPropertyChanged: {fileID: 0}
---- !u!114 &2552269633990665898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843506291825221947}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abdb19c50d9743440a3d580d1a646ae7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Game::Game.PlayerInteraction
-  readKeyboard: 1
 --- !u!114 &6878519923600047725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +366,35 @@ MonoBehaviour:
     eat: Kameleon_Jelly_Uwaa
     crawl: Kameleon_Jelly_Slime
     die: 
+--- !u!114 &8361329329186711336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843506291825221947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d47d7ac13186054194ed103f6827fe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.PlayerIceSlide
+  minimumSlideSpeed: 3
+  slideAcceleration: 12
+  slideCounterAcceleration: 6
+  maximumSlideSpeed: 14
+  readKeyboard: 1
+--- !u!114 &1131591135147823217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843506291825221947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7206dca051a127c4187eac2ca473f3d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.PlayerHazardContact
 --- !u!1 &6176994710231478815
 GameObject:
   m_ObjectHideFlags: 0

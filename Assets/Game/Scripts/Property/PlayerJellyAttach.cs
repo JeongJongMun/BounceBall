@@ -72,6 +72,8 @@ namespace Game
                 var contact = collision.GetContact(i);
                 var tile = StageTiles.GetSpecialTileAt(contact.point, contact.normal);
                 if (tile == null || tile.TileProperty != TilePropertyType.Jelly) continue;
+                // 표면 효과를 끈 젤리 사망 발판에는 붙지 않는다 (기믹 문서 §4.3)
+                if (!tile.AppliesSurfaceEffectFor(PlayerPropertyType.Jelly)) continue;
 
                 float axisAlignment = Mathf.Max(Mathf.Abs(contact.normal.x), Mathf.Abs(contact.normal.y));
                 if (axisAlignment <= best) continue;
@@ -210,7 +212,9 @@ namespace Game
         private static bool IsJellyAt(RaycastHit2D hit)
         {
             var tile = StageTiles.GetSpecialTileAt(hit.point, hit.normal);
-            return tile != null && tile.TileProperty == TilePropertyType.Jelly;
+            return tile != null
+                && tile.TileProperty == TilePropertyType.Jelly
+                && tile.AppliesSurfaceEffectFor(PlayerPropertyType.Jelly);
         }
 
         // 표면에서 떨어지지 않도록 위치를 지속 보정한다 (기획 §5.3)

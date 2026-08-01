@@ -124,5 +124,31 @@ namespace Game.Tests
             // Attach — 자동 점프가 실행되지 않아야 한다 (기획 §8)
             Assert.Less(bounce, 0.1f, "젤리 타일에 부착해야 하는데 자동 점프가 발생했습니다.");
         }
+
+        [UnityTest]
+        public IEnumerator 얼음_성질은_얼음_타일에서_튀지_않는다()
+        {
+            var ice = ScriptableObject.CreateInstance<SpecialTile>();
+            ice.colliderType = Tile.ColliderType.Grid;
+            ice.SetTileProperty(TilePropertyType.Ice);
+
+            float bounce = 0f;
+            yield return MeasureBounce(ice, PlayerPropertyType.Ice, v => bounce = v);
+
+            // Slide — 바닥에 붙어 미끄러지므로 자동 점프가 없어야 한다 (기획 §2.3)
+            Assert.Less(bounce, 0.1f, "얼음 타일에서 미끄러져야 하는데 자동 점프가 발생했습니다.");
+        }
+
+        [UnityTest]
+        public IEnumerator 얼음_성질은_기본_타일에서는_낮게_점프한다()
+        {
+            var ground = ScriptableObject.CreateInstance<Tile>();
+            ground.colliderType = Tile.ColliderType.Grid;
+
+            float bounce = 0f;
+            yield return MeasureBounce(ground, PlayerPropertyType.Ice, v => bounce = v);
+
+            Assert.AreEqual(_player.Stats.LowJumpForce, bounce, 0.5f);
+        }
     }
 }
