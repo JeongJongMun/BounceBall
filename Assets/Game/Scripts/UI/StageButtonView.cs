@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,9 +23,20 @@ namespace Game
         [SerializeField] private List<Sprite> digitSprites = new();
 
         [SerializeField] private Color lockedRootColor = new Color32(0x9a, 0x9a, 0x9a, 0xff);
+        [SerializeField] private float lockedShakeDuration = 0.55f;
+        [SerializeField] private float lockedShakeStrength = 42f;
 
         private Color _normalRootColor;
         private bool _hasNormalRootColor;
+        private Vector2 _restPos;
+        private bool _hasRestPos;
+
+        private void OnDisable()
+        {
+            var rt = (RectTransform)transform;
+            rt.DOKill();
+            if (_hasRestPos) rt.anchoredPosition = _restPos;
+        }
 
         public void SetDisplay(int stageNumber, StageButtonState state)
         {
@@ -42,7 +54,7 @@ namespace Game
             }
             rootImage.color = locked ? lockedRootColor : _normalRootColor;
 
-            // 잠긴 버튼은 눌리긴 해야 안내 팝업을 띄울 수 있으므로 interactable을 끄지 않는다.
+            // 잠긴 버튼도 클릭해 흔들림 피드백을 줘야 하므로 interactable을 끄지 않는다.
             // 대신 Hover 색 변화를 없애 "선택 불가"임을 알린다 (UI 기획서 §2.4).
             if (TryGetComponent<Button>(out var button))
             {
@@ -53,6 +65,33 @@ namespace Game
                 colors.selectedColor = colors.highlightedColor;
                 button.colors = colors;
             }
+        }
+
+        // 잠긴 스테이지를 눌렀을 때 좌우로 짧게 흔든다.
+        public void PlayLockedShake()
+        {
+            var rt = (RectTransform)transform;
+            if (!_hasRestPos)
+            {
+                _restPos = rt.anchoredPosition;
+                _hasRestPos = true;
+            }
+
+            float s = lockedShakeStrength;
+            float step = lockedShakeDuration / 5.5f;
+
+            rt.DOKill();
+            rt.anchoredPosition = _restPos;
+            DOTween.Sequence()
+                .SetTarget(rt)
+                .SetUpdate(true)
+                .SetLink(gameObject)
+                .Append(rt.DOAnchorPosX(_restPos.x + s, step).SetEase(Ease.OutBack))
+                .Append(rt.DOAnchorPosX(_restPos.x - s, step).SetEase(Ease.OutBack))
+                .Append(rt.DOAnchorPosX(_restPos.x + s * 0.6f, step).SetEase(Ease.OutBack))
+                .Append(rt.DOAnchorPosX(_restPos.x - s * 0.35f, step).SetEase(Ease.OutBack))
+                .Append(rt.DOAnchorPosX(_restPos.x, step * 1.5f).SetEase(Ease.OutBack))
+                .OnKill(() => rt.anchoredPosition = _restPos);
         }
 
         private void ApplyStageNumber(int stageNumber)
