@@ -44,16 +44,19 @@ namespace Game.EditorTools
             var goalItem = CreateItemPrefab("GoalItem", GoalColor, typeof(GoalItem));
             var checkpoint = CreateItemPrefab("Checkpoint", CheckpointColor, typeof(Checkpoint));
             RecolorItemPrefab(checkpoint, CheckpointColor);
+            var coinItem = CreateItemPrefab("CoinItem", CoinColor, typeof(CoinItem));
+            RecolorItemPrefab(coinItem, CoinColor);
 
             var defaultItemMarker = CreateMarkerTile("PropertyItemDefaultMarker", defaultItem, DefaultColor);
             var jellyItemMarker = CreateMarkerTile("PropertyItemJellyMarker", jellyItem, JellyColor);
             var iceItemMarker = CreateMarkerTile("PropertyItemIceMarker", iceItem, IceColor);
             var goalMarker = CreateMarkerTile("GoalItemMarker", goalItem, GoalColor);
             var checkpointMarker = CreateMarkerTile("CheckpointMarker", checkpoint, CheckpointColor);
+            var coinMarker = CreateMarkerTile("CoinMarker", coinItem, CoinColor);
 
             CreateStageBrushAsset();
             UpdatePalette(tile, jellyTile, iceTile,
-                defaultItemMarker, jellyItemMarker, iceItemMarker, goalMarker, checkpointMarker);
+                defaultItemMarker, jellyItemMarker, iceItemMarker, goalMarker, checkpointMarker, coinMarker);
 
             CreatePlayerPrefab(defaultProperty);
 
@@ -99,6 +102,7 @@ namespace Game.EditorTools
         private static readonly Color GoalColor = new(1f, 0.85f, 0.2f);
         // 기본 성질 아이템이 초록이라 체크포인트는 분홍으로 구분한다 (팔레트에서 헷갈리지 않도록).
         private static readonly Color CheckpointColor = new(1f, 0.4f, 0.75f);
+        private static readonly Color CoinColor = new(1f, 0.72f, 0.1f);
 
         private static PropertyData CreateProperty(string name, PlayerPropertyType type, string displayName, Color color)
         {
@@ -232,7 +236,7 @@ namespace Game.EditorTools
         private static void UpdatePalette(
             Tile ground, SpecialTile jellyTile, SpecialTile iceTile,
             PrefabMarkerTile defaultItemMarker, PrefabMarkerTile jellyItemMarker, PrefabMarkerTile iceItemMarker,
-            PrefabMarkerTile goalMarker, PrefabMarkerTile checkpointMarker)
+            PrefabMarkerTile goalMarker, PrefabMarkerTile checkpointMarker, PrefabMarkerTile coinMarker)
         {
             if (AssetDatabase.LoadAssetAtPath<GameObject>(PalettePath) == null)
             {
@@ -269,6 +273,7 @@ namespace Game.EditorTools
                 tilemap.SetTile(new Vector3Int(2, 1, 0), iceItemMarker);
                 tilemap.SetTile(new Vector3Int(3, 1, 0), goalMarker);
                 tilemap.SetTile(new Vector3Int(4, 1, 0), checkpointMarker);
+                tilemap.SetTile(new Vector3Int(5, 1, 0), coinMarker);
 
                 tilemap.RefreshAllTiles();
                 PrefabUtility.SaveAsPrefabAsset(contents, PalettePath);

@@ -1,5 +1,6 @@
 using Core;
 using Core.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,6 +14,11 @@ namespace Game.UI
         [SerializeField] private Button restartButton;
         [SerializeField] private Button menuButton;
 
+        [Header("보상 표시 (UI 기획서 §6.2)")]
+        [SerializeField] private TMP_Text stageCoinText;
+        [SerializeField] private TMP_Text rewardCoinText;
+        [SerializeField] private TMP_Text totalCoinText;
+
         private void Awake()
         {
             if (nextButton != null) nextButton.onClick.AddListener(LoadNextStage);
@@ -24,6 +30,27 @@ namespace Game.UI
         protected override void OnShow()
         {
             if (nextButton != null) nextButton.gameObject.SetActive(GetNextStageScene() != null);
+            UpdateRewardTexts();
+        }
+
+        // 스테이지 획득 / 클리어 보상 / 총 획득 골드 (UI 기획서 §6.3)
+        private void UpdateRewardTexts()
+        {
+            var stage = FindAnyObjectByType<StageController>();
+            int earned = stage != null ? stage.StageCoinEarned : 0;
+            int reward = stage != null ? stage.ClearRewardCoin : 0;
+
+            if (stageCoinText != null) stageCoinText.text = earned.ToString();
+            if (rewardCoinText != null) rewardCoinText.text = reward.ToString();
+            if (totalCoinText != null) totalCoinText.text = (earned + reward).ToString();
+        }
+
+        // 에디터 툴링에서 배선할 때 사용.
+        public void SetRewardTexts(TMP_Text stageCoin, TMP_Text rewardCoin, TMP_Text totalCoin)
+        {
+            stageCoinText = stageCoin;
+            rewardCoinText = rewardCoin;
+            totalCoinText = totalCoin;
         }
 
         private static string GetNextStageScene()
