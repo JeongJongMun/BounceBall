@@ -16,7 +16,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 63af09122aea26440a99649665276a57, type: 2}
   - {fileID: 11400000, guid: bdf7bcdac3c39a14a8e2accce7dd47a2, type: 2}
   - {fileID: 11400000, guid: 004ea9c34864e504eb9d55ffb0168f1c, type: 2}
+  - {fileID: 11400000, guid: 91751c98d3c865c48b22bd98fc0c7a2a, type: 2}
+  - {fileID: 11400000, guid: 8a011041964e9304fad6ee5178200141, type: 2}
+  - {fileID: 11400000, guid: 58946aeca0628654eaeccc11cdf26085, type: 2}
   shopProducts:
   - {fileID: 11400000, guid: 63af09122aea26440a99649665276a57, type: 2}
   - {fileID: 11400000, guid: bdf7bcdac3c39a14a8e2accce7dd47a2, type: 2}
   - {fileID: 11400000, guid: 004ea9c34864e504eb9d55ffb0168f1c, type: 2}
+  - {fileID: 11400000, guid: 91751c98d3c865c48b22bd98fc0c7a2a, type: 2}
+  - {fileID: 11400000, guid: 8a011041964e9304fad6ee5178200141, type: 2}
+  - {fileID: 11400000, guid: 58946aeca0628654eaeccc11cdf26085, type: 2}

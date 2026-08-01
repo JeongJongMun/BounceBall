@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf64e280065b3334b8f2cb3d1de896a3, type: 3}
+  m_Name: Item_DoubleJump
+  m_EditorClassIdentifier: Game::Game.ItemData
+  itemId: Item_DoubleJump
+  itemName: "\uB354\uBE14 \uC810\uD504"
+  description: "\uC0AC\uC6A9\uD558\uBA74 \uACF5\uC911\uC5D0\uC11C\uB3C4 \uC704\uB85C
+    \uD55C \uBC88 \uB354 \uC810\uD504\uD55C\uB2E4."
+  thumbnail: {fileID: -8770359179612895629, guid: 0968064af23319445aa7bc2c825a44be,
+    type: 3}
+  category: 3
+  price: 5
+  effect: {fileID: 11400000, guid: 07d1dbf8e1ac0aa47a5341d0bbee3a53, type: 2}
