@@ -1179,11 +1179,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1907861373200582881, guid: 220a581d7eeca40c0b5617037ce5d0a6,
-        type: 3}
-      propertyPath: m_ScrollSensitivity
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 2147471803931266397, guid: 220a581d7eeca40c0b5617037ce5d0a6,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1284,6 +1279,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2866743424555591428, guid: 220a581d7eeca40c0b5617037ce5d0a6,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4179644343376467396, guid: 220a581d7eeca40c0b5617037ce5d0a6,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1374,6 +1374,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -125
       objectReference: {fileID: 0}
+    - target: {fileID: 6830043981792219320, guid: 220a581d7eeca40c0b5617037ce5d0a6,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7199439793024164718, guid: 220a581d7eeca40c0b5617037ce5d0a6,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1408,21 +1413,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 310
-      objectReference: {fileID: 0}
-    - target: {fileID: 7529467732744747862, guid: 220a581d7eeca40c0b5617037ce5d0a6,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 1500
-      objectReference: {fileID: 0}
-    - target: {fileID: 7529467732744747862, guid: 220a581d7eeca40c0b5617037ce5d0a6,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 700
-      objectReference: {fileID: 0}
-    - target: {fileID: 8893097008955235428, guid: 220a581d7eeca40c0b5617037ce5d0a6,
-        type: 3}
-      propertyPath: m_ChildAlignment
-      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
