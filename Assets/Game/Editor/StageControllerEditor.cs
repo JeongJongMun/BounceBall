@@ -122,6 +122,19 @@ namespace Game.EditorTools
                 }
             }
 
+            // 투명 벽
+            if (!controller.UseBoundaryWalls)
+            {
+                Debug.LogWarning("[검증] 투명 벽이 꺼져 있습니다. 플레이어가 화면 밖으로 나갈 수 있습니다.");
+                warnings++;
+            }
+            else
+            {
+                errors += WarnOutsideWalls<GoalItem>(controller);
+                errors += WarnOutsideWalls<PropertyItem>(controller);
+                errors += WarnOutsideWalls<Checkpoint>(controller);
+            }
+
             // 낙사선 아래 배치물
             warnings += WarnBelowFallLine<PropertyItem>(controller);
             warnings += WarnBelowFallLine<GoalItem>(controller);
@@ -150,6 +163,22 @@ namespace Game.EditorTools
                         tilemap);
                 }
             }
+        }
+
+        // 벽 바깥에 있는 배치물은 플레이어가 닿을 수 없다.
+        private static int WarnOutsideWalls<T>(StageController controller) where T : MonoBehaviour
+        {
+            int count = 0;
+            foreach (var item in Object.FindObjectsByType<T>(FindObjectsSortMode.None))
+            {
+                float x = item.transform.position.x;
+                if (x < controller.LeftWallX || x > controller.RightWallX)
+                {
+                    Debug.LogError($"[검증] {typeof(T).Name} '{item.name}'이 투명 벽 바깥에 있어 닿을 수 없습니다.", item);
+                    count++;
+                }
+            }
+            return count;
         }
 
         private static int WarnBelowFallLine<T>(StageController controller) where T : MonoBehaviour
