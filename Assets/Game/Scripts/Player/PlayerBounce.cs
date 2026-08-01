@@ -15,6 +15,7 @@ namespace Game
         private Player _player;
         private PlayerSpineView _view;
         private PlayerIceSlide _slide;
+        private JumpDustEffect _dust;
         private float _lastBounceTime = -999f;
 
         private void Awake()
@@ -22,6 +23,7 @@ namespace Game
             _player = GetComponent<Player>();
             _view = GetComponent<PlayerSpineView>();
             _slide = GetComponent<PlayerIceSlide>();
+            _dust = GetComponent<JumpDustEffect>();
         }
 
         private void Start()
@@ -131,6 +133,12 @@ namespace Game
             _lastBounceTime = Time.time;
             _player.SetGrounded(false);
             if (_view != null) _view.PlayJump();
+            // 슈퍼 점프 발판은 전용 먼지를 쓴다 (기믹 문서 §3.2)
+            if (_dust != null)
+            {
+                if (superJump != null) _dust.PlaySuper();
+                else _dust.Play();
+            }
 
             // 슈퍼 점프는 전용 사운드로 대체한다 (사운드 기획: 기믹 SuperJump)
             Sound.Play(superJump != null ? SoundId.SuperJump : BounceSound(_player.PropertyType));
