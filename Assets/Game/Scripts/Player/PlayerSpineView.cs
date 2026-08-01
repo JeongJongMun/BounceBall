@@ -28,11 +28,17 @@ namespace Game
         [SerializeField] private ViewSet iceView;
 
         private ViewSet _active;
+        private Player _player;
         private bool _crawling;
         private bool _sliding;
         private Vector3 _defaultBaseScale = Vector3.one;
         private Vector3 _jellyBaseScale = Vector3.one;
         private Vector3 _iceBaseScale = Vector3.one;
+
+        private Player PlayerRef => _player != null ? _player : (_player = GetComponent<Player>());
+
+        // 원화가 왼쪽을 보고 그려져 있어 FacingDirection과 부호가 반대다.
+        private float RenderFacing => -PlayerRef.FacingDirection;
 
         private void Awake()
         {
@@ -40,6 +46,14 @@ namespace Game
             if (defaultView?.skeleton != null) _defaultBaseScale = defaultView.skeleton.transform.localScale;
             if (jellyView?.skeleton != null) _jellyBaseScale = jellyView.skeleton.transform.localScale;
             if (iceView?.skeleton != null) _iceBaseScale = iceView.skeleton.transform.localScale;
+        }
+
+        // 이동 방향에 맞춰 스켈레톤을 좌우 반전한다.
+        // Transform 스케일이 아니라 Spine의 ScaleX를 쓰므로 콜라이더·자식 위치 계산에는 영향이 없다.
+        private void Update()
+        {
+            if (_active?.skeleton?.Skeleton == null) return;
+            _active.skeleton.Skeleton.ScaleX = RenderFacing;
         }
 
         public void SetProperty(PlayerPropertyType type, Color tint)
