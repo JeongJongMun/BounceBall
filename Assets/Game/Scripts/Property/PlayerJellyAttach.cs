@@ -29,6 +29,9 @@ namespace Game
         public JellyAttachDirection AttachDirection { get; private set; } = JellyAttachDirection.None;
         public bool IsAttached => AttachDirection != JellyAttachDirection.None;
 
+        // 표면을 따라 실제로 이동 중인가. 붙어만 있고 입력이 없으면 false다.
+        public bool IsCrawling { get; private set; }
+
         public bool ReadKeyboard
         {
             get => readKeyboard;
@@ -110,6 +113,7 @@ namespace Game
             if (!IsAttached) return;
 
             AttachDirection = JellyAttachDirection.None;
+            IsCrawling = false;
             _lastReleaseTime = Time.time;
             PlayerRef.Body.gravityScale = _cachedGravityScale;
             PlayerRef.SetAttached(false);
@@ -144,7 +148,12 @@ namespace Game
             body.linearVelocity = Vector2.zero; // 부착 중에는 물리 속도가 아니라 위치로 움직인다
 
             var move = JellySurface.MoveDirection(AttachDirection, _input);
-            if (move.sqrMagnitude < 0.0001f) return;
+            IsCrawling = move.sqrMagnitude >= 0.0001f;
+            if (!IsCrawling) return;
+
+            // 부착 중에는 PlayerMovement가 통째로 빠지므로 (State == Attached) 여기서 직접 갱신한다.
+            // 수평으로 기어갈 때만 바꾼다 — 벽은 상하 이동이라 좌우 방향이 없어 직전 방향을 유지한다.
+            if (Mathf.Abs(move.x) > 0.01f) PlayerRef.FacingDirection = Mathf.Sign(move.x);
 
             float step = jellyMoveSpeed * Time.fixedDeltaTime;
             var normal = JellySurface.NormalOf(AttachDirection);

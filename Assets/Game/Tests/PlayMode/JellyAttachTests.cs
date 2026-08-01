@@ -235,5 +235,84 @@ namespace Game.Tests
             Assert.IsFalse(_attach.IsAttached, "기본 성질인데 부착했습니다.");
             Assert.AreNotEqual(0f, _player.Body.gravityScale);
         }
+
+        // 벽의 반대쪽 면에서는 상하가 뒤집혀야 한다.
+        // enum LeftWall = 벽이 플레이어의 왼쪽 = 플레이어는 벽의 우측면에 붙어 있다.
+        [UnityTest]
+        public IEnumerator 벽_우측면에서는_D가_아래로_내려간다()
+        {
+            PaintColumn(x: -2, fromY: -3, toY: 3);
+            _playerGo.transform.position = new Vector3(-0.2f, 0.5f, 0f);
+            _player.Body.linearVelocity = new Vector2(-8f, 0f); // 벽으로 밀어붙인다
+
+            yield return SettleFor(1.5f);
+
+            Assert.IsTrue(_attach.IsAttached, "젤리 벽에 부착하지 않았습니다.");
+            Assert.AreEqual(JellyAttachDirection.LeftWall, _attach.AttachDirection);
+
+            float startY = _playerGo.transform.position.y;
+            _attach.SetInput(1f); // D
+            yield return SettleFor(0.5f);
+            Assert.Less(_playerGo.transform.position.y, startY - 0.2f,
+                "벽 우측면에서 D는 내려가야 합니다.");
+
+            startY = _playerGo.transform.position.y;
+            _attach.SetInput(-1f); // A
+            yield return SettleFor(0.5f);
+            Assert.Greater(_playerGo.transform.position.y, startY + 0.2f,
+                "벽 우측면에서 A는 올라가야 합니다.");
+        }
+
+        // 부착 중에는 PlayerMovement가 빠지므로, 기어가는 방향으로 직접 바라봐야 한다.
+        [UnityTest]
+        public IEnumerator 바닥을_기어갈_때_이동_방향을_바라본다()
+        {
+            PaintRow(y: -2, fromX: -3, toX: 3);
+            _playerGo.transform.position = new Vector3(0.5f, 0.2f, 0f);
+            yield return SettleFor(1.5f);
+            Assert.IsTrue(_attach.IsAttached, "젤리 바닥에 부착하지 않았습니다.");
+
+            _player.FacingDirection = -1f; // 반대쪽을 보게 해두고 시작
+            _attach.SetInput(1f);
+            yield return SettleFor(0.3f);
+            Assert.AreEqual(1f, _player.FacingDirection, "오른쪽으로 기어가는데 방향이 바뀌지 않았습니다.");
+
+            _attach.SetInput(-1f);
+            yield return SettleFor(0.3f);
+            Assert.AreEqual(-1f, _player.FacingDirection, "왼쪽으로 기어가는데 방향이 바뀌지 않았습니다.");
+        }
+
+        // 천장은 바닥과 같은 화면 기준 좌우를 쓴다.
+        [UnityTest]
+        public IEnumerator 천장을_기어갈_때도_이동_방향을_바라본다()
+        {
+            PaintRow(y: 2, fromX: -3, toX: 3);
+            _playerGo.transform.position = new Vector3(0.5f, 1.2f, 0f);
+            _player.Body.linearVelocity = new Vector2(0f, 12f);
+            yield return SettleFor(1.5f);
+            Assert.AreEqual(JellyAttachDirection.Ceiling, _attach.AttachDirection);
+
+            _player.FacingDirection = -1f;
+            _attach.SetInput(1f);
+            yield return SettleFor(0.3f);
+            Assert.AreEqual(1f, _player.FacingDirection, "천장에서 D는 오른쪽을 봐야 합니다.");
+        }
+
+        // 벽에서는 상하 이동뿐이라 좌우 방향을 바꿀 근거가 없다 — 직전 방향을 유지해야 한다.
+        [UnityTest]
+        public IEnumerator 벽에서는_바라보는_방향이_유지된다()
+        {
+            PaintColumn(x: 2, fromY: -3, toY: 3);
+            _playerGo.transform.position = new Vector3(1.2f, 0.5f, 0f);
+            _player.Body.linearVelocity = new Vector2(8f, 0f);
+            yield return SettleFor(1.5f);
+            Assert.AreEqual(JellyAttachDirection.RightWall, _attach.AttachDirection);
+
+            _player.FacingDirection = 1f;
+            _attach.SetInput(1f);
+            yield return SettleFor(0.3f);
+
+            Assert.AreEqual(1f, _player.FacingDirection, "벽에서 상하로 움직였는데 방향이 바뀌었습니다.");
+        }
     }
 }

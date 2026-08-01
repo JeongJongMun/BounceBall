@@ -34,7 +34,11 @@ namespace Game
         }
 
         // A/D 입력을 표면을 따라가는 이동 벡터로 바꾼다 (기획 §5.4).
-        // 바닥·천장은 화면 기준 좌우를 그대로 쓰고, 좌우 벽은 둘 다 A=아래 / D=위 (반전 없음).
+        //
+        // 바닥·천장은 화면 기준 좌우를 그대로 쓴다.
+        // 벽은 붙은 면에 따라 반전한다 — 벽의 좌측면(= 벽이 플레이어 오른쪽, RightWall)은 A=아래·D=위,
+        // 우측면(= 벽이 플레이어 왼쪽, LeftWall)은 A=위·D=아래.
+        // 이렇게 해야 바닥에서 모서리를 돌아 벽으로 올라탈 때 같은 키를 누른 채로 진행 방향이 이어진다.
         public static Vector2 MoveDirection(JellyAttachDirection direction, float input)
         {
             switch (direction)
@@ -42,9 +46,10 @@ namespace Game
                 case JellyAttachDirection.Floor:
                 case JellyAttachDirection.Ceiling:
                     return new Vector2(input, 0f);
-                case JellyAttachDirection.LeftWall:
                 case JellyAttachDirection.RightWall:
                     return new Vector2(0f, input);
+                case JellyAttachDirection.LeftWall:
+                    return new Vector2(0f, -input);
                 default:
                     return Vector2.zero;
             }

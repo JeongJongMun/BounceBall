@@ -85,6 +85,10 @@ namespace Game
             playerProperty.Apply(propertyData);
             Sound.Play(SoundId.Property_Change);
 
+            // 변신 이펙트는 아이템을 먹은 이 시점에만 터뜨린다 —
+            // PlayerProperty.Apply는 시작 성질 적용과 체크포인트 복구에서도 불리므로 거기 걸면 안 된다.
+            playerProperty.GetComponent<PlayerPropertyEffect>()?.PlayTransform();
+
             onAcquired?.Raise();
         }
 
