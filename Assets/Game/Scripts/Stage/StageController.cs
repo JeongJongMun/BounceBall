@@ -322,6 +322,11 @@ namespace Game
             _isRespawning = true;
 
             player.SetDisabled(true); // 입력·자동 바운스 정지 + 속도 0
+
+            // 낙사·비방어 사망은 실드가 막지 못하고 제거만 된다 (상점 소비형 문서 §5.5).
+            // 방어에 성공한 접촉은 애초에 여기로 오지 않는다.
+            player.GetComponent<PlayerShield>()?.Deactivate();
+
             // SetDisabled가 방금 0으로 만든 속도를 위로 튕겨 덮어쓴다.
             // 중력은 Disabled 상태에서도 계속 적용되므로(PlayerBounce) 이후엔 자연히 포물선으로 떨어진다.
             player.Body.linearVelocity = new Vector2(0f, deathBounceForce);
@@ -431,6 +436,9 @@ namespace Game
                 player.SetDisabled(true);
                 player.Body.gravityScale = 0f;
             }
+
+            // 클리어 시 실드 제거 (상점 소비형 문서 §5.8). 소비한 아이템은 반환하지 않는다.
+            if (player != null) player.GetComponent<PlayerShield>()?.Deactivate();
 
             StageProgress.SetCleared(SceneManager.GetActiveScene().name);
 

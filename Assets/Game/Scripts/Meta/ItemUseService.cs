@@ -78,18 +78,11 @@ namespace Game
             }
         }
 
+        // 효과는 아이템마다 다르므로 데이터(ItemEffect)에 맡긴다.
+        // 여기서 아이템 종류를 분기하면 새 아이템이 늘 때마다 이 파일을 고쳐야 한다.
         private static bool ApplyEffect(ItemData item, Player player)
         {
-            if (item.Category != ItemCategory.PropertyConsumable) return false;
-            if (item.GrantedProperty == null) return false;
-
-            var playerProperty = player.GetComponent<PlayerProperty>();
-            if (playerProperty == null) return false;
-
-            player.GetComponent<PlayerSpineView>()?.PlayEat();
-            playerProperty.Apply(item.GrantedProperty);
-            Sound.Play(SoundId.Property_Change);
-            return true;
+            return item.Effect != null && item.Effect.TryApply(player);
         }
     }
 }

@@ -19,4 +19,4 @@ MonoBehaviour:
   thumbnail: {fileID: 21300000, guid: 9849e1ea6fc7ef248a9da555ba42efe8, type: 3}
   category: 0
   price: 7
-  grantedProperty: {fileID: 11400000, guid: f97616b749e45bf49ad40126e88285fd, type: 2}
+  effect: {fileID: 11400000, guid: 35c4a0593b302b24386e79b99f6d6b14, type: 2}

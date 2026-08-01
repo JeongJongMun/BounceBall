@@ -12,7 +12,11 @@ namespace Game
 
         private Player _player;
         private PlayerIceSlide _slide;
+        private PlayerDash _dash;
         private float _input;
+
+        // 대시 방향 결정에 쓴다 (상점 소비형 문서 §4.2)
+        public float CurrentInput => _input;
 
         public bool ReadKeyboard
         {
@@ -44,6 +48,9 @@ namespace Game
             if (_player.State == PlayerState.Attached) return;
             // 미끄러짐 중에는 얼음 전용 이동이 일반 좌우 이동을 대체한다 (기획 §6.1)
             if (_slide != null && _slide.IsSliding) return;
+            // 대시 중에는 수평 속도를 대시가 소유한다 (상점 소비형 문서 §4.4-5)
+            if (_dash == null) _dash = GetComponent<PlayerDash>();
+            if (_dash != null && _dash.IsDashing) return;
 
             // 일반 이동에서는 마지막 입력 방향이 바라보는 방향이 된다 (기획 §6.5)
             if (!Mathf.Approximately(_input, 0f)) _player.FacingDirection = Mathf.Sign(_input);
