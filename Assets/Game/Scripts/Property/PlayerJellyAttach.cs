@@ -151,6 +151,10 @@ namespace Game
             IsCrawling = move.sqrMagnitude >= 0.0001f;
             if (!IsCrawling) return;
 
+            // 부착 중에는 PlayerMovement가 통째로 빠지므로 (State == Attached) 여기서 직접 갱신한다.
+            // 수평으로 기어갈 때만 바꾼다 — 벽은 상하 이동이라 좌우 방향이 없어 직전 방향을 유지한다.
+            if (Mathf.Abs(move.x) > 0.01f) PlayerRef.FacingDirection = Mathf.Sign(move.x);
+
             float step = jellyMoveSpeed * Time.fixedDeltaTime;
             var normal = JellySurface.NormalOf(AttachDirection);
             var next = body.position + move * step;
