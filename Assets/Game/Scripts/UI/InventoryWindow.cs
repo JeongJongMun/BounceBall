@@ -97,6 +97,7 @@ namespace Game
                 slot.gameObject.SetActive(true);
                 slot.Bind(item, entry.Value);
                 slot.Clicked += HandleSlotClicked;
+                slot.DoubleClicked += HandleSlotDoubleClicked;
                 _slots.Add(slot);
             }
 
@@ -115,6 +116,12 @@ namespace Game
             _selectedItemId = slot.ItemId;
             foreach (var other in _slots) other.SetSelected(other == slot);
             ShowDetail(_selectedItemId);
+        }
+
+        // 더블 클릭으로 사용 (문서 §5.4). 인게임이 아니면 ItemUseService가 막는다.
+        private void HandleSlotDoubleClicked(InventorySlotView slot)
+        {
+            ItemUseService.TryUse(slot.ItemId);
         }
 
         private void ShowDetail(string itemId)

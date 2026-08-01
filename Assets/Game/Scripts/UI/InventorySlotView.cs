@@ -7,12 +7,16 @@ using UnityEngine.UI;
 namespace Game
 {
     // 인벤토리 슬롯 하나. 클릭하면 선택(상세 표시), 더블 클릭하면 사용을 요청한다 (인벤토리 문서 §5.4).
-    public class InventorySlotView : MonoBehaviour, IPointerClickHandler
+    // 퀵슬롯으로 끌어다 놓아 등록할 수도 있다 (§5.6.3).
+    public class InventorySlotView : MonoBehaviour,
+        IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [SerializeField] private Image iconImage;
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text countText;
         [SerializeField] private Image selectionOutline;
+
+        private CanvasGroup _canvasGroup;
 
         public string ItemId { get; private set; }
 
@@ -43,6 +47,25 @@ namespace Game
         {
             Clicked?.Invoke(this);
             if (eventData.clickCount >= 2) DoubleClicked?.Invoke(this);
+        }
+
+        // 드래그 이벤트를 구현해야 퀵슬롯의 OnDrop이 호출된다.
+        // 끄는 동안에는 반투명 아이콘 대신 슬롯 자체를 살짝 흐리게 해 잡고 있음을 알린다.
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            if (string.IsNullOrEmpty(ItemId)) return;
+            if (_canvasGroup == null) _canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            _canvasGroup.alpha = 0.5f;
+            _canvasGroup.blocksRaycasts = false; // 아래의 퀵슬롯이 드롭을 받도록
+        }
+
+        public void OnDrag(PointerEventData eventData) { }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            if (_canvasGroup == null) return;
+            _canvasGroup.alpha = 1f;
+            _canvasGroup.blocksRaycasts = true;
         }
 
         // 에디터 툴링에서 배선할 때 사용.
