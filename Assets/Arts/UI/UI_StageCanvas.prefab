@@ -952,10 +952,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8902187835878528297}
     m_Modifications:
+    - target: {fileID: 772351277342569482, guid: cbcfb944f26174fc8bb4847dbc4b635c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1043179327328831016, guid: cbcfb944f26174fc8bb4847dbc4b635c,
         type: 3}
       propertyPath: m_Name
       value: Button_Inven
+      objectReference: {fileID: 0}
+    - target: {fileID: 1591146540067099373, guid: cbcfb944f26174fc8bb4847dbc4b635c,
+        type: 3}
+      propertyPath: m_text
+      value: I
       objectReference: {fileID: 0}
     - target: {fileID: 5289638005588753849, guid: cbcfb944f26174fc8bb4847dbc4b635c,
         type: 3}
@@ -1119,6 +1129,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8902187835878528297}
     m_Modifications:
+    - target: {fileID: 772351277342569482, guid: cbcfb944f26174fc8bb4847dbc4b635c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1043179327328831016, guid: cbcfb944f26174fc8bb4847dbc4b635c,
         type: 3}
       propertyPath: m_Name
