@@ -13,15 +13,31 @@ namespace Game
         [SerializeField] private Canvas stageCanvas;
         [SerializeField] private Canvas settingsCanvas;
 
+        [Tooltip("시작 버튼 연출을 재생할 타이틀 배경. 비워두면 연출 없이 바로 넘어간다")]
+        [SerializeField] private TitleBackgroundAnimator titleAnimator;
+
+        private bool _starting;
+
+        // 스테이지 선택·설정에서 돌아오면 다시 눌릴 수 있어야 한다.
+        private void OnEnable()
+        {
+            _starting = false;
+            SetButtonsInteractable(true);
+        }
+
         private void Awake()
         {
             if (startButton)
             {
                 startButton.onClick.AddListener(() =>
                 {
-                    stageCanvas.gameObject.SetActive(true);
-                    settingsCanvas.gameObject.SetActive(false);
-                    gameObject.SetActive(false);
+                    // 연출이 도는 동안 다시 눌리면 중복 진입한다.
+                    if (_starting) return;
+                    _starting = true;
+                    SetButtonsInteractable(false);
+
+                    if (titleAnimator != null) titleAnimator.PlayStart(EnterStageSelect);
+                    else EnterStageSelect();
                 });
             }
 
@@ -58,6 +74,21 @@ namespace Game
             stageCanvas.gameObject.SetActive(true);
             if (settingsCanvas != null) settingsCanvas.gameObject.SetActive(false);
             gameObject.SetActive(false);
+        }
+
+        // 시작 연출이 끝난 뒤 실제로 게임(스테이지 선택)으로 넘어간다.
+        private void EnterStageSelect()
+        {
+            if (stageCanvas != null) stageCanvas.gameObject.SetActive(true);
+            if (settingsCanvas != null) settingsCanvas.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
+
+        private void SetButtonsInteractable(bool value)
+        {
+            if (startButton != null) startButton.interactable = value;
+            if (settingsButton != null) settingsButton.interactable = value;
+            if (quitButton != null) quitButton.interactable = value;
         }
 
         // 설정 창은 평소 꺼져 있으므로 비활성 오브젝트까지 찾는다.
