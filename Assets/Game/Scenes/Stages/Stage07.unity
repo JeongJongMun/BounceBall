@@ -1920,7 +1920,7 @@ MonoBehaviour:
   stageMinX: -16.3
   stageMaxX: 15.349999
   stageMinY: -7.75
-  stageMaxY: 5.85
+  stageMaxY: 4.49
   stageFallLimitY: -6.75
   boundsPadding: 3
   cameraZoom: 5
