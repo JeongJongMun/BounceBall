@@ -171,7 +171,7 @@ namespace Game
             if (!Shop.TryPurchase(_selected, 1))
             {
                 // UI_Error는 버튼을 누르는 순간 이미 났다 (SetBuySound)
-                ToastManager.Show("돈이 부족합니다");
+                ToastManager.Show("금액이 부족합니다"); // 문구는 UI 기획서 §4.3 기준
                 return;
             }
 
