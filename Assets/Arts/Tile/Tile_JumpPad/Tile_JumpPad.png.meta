@@ -1,49 +1,37 @@
 fileFormatVersion: 2
-guid: 5a1f3d382f1961d46855f4150765553e
+guid: f5c943579a0bbd5468a923ea68316d60
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8197669215852149642
-    second: Player_Kameleon_Jelly_0
+      213: -7044982251914074396
+    second: Tile_JumpPad_0
   - first:
-      213: -7152914588471169794
-    second: Player_Kameleon_Jelly_1
+      213: 8868456964774105998
+    second: Tile_JumpPad_1
   - first:
-      213: -4003274082547919385
-    second: Player_Kameleon_Jelly_2
+      213: -3827631748340803626
+    second: Tile_JumpPad_2
   - first:
-      213: -6289302457038804473
-    second: Player_Kameleon_Jelly_3
+      213: -2853367398512986377
+    second: Tile_JumpPad_3
   - first:
-      213: 4097653849193112883
-    second: Player_Kameleon_Jelly_4
+      213: 6626318551160694556
+    second: Tile_JumpPad_4
   - first:
-      213: 5897484258336694793
-    second: Player_Kameleon_Jelly_5
+      213: 4532094853402167625
+    second: Tile_JumpPad_5
   - first:
-      213: -629527269597512684
-    second: Player_Kameleon_Jelly_6
+      213: -6607598799232477621
+    second: Tile_JumpPad_6
   - first:
-      213: -207790208023835754
-    second: Player_Kameleon_Jelly_7
+      213: -4298765634201351552
+    second: Tile_JumpPad_7
   - first:
-      213: 4184129176779654719
-    second: Player_Kameleon_Jelly_8
+      213: 5899167400295953289
+    second: Tile_JumpPad_8
   - first:
-      213: 6223542368870732960
-    second: Player_Kameleon_Jelly_9
-  - first:
-      213: 6064500287510709532
-    second: Player_Kameleon_Jelly_10
-  - first:
-      213: 47644574159318717
-    second: Player_Kameleon_Jelly_11
-  - first:
-      213: -4074838307635607241
-    second: Player_Kameleon_Jelly_12
-  - first:
-      213: -3587435568846235592
-    second: Player_Kameleon_Jelly_13
+      213: 6564793743701129522
+    second: Tile_JumpPad_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -85,7 +73,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -94,7 +82,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -165,13 +153,35 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player_Kameleon_Jelly_0
+      name: Tile_JumpPad_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 215
+        width: 257
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e6eab1c7f13b3e90800000000000000
+      internalID: -7044982251914074396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tile_JumpPad_1
       rect:
         serializedVersion: 2
         x: 2
-        y: 2
-        width: 1315
-        height: 1053
+        y: 151
+        width: 212
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,20 +190,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a8bb50df7b8f3c170800000000000000
-      internalID: 8197669215852149642
+      spriteID: e8313335f96131b70800000000000000
+      internalID: 8868456964774105998
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Kameleon_Jelly_1
+      name: Tile_JumpPad_2
       rect:
         serializedVersion: 2
-        x: 1317
-        y: 590
-        width: 431
-        height: 408
+        x: 214
+        y: 151
+        width: 212
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,218 +212,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: efc677d541ebbbc90800000000000000
-      internalID: -7152914588471169794
+      spriteID: 6d7932d543581eac0800000000000000
+      internalID: -3827631748340803626
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Kameleon_Jelly_2
+      name: Tile_JumpPad_3
       rect:
         serializedVersion: 2
-        x: 1748
-        y: 932
-        width: 145
-        height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7e51433ae638178c0800000000000000
-      internalID: -4003274082547919385
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Kameleon_Jelly_3
-      rect:
-        serializedVersion: 2
-        x: 1748
-        y: 590
-        width: 185
-        height: 342
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 70ae53bccb8e7b8a0800000000000000
-      internalID: -6289302457038804473
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Kameleon_Jelly_4
-      rect:
-        serializedVersion: 2
-        x: 1936
-        y: 501
-        width: 793
-        height: 456
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 335eaad277acdd830800000000000000
-      internalID: 4097653849193112883
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Kameleon_Jelly_5
-      rect:
-        serializedVersion: 2
-        x: 3158
-        y: 831
-        width: 321
-        height: 192
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 902ed9ecfa218d150800000000000000
-      internalID: 5897484258336694793
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Kameleon_Jelly_6
-      rect:
-        serializedVersion: 2
-        x: 3479
-        y: 828
-        width: 307
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 41cf73f98487347f0800000000000000
-      internalID: -629527269597512684
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Kameleon_Jelly_7
-      rect:
-        serializedVersion: 2
-        x: 2729
-        y: 501
-        width: 419
-        height: 405
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 69b4fee18e7cd1df0800000000000000
-      internalID: -207790208023835754
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Kameleon_Jelly_8
-      rect:
-        serializedVersion: 2
-        x: 3149
-        y: 820
-        width: 10
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f368c4c5153011a30800000000000000
-      internalID: 4184129176779654719
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Kameleon_Jelly_9
-      rect:
-        serializedVersion: 2
-        x: 3149
-        y: 501
-        width: 332
-        height: 319
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0a4122d8fc67e5650800000000000000
-      internalID: 6223542368870732960
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Kameleon_Jelly_10
-      rect:
-        serializedVersion: 2
-        x: 3481
-        y: 501
-        width: 295
-        height: 327
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c15845161ee692450800000000000000
-      internalID: 6064500287510709532
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Kameleon_Jelly_11
-      rect:
-        serializedVersion: 2
-        x: 1317
+        x: 427
         y: 1
-        width: 619
-        height: 589
+        width: 50
+        height: 257
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -422,20 +234,108 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dbead3edc7449a000800000000000000
-      internalID: 47644574159318717
+      spriteID: 7f6f3f5087dc668d0800000000000000
+      internalID: -2853367398512986377
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Kameleon_Jelly_12
+      name: Tile_JumpPad_4
       rect:
         serializedVersion: 2
-        x: 1936
+        x: 2
+        y: 101
+        width: 212
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c17a3825d9965fb50800000000000000
+      internalID: 6626318551160694556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tile_JumpPad_5
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 51
+        width: 212
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9498961d14c35ee30800000000000000
+      internalID: 4532094853402167625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tile_JumpPad_6
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 101
+        width: 212
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b46537196e71d44a0800000000000000
+      internalID: -6607598799232477621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tile_JumpPad_7
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 51
+        width: 212
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08a85c87e67b754c0800000000000000
+      internalID: -4298765634201351552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tile_JumpPad_8
+      rect:
+        serializedVersion: 2
+        x: 2
         y: 1
-        width: 1810
-        height: 500
+        width: 212
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -444,20 +344,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 739c93c06244377c0800000000000000
-      internalID: -4074838307635607241
+      spriteID: 9837435de7d0ed150800000000000000
+      internalID: 5899167400295953289
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Kameleon_Jelly_13
+      name: Tile_JumpPad_9
       rect:
         serializedVersion: 2
-        x: 3746
-        y: 2
-        width: 42
-        height: 160
+        x: 214
+        y: 1
+        width: 212
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -466,8 +366,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 83891507b5ed63ec0800000000000000
-      internalID: -3587435568846235592
+      spriteID: 239330dc025da1b50800000000000000
+      internalID: 6564793743701129522
       vertices: []
       indices: 
       edges: []
@@ -476,7 +376,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -486,20 +386,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Player_Kameleon_Jelly_0: 8197669215852149642
-      Player_Kameleon_Jelly_1: -7152914588471169794
-      Player_Kameleon_Jelly_10: 6064500287510709532
-      Player_Kameleon_Jelly_11: 47644574159318717
-      Player_Kameleon_Jelly_12: -4074838307635607241
-      Player_Kameleon_Jelly_13: -3587435568846235592
-      Player_Kameleon_Jelly_2: -4003274082547919385
-      Player_Kameleon_Jelly_3: -6289302457038804473
-      Player_Kameleon_Jelly_4: 4097653849193112883
-      Player_Kameleon_Jelly_5: 5897484258336694793
-      Player_Kameleon_Jelly_6: -629527269597512684
-      Player_Kameleon_Jelly_7: -207790208023835754
-      Player_Kameleon_Jelly_8: 4184129176779654719
-      Player_Kameleon_Jelly_9: 6223542368870732960
+      Tile_JumpPad_0: -7044982251914074396
+      Tile_JumpPad_1: 8868456964774105998
+      Tile_JumpPad_2: -3827631748340803626
+      Tile_JumpPad_3: -2853367398512986377
+      Tile_JumpPad_4: 6626318551160694556
+      Tile_JumpPad_5: 4532094853402167625
+      Tile_JumpPad_6: -6607598799232477621
+      Tile_JumpPad_7: -4298765634201351552
+      Tile_JumpPad_8: 5899167400295953289
+      Tile_JumpPad_9: 6564793743701129522
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

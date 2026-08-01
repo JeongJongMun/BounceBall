@@ -499,8 +499,7 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 653af52dd45c34228a071cf0cab138f6, type: 3}
   - serializedVersion: 2
     m_RefCount: 1
-    m_Data: {fileID: -8774579561408971138, guid: 9a8f3209afcac1c49b1f3a576351bcfb,
-      type: 3}
+    m_Data: {fileID: 21300000, guid: e0716db46f7c33c4dbe23d9e5b2054c6, type: 3}
   - serializedVersion: 2
     m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 5c8d8c408bbec4ce19d54ce3d8cdf787, type: 3}
@@ -524,7 +523,7 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 2ab9cac19091c41069e3e6bc79f4817c, type: 3}
   - serializedVersion: 2
     m_RefCount: 1
-    m_Data: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    m_Data: {fileID: 21300000, guid: 263eaea8e40899d4caaae4c2ab307d2b, type: 3}
   - serializedVersion: 2
     m_RefCount: 1
     m_Data: {fileID: 21300000, guid: fbb13d26d1f724f86ad513db143f79a3, type: 3}
@@ -823,12 +822,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4397792438384607584, guid: 200805fe9b0d7434a86785d170841373,
+    - target: {fileID: 2387655474992220806, guid: 200805fe9b0d7434a86785d170841373,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2672718822782653898, guid: 200805fe9b0d7434a86785d170841373,
         type: 3}
       propertyPath: m_DynamicOccludee
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4397792438384607584, guid: 200805fe9b0d7434a86785d170841373,
+    - target: {fileID: 2672718822782653898, guid: 200805fe9b0d7434a86785d170841373,
         type: 3}
       propertyPath: m_LightProbeUsage
       value: 0
@@ -933,7 +937,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3800956663475228912}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1968276868095242919
+--- !u!114 &2193855291991655418
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

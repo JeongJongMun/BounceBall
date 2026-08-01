@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 5a94b114599fdf349bf173292399e884
+guid: e0716db46f7c33c4dbe23d9e5b2054c6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8708341460942908402
-    second: CheckPoint_0
-  - first:
-      213: -4429073703921908900
-    second: CheckPoint_1
+      213: -4070290119671590820
+    second: SuperJumpPreview_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -58,7 +55,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -78,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -129,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CheckPoint_0
+      name: SuperJumpPreview_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 2
-        width: 256
-        height: 113
+        x: 10
+        y: 10
+        width: 236
+        height: 236
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,30 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e0411bd7491c52780800000000000000
-      internalID: -8708341460942908402
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CheckPoint_1
-      rect:
-        serializedVersion: 2
-        x: 259
-        y: 2
-        width: 147
-        height: 118
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c5306b9bee4c882c0800000000000000
-      internalID: -4429073703921908900
+      spriteID: c50513493bc6387c0800000000000000
+      internalID: -4070290119671590820
       vertices: []
       indices: 
       edges: []
@@ -186,8 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CheckPoint_0: -8708341460942908402
-      CheckPoint_1: -4429073703921908900
+      SuperJumpPreview_0: -4070290119671590820
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

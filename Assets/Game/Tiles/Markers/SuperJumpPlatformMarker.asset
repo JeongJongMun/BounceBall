@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: SuperJumpPlatformMarker
   m_EditorClassIdentifier: Game::Game.PrefabMarkerTile
   prefab: {fileID: 6577777613987685907, guid: 200805fe9b0d7434a86785d170841373, type: 3}
-  previewSprite: {fileID: -8774579561408971138, guid: 9a8f3209afcac1c49b1f3a576351bcfb,
-    type: 3}
-  previewColor: {r: 0.2, g: 0.9, b: 0.7, a: 1}
+  previewSprite: {fileID: 21300000, guid: e0716db46f7c33c4dbe23d9e5b2054c6, type: 3}
+  previewColor: {r: 1, g: 1, b: 1, a: 1}
