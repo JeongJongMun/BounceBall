@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tile_Default_T_02
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.Tilemaps.Tile
   m_Sprite: {fileID: 21300000, guid: 255060d174fa04e758616091f421aca2, type: 3}
-  m_Color: {r: 0.55, g: 0.55, b: 0.6, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0
