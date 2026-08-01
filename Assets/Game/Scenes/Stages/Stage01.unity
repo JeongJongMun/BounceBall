@@ -2195,8 +2195,20 @@ MonoBehaviour:
   stageMaxY: 4.78
   stageFallLimitY: -4.85
   boundsPadding: 3
+  cameraZoom: 5
+  cameraVerticalOffset: 0
+  lockCameraX: 0
+  lockCameraY: 0
+  cameraSettingsOverride: {fileID: 0}
+  useBoundaryWalls: 1
+  wallMode: 0
+  wallOffsetFromBounds: 0
+  leftWallX: -12
+  rightWallX: 12
+  wallHeadroom: 32.9
   totalGoalItemCount: 2
   requiredGoalItemCount: 2
+  clearRewardCoin: 50
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,
     type: 2}
   onStageCleared: {fileID: 11400000, guid: cb747b9164232d04b9885739a15dda67, type: 2}

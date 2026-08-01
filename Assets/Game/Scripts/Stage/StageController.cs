@@ -10,70 +10,97 @@ namespace Game
     // (기획 §21~§24). 체크포인트 컴포넌트는 SaveCheckpoint를 호출해 이 계층에 얹힌다.
     public class StageController : MonoBehaviour
     {
-        [Header("스테이지")]
+        // 인스펙터 그룹은 StageControllerEditor가 그린다. 여기서는 라벨과 설명만 붙인다.
+        [Label("스테이지 ID")]
         [SerializeField] private string stageId = "Stage01";
+
+        [Label("시작 위치")]
+        [Tooltip("플레이어가 스폰되는 지점. 체크포인트가 없으면 여기서 부활한다")]
         [SerializeField] private Transform startPosition;
 
-        [Header("카메라 경계")]
+        [Label("왼쪽 경계 X")]
         [SerializeField] private float stageMinX = -10f;
+
+        [Label("오른쪽 경계 X")]
         [SerializeField] private float stageMaxX = 10f;
+
+        [Label("아래 경계 Y")]
         [SerializeField] private float stageMinY = -6f;
+
+        [Label("위 경계 Y")]
         [SerializeField] private float stageMaxY = 6f;
 
-        [Header("낙사")]
+        [Label("낙사선 Y")]
+        [Tooltip("이 아래로 떨어지면 체크포인트에서 부활한다")]
         [SerializeField] private float stageFallLimitY = -8f;
 
-        [Header("경계 여백")]
+        [Label("경계 여백")]
         [Tooltip("타일 끝에서 카메라가 더 보여주는 빈 공간")]
         [SerializeField] private float boundsPadding = 3f;
 
-        [Header("카메라 (이 스테이지 전용)")]
+        [Label("카메라 크기 (줌)")]
         [Tooltip("화면에 얼마나 넓게 보일지. 세로 절반 크기 기준 — 5면 위아래로 10칸이 보인다")]
         [SerializeField] private float cameraZoom = 5f;
 
+        [Label("세로 오프셋")]
         [Tooltip("값을 올리면 캐릭터가 화면 아래쪽에 놓여 위쪽이 더 보인다")]
         [SerializeField] private float cameraVerticalOffset = 0f;
 
+        [Label("가로 추적 잠금")]
         [Tooltip("켜면 카메라가 좌우로 움직이지 않는다 (한 화면 스테이지, 세로 전용 스테이지)")]
         [SerializeField] private bool lockCameraX = false;
 
+        [Label("세로 추적 잠금")]
         [Tooltip("켜면 카메라가 위아래로 움직이지 않는다 (가로로만 진행하는 평지 스테이지)")]
         [SerializeField] private bool lockCameraY = false;
 
+        [Label("카메라 설정 덮어쓰기")]
         [Tooltip("이 스테이지만 조작감을 다르게 할 때 지정. 비우면 글로벌 CameraSettings를 쓴다")]
         [SerializeField] private CameraSettings cameraSettingsOverride;
 
-        [Header("투명 벽")]
+        [Label("투명 벽 사용")]
         [Tooltip("끄면 플레이어가 화면 밖으로 나갈 수 있다")]
         [SerializeField] private bool useBoundaryWalls = true;
 
+        [Label("벽 위치 방식")]
         [Tooltip("경계 기준: 카메라 경계에서 자동 계산 / 직접 지정: 좌우 X를 손으로 입력")]
         [SerializeField] private BoundaryWallMode wallMode = BoundaryWallMode.FromBounds;
 
-        [Tooltip("(경계 기준) 벽을 경계선보다 얼마나 더 바깥에 세울지. 0이면 화면 끝까지 갈 수 있다")]
+        [Label("경계에서 벌리기")]
+        [Tooltip("벽을 경계선보다 얼마나 더 바깥에 세울지. 0이면 화면 끝까지 갈 수 있다")]
         [SerializeField] private float wallOffsetFromBounds = 0f;
 
-        [Tooltip("(직접 지정) 왼쪽 벽의 X 좌표")]
+        [Label("왼쪽 벽 X")]
         [SerializeField] private float leftWallX = -12f;
 
-        [Tooltip("(직접 지정) 오른쪽 벽의 X 좌표")]
+        [Label("오른쪽 벽 X")]
         [SerializeField] private float rightWallX = 12f;
 
+        [Label("벽 높이 여유")]
         [Tooltip("낙사선부터 위로 얼마나 높게 세울지. 세로로 긴 스테이지에서 위로 빠져나가면 키운다")]
         [SerializeField] private float wallHeadroom = 30f;
 
-        [Header("목표 아이템")]
+        [Label("전체 배치 수량")]
+        [Tooltip("스테이지에 놓인 목표 아이템 개수. 검증 버튼이 자동으로 맞춰준다")]
         [SerializeField] private int totalGoalItemCount;
+
+        [Label("클리어 요구 수량")]
+        [Tooltip("이만큼 모으면 스테이지가 클리어된다")]
         [SerializeField] private int requiredGoalItemCount;
 
-        [Header("보상")]
-        [Tooltip("스테이지 클리어 시 지급할 코인 (인벤토리 문서 §6.2)")]
+        [Label("클리어 보상 코인")]
         [SerializeField] private int clearRewardCoin = 50;
 
-        [Header("이벤트")]
+        [Label("목표 진행도 변경")]
         [SerializeField] private StringEventChannel onGoalProgressChanged;
+
+        [Label("스테이지 클리어")]
         [SerializeField] private VoidEventChannel onStageCleared;
+
+        [Label("플레이어 사망")]
         [SerializeField] private VoidEventChannel onPlayerFailed;
+
+        [Label("체크포인트 활성화")]
         [SerializeField] private VoidEventChannel onCheckpointActivated;
 
         private CheckpointState _checkpoint;
