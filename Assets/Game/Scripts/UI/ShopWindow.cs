@@ -89,11 +89,12 @@ namespace Game
             UIPopupState.SetOpen(this, false);
         }
 
-        // 인게임에서는 상점을 열 수 없다 (문서 §7.1)
+        // 인게임 플레이 중에는 상점을 열 수 없다 (문서 §7.1).
+        // 스테이지 선택 화면(Ready)과 클리어 화면(Cleared)에서만 연다.
         private static bool CanOpenHere()
         {
             var manager = GameManager.Instance;
-            return manager == null || manager.State == GameState.Ready;
+            return manager == null || manager.State == GameState.Ready || manager.State == GameState.Cleared;
         }
 
         private void BuildProductList()
@@ -152,7 +153,6 @@ namespace Game
                 if (unitPriceText != null) unitPriceText.text = "";
                 if (quantityText != null) quantityText.text = "";
                 if (totalPriceText != null) totalPriceText.text = "";
-                if (buyButton != null) buyButton.interactable = false;
                 return;
             }
 
@@ -170,12 +170,18 @@ namespace Game
                 totalPriceText.text = total.ToString();
                 totalPriceText.color = affordable ? affordableColor : insufficientColor;
             }
-            if (buyButton != null) buyButton.interactable = affordable;
         }
 
+        // 버튼을 누르면 바로 구매한다. 코인이 모자라면 토스트로 알린다.
         private void Purchase()
         {
-            if (!Shop.TryPurchase(_selected, _quantity)) return;
+            if (_selected == null) return;
+
+            if (!Shop.TryPurchase(_selected, _quantity))
+            {
+                ToastManager.Show("돈이 부족합니다");
+                return;
+            }
 
             _quantity = 1;
             RefreshDetail(); // 보유 금액·색상 즉시 갱신 (문서 §7.5)

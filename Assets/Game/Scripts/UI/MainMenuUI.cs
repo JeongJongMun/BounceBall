@@ -41,6 +41,17 @@ namespace Game
             }
         }
 
+        // 스테이지에서 돌아온 경우에는 메인 화면을 건너뛰고 스테이지 선택 화면을 연다.
+        private void Start()
+        {
+            if (!MenuNavigation.ConsumeStageSelectRequest()) return;
+            if (stageCanvas == null) return;
+
+            stageCanvas.gameObject.SetActive(true);
+            if (settingsCanvas != null) settingsCanvas.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
+
         private void QuitGame()
         {
 #if UNITY_EDITOR
