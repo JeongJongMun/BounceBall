@@ -13,6 +13,9 @@ namespace Game.EditorTools
         private const string DefaultDataPath = "Assets/Arts/Character/Default/Player_Kameleon_SkeletonData.asset";
         private const string JellyDataPath = "Assets/Arts/Character/Jelly/Player_Kameleon_Jelly_SkeletonData.asset";
         private const string IceDataPath = "Assets/Arts/Character/Ice/Kameleon_Ice_SkeletonData.asset";
+        private const string DefaultTonguePath = "Assets/Arts/Character/Default/Kameleon_Tongue.png";
+        private const string JellyTonguePath = "Assets/Arts/Character/Jelly/Kameleon_Jelly_Tongue.png";
+        private const string IceTonguePath = "Assets/Arts/Character/Ice/Kameleon_Ice_Tongue.png";
 
         // 스켈레톤 원본 높이 ~1257px, SkeletonData 기본 스케일 0.01 → 약 12.6유닛.
         // 플레이어 콜라이더(반지름 0.35)에 맞춰 시각 높이 ~1유닛으로 축소한다.
@@ -30,6 +33,15 @@ namespace Game.EditorTools
                 return;
             }
 
+            var defaultTongue = AssetDatabase.LoadAssetAtPath<Sprite>(DefaultTonguePath);
+            var jellyTongue = AssetDatabase.LoadAssetAtPath<Sprite>(JellyTonguePath);
+            var iceTongue = AssetDatabase.LoadAssetAtPath<Sprite>(IceTonguePath);
+            if (defaultTongue == null || jellyTongue == null || iceTongue == null)
+            {
+                Debug.LogError("[Game] 혀 스프라이트를 찾을 수 없습니다. Assets/Arts를 Reimport 했는지 확인하세요.");
+                return;
+            }
+
             var root = PrefabUtility.LoadPrefabContents(PlayerPrefabPath);
             try
             {
@@ -40,18 +52,20 @@ namespace Game.EditorTools
                 var defaultSkeleton = RebuildView(root.transform, "DefaultView", defaultData);
                 var jellySkeleton = RebuildView(root.transform, "JellyView", jellyData);
                 var iceSkeleton = RebuildView(root.transform, "IceView", iceData);
+                var tongue = RebuildTongue(root.transform);
 
                 var view = root.GetComponent<PlayerSpineView>();
                 if (view == null) view = root.AddComponent<PlayerSpineView>();
 
                 var so = new SerializedObject(view);
-                BindViewSet(so, "defaultView", defaultSkeleton,
+                BindViewSet(so, "defaultView", defaultSkeleton, defaultTongue,
                     "Kameleon_Idle", "Kameleon_Jump", "Kameleon_Uwaa", crawl: "", slide: "", die: "Kameleon_Die");
-                BindViewSet(so, "jellyView", jellySkeleton,
+                BindViewSet(so, "jellyView", jellySkeleton, jellyTongue,
                     "Kameleon_Jelly_Idle", "Kameleon_Jelly_Jump", "Kameleon_Jelly_Uwaa", crawl: "Kameleon_Jelly_Slime", slide: "", die: "Kameleon_Jelly_Die");
                 // 얼음은 아직 사망 애니메이션이 없다 — PlayDeath()가 스케일 아웃으로 대체한다.
-                BindViewSet(so, "iceView", iceSkeleton,
+                BindViewSet(so, "iceView", iceSkeleton, iceTongue,
                     "Kameleon_Ice_Idle", "Kameleon_Jump", "Kameleon_Ice_Uwaa", crawl: "", slide: "Kameleon_Ice_Slide", die: "");
+                so.FindProperty("tongue").objectReferenceValue = tongue;
                 so.ApplyModifiedPropertiesWithoutUndo();
 
                 jellySkeleton.gameObject.SetActive(false); // 기본 성질로 시작
@@ -85,9 +99,25 @@ namespace Game.EditorTools
             return skeleton;
         }
 
-        private static void BindViewSet(SerializedObject so, string field,
-            SkeletonAnimation skeleton, string idle, string jump, string eat, string crawl, string slide, string die)
+        // 아이템 방향으로 뻗는 혀. 세 성질이 렌더러 하나를 공유하고 스프라이트만 바꿔 낀다.
+        private static SpriteRenderer RebuildTongue(Transform parent)
         {
+            var existing = parent.Find("Tongue");
+            if (existing != null) Object.DestroyImmediate(existing.gameObject);
+
+            var go = new GameObject("Tongue");
+            go.SetActive(true); // GameObject는 항상 켜둔다 — 껐다 켜는 건 SpriteRenderer.enabled로만
+            go.transform.SetParent(parent, false);
+            var renderer = go.AddComponent<SpriteRenderer>();
+            renderer.sortingOrder = 25; // 스켈레톤(20)보다 앞
+            renderer.enabled = false;
+            return renderer;
+        }
+
+        private static void BindViewSet(SerializedObject so, string field,
+            SkeletonAnimation skeleton, Sprite tongueSprite, string idle, string jump, string eat, string crawl, string slide, string die)
+        {
+            so.FindProperty($"{field}.tongueSprite").objectReferenceValue = tongueSprite;
             so.FindProperty($"{field}.skeleton").objectReferenceValue = skeleton;
             so.FindProperty($"{field}.idle").stringValue = idle;
             so.FindProperty($"{field}.jump").stringValue = jump;

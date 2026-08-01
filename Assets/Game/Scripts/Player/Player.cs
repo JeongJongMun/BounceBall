@@ -24,6 +24,18 @@ namespace Game
         // 일반 이동에서는 마지막 입력 방향, 미끄러짐 중에는 실제 수평 이동 방향으로 갱신한다.
         public float FacingDirection { get; set; } = 1f;
 
+        private float _eatEndTime = -1f;
+
+        // 아이템 먹는 연출이 끝날 때까지는 다른 아이템을 먹지 못한다 (기획 §11.3).
+        // 이동·자동 바운스는 막지 않는다 — 연출 중에도 조작감을 유지한다.
+        public bool IsEating => Time.time < _eatEndTime;
+
+        public void BeginEat(float duration)
+        {
+            if (duration <= 0f) return;
+            _eatEndTime = Time.time + duration;
+        }
+
         public void SetGrounded(bool grounded)
         {
             // 부착·조작 제한 중에는 접지 판정이 상태를 덮어쓰지 않는다.
