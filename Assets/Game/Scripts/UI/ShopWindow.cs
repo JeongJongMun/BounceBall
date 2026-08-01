@@ -34,6 +34,7 @@ namespace Game
         private ItemDatabase _database;
         private ItemData _selected;
         private int _quantity = 1;
+        private UiClickSoundSource _buySound;
 
         public bool IsOpen => root != null && root.activeSelf;
 
@@ -159,6 +160,9 @@ namespace Game
             int total = Shop.TotalPrice(_selected, _quantity);
             bool affordable = Shop.CanAfford(_selected, _quantity);
 
+            // 살 수 없는 상태면 구매 버튼이 클릭음 대신 UI_Error를 낸다
+            SetBuySound(affordable ? SoundId.UI_Click : SoundId.UI_Error);
+
             if (detailNameText != null) detailNameText.text = _selected.ItemName;
             if (detailDescriptionText != null) detailDescriptionText.text = _selected.Description;
             if (unitPriceText != null) unitPriceText.text = _selected.Price.ToString();
@@ -172,6 +176,14 @@ namespace Game
             }
         }
 
+        private void SetBuySound(SoundId sound)
+        {
+            if (buyButton == null) return;
+
+            if (_buySound == null) _buySound = UiClickSound.Ensure(buyButton.gameObject);
+            if (_buySound != null) _buySound.sound = sound;
+        }
+
         // 버튼을 누르면 바로 구매한다. 코인이 모자라면 토스트로 알린다.
         private void Purchase()
         {
@@ -179,6 +191,7 @@ namespace Game
 
             if (!Shop.TryPurchase(_selected, _quantity))
             {
+                // UI_Error는 버튼을 누르는 순간 이미 났다 (SetBuySound)
                 ToastManager.Show("돈이 부족합니다");
                 return;
             }

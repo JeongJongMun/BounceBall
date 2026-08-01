@@ -11,6 +11,12 @@ namespace Game.EditorTools
         private const string StagesDir = "Assets/Game/Scenes/Stages";
         private const string GroundTilePath = "Assets/Game/Tiles/GroundTile.asset";
 
+        // 스테이지 배경색 (#EBE8DD)
+        private static readonly Color BackgroundColor = new Color32(0xEB, 0xE8, 0xDD, 0xFF);
+
+        // 타일 사이를 살짝 겹쳐 타일 경계의 빈 줄(seam)을 없앤다
+        private static readonly Vector3 CellGap = new Vector3(-0.05f, -0.05f, 0f);
+
         [MenuItem("Game/New Stage...")]
         public static void NewStage()
         {
@@ -35,13 +41,14 @@ namespace Game.EditorTools
             cam.orthographic = true;
             cam.orthographicSize = 5f;
             cam.clearFlags = CameraClearFlags.SolidColor;
-            cam.backgroundColor = new Color(0.12f, 0.13f, 0.18f);
+            cam.backgroundColor = BackgroundColor;
             cam.transform.position = new Vector3(0f, 0f, -10f);
             camGo.AddComponent<AudioListener>();
 
             // 그리드 + 타일맵 레이어
             var gridGo = new GameObject("Grid");
-            gridGo.AddComponent<Grid>();
+            var grid = gridGo.AddComponent<Grid>();
+            grid.cellGap = CellGap;
 
             var ground = new GameObject("Ground");
             ground.transform.SetParent(gridGo.transform, false);

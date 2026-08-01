@@ -225,6 +225,7 @@ namespace Game
             checkpoint.SetActivated(true);
 
             SaveCheckpoint(checkpoint.transform.position);
+            Sound.Play(SoundId.CheckPoint);
             onCheckpointActivated?.Raise();
         }
 
