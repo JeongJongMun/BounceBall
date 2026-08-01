@@ -325,6 +325,7 @@ namespace Game
             // 중력은 Disabled 상태에서도 계속 적용되므로(PlayerBounce) 이후엔 자연히 포물선으로 떨어진다.
             player.Body.linearVelocity = new Vector2(0f, deathBounceForce);
             onPlayerFailed?.Raise();
+            Sound.Play(SoundId.Dead);
 
             var view = player.GetComponent<PlayerSpineView>();
             float deathDuration = view != null ? view.PlayDeath() : 0f;

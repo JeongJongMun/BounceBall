@@ -58,3 +58,6 @@ MonoBehaviour:
   - id: 15
     clip: {fileID: 8300000, guid: 2d3c9ba4f1212074b82e9b06506fa0b8, type: 3}
     volume: 1
+  - id: 16
+    clip: {fileID: 8300000, guid: 34310da96e123994da653d65822e8d69, type: 3}
+    volume: 1
