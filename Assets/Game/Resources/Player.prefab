@@ -254,14 +254,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae04010f3be78fd4a8c4827e9d4437ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::Game.PlayerStats
-  normalJumpForce: 11
+  normalJumpForce: 10
   lowJumpForce: 8
   highJumpForce: 13
   gravityScale: 3
   maxFallSpeed: 20
   landingVelocityThreshold: 0.5
   bounceCooldown: 0.1
-  moveSpeed: 7
+  moveSpeed: 5.5
   acceleration: 60
   deceleration: 40
   airControl: 0.8
@@ -389,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d47d7ac13186054194ed103f6827fe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::Game.PlayerIceSlide
-  minimumSlideSpeed: 3
+  minimumSlideSpeed: 0.06
   slideAcceleration: 12
   slideCounterAcceleration: 6
   maximumSlideSpeed: 14
