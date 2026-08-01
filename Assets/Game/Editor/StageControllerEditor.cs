@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -8,11 +9,31 @@ namespace Game.EditorTools
     [CustomEditor(typeof(StageController))]
     public class StageControllerEditor : Editor
     {
+        // 접힘 상태는 에디터에 기억시켜 다음에 열 때도 유지한다.
+        private const string FoldoutPrefix = "Game.StageController.Foldout.";
+
+        private readonly HashSet<string> _drawn = new();
+
         public override void OnInspectorGUI()
         {
-            DrawDefaultInspector();
-            EditorGUILayout.Space();
+            serializedObject.Update();
+            _drawn.Clear();
 
+            DrawGroup("스테이지", true, "stageId", "startPosition");
+            DrawCameraGroup();
+            DrawGroup("경계 · 낙사", true,
+                "stageMinX", "stageMaxX", "stageMinY", "stageMaxY", "stageFallLimitY", "boundsPadding");
+            DrawWallGroup();
+            DrawGroup("목표 아이템", true, "totalGoalItemCount", "requiredGoalItemCount", "clearRewardCoin");
+            DrawGroup("이벤트", false,
+                "onGoalProgressChanged", "onStageCleared", "onPlayerFailed", "onCheckpointActivated");
+
+            // 그룹에 넣지 않은 필드가 인스펙터에서 사라지지 않도록 남은 것을 모아 보여준다.
+            DrawRemaining();
+
+            serializedObject.ApplyModifiedProperties();
+
+            EditorGUILayout.Space();
             var controller = (StageController)target;
 
             if (GUILayout.Button("경계 자동 계산 (Ground 타일맵 기준)"))
@@ -20,6 +41,116 @@ namespace Game.EditorTools
 
             if (GUILayout.Button("스테이지 검증"))
                 Validate(controller);
+        }
+
+        private void DrawCameraGroup()
+        {
+            if (!BeginGroup("카메라", true)) return;
+
+            DrawField("cameraZoom");
+            DrawField("cameraVerticalOffset");
+            DrawField("lockCameraX");
+            DrawField("lockCameraY");
+            DrawField("cameraSettingsOverride");
+
+            if (serializedObject.FindProperty("cameraSettingsOverride").objectReferenceValue != null)
+                EditorGUILayout.HelpBox("글로벌 CameraSettings 대신 이 프리셋을 사용합니다.", MessageType.Info);
+
+            EndGroup();
+        }
+
+        // 쓰지 않는 값은 숨겨서 헷갈리지 않게 한다.
+        private void DrawWallGroup()
+        {
+            if (!BeginGroup("투명 벽", true)) return;
+
+            DrawField("useBoundaryWalls");
+            if (serializedObject.FindProperty("useBoundaryWalls").boolValue)
+            {
+                DrawField("wallMode");
+
+                var mode = (BoundaryWallMode)serializedObject.FindProperty("wallMode").enumValueIndex;
+                if (mode == BoundaryWallMode.FromBounds)
+                {
+                    DrawField("wallOffsetFromBounds");
+                }
+                else
+                {
+                    DrawField("leftWallX");
+                    DrawField("rightWallX");
+                }
+
+                DrawField("wallHeadroom");
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("투명 벽이 꺼져 있어 플레이어가 화면 밖으로 나갈 수 있습니다.", MessageType.Warning);
+                // 숨겨도 값은 유지되므로, 다시 켜면 이전 설정이 그대로 돌아온다.
+                MarkDrawn("wallMode", "wallOffsetFromBounds", "leftWallX", "rightWallX", "wallHeadroom");
+            }
+
+            EndGroup();
+        }
+
+        private void DrawGroup(string title, bool openByDefault, params string[] fields)
+        {
+            if (!BeginGroup(title, openByDefault))
+            {
+                MarkDrawn(fields);
+                return;
+            }
+
+            foreach (var field in fields) DrawField(field);
+            EndGroup();
+        }
+
+        private bool BeginGroup(string title, bool openByDefault)
+        {
+            string key = FoldoutPrefix + title;
+            bool open = EditorPrefs.GetBool(key, openByDefault);
+
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            bool newOpen = EditorGUILayout.Foldout(open, title, true, EditorStyles.foldoutHeader);
+            if (newOpen != open) EditorPrefs.SetBool(key, newOpen);
+
+            if (!newOpen) EditorGUILayout.EndVertical();
+            return newOpen;
+        }
+
+        private void EndGroup() => EditorGUILayout.EndVertical();
+
+        private void DrawField(string name)
+        {
+            var property = serializedObject.FindProperty(name);
+            if (property == null) return;
+
+            EditorGUILayout.PropertyField(property, true);
+            _drawn.Add(name);
+        }
+
+        private void MarkDrawn(params string[] names)
+        {
+            foreach (var name in names) _drawn.Add(name);
+        }
+
+        private void DrawRemaining()
+        {
+            var iterator = serializedObject.GetIterator();
+            var leftover = new List<SerializedProperty>();
+
+            bool enterChildren = true;
+            while (iterator.NextVisible(enterChildren))
+            {
+                enterChildren = false;
+                if (iterator.name == "m_Script" || _drawn.Contains(iterator.name)) continue;
+                leftover.Add(iterator.Copy());
+            }
+
+            if (leftover.Count == 0) return;
+
+            if (!BeginGroup("기타", true)) return;
+            foreach (var property in leftover) EditorGUILayout.PropertyField(property, true);
+            EndGroup();
         }
 
         private static void AutoCalculateBounds(StageController controller)
@@ -122,6 +253,19 @@ namespace Game.EditorTools
                 }
             }
 
+            // 투명 벽
+            if (!controller.UseBoundaryWalls)
+            {
+                Debug.LogWarning("[검증] 투명 벽이 꺼져 있습니다. 플레이어가 화면 밖으로 나갈 수 있습니다.");
+                warnings++;
+            }
+            else
+            {
+                errors += WarnOutsideWalls<GoalItem>(controller);
+                errors += WarnOutsideWalls<PropertyItem>(controller);
+                errors += WarnOutsideWalls<Checkpoint>(controller);
+            }
+
             // 낙사선 아래 배치물
             warnings += WarnBelowFallLine<PropertyItem>(controller);
             warnings += WarnBelowFallLine<GoalItem>(controller);
@@ -150,6 +294,22 @@ namespace Game.EditorTools
                         tilemap);
                 }
             }
+        }
+
+        // 벽 바깥에 있는 배치물은 플레이어가 닿을 수 없다.
+        private static int WarnOutsideWalls<T>(StageController controller) where T : MonoBehaviour
+        {
+            int count = 0;
+            foreach (var item in Object.FindObjectsByType<T>(FindObjectsSortMode.None))
+            {
+                float x = item.transform.position.x;
+                if (x < controller.LeftWallX || x > controller.RightWallX)
+                {
+                    Debug.LogError($"[검증] {typeof(T).Name} '{item.name}'이 투명 벽 바깥에 있어 닿을 수 없습니다.", item);
+                    count++;
+                }
+            }
+            return count;
         }
 
         private static int WarnBelowFallLine<T>(StageController controller) where T : MonoBehaviour

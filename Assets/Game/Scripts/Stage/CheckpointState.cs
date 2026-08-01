@@ -13,23 +13,13 @@ namespace Game
         // 저장 시점에 이미 획득돼 있던 목표 아이템. 여기 없는 것은 부활 시 되살아난다.
         public HashSet<GoalItem> CollectedGoals { get; }
 
-        // 저장 시점에 이미 획득돼 있던 성질 아이템. 목표 아이템과 동일한 규칙으로 복구한다 (기획 §11.5).
-        public HashSet<PropertyItem> AcquiredPropertyItems { get; }
-
         public int AcquiredGoalItemCount => CollectedGoals.Count;
 
-        public CheckpointState(
-            Vector3 position,
-            PropertyData property,
-            IEnumerable<GoalItem> collectedGoals,
-            IEnumerable<PropertyItem> acquiredPropertyItems = null)
+        public CheckpointState(Vector3 position, PropertyData property, IEnumerable<GoalItem> collectedGoals)
         {
             Position = position;
             Property = property;
             CollectedGoals = collectedGoals != null ? new HashSet<GoalItem>(collectedGoals) : new HashSet<GoalItem>();
-            AcquiredPropertyItems = acquiredPropertyItems != null
-                ? new HashSet<PropertyItem>(acquiredPropertyItems)
-                : new HashSet<PropertyItem>();
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Core.Events;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game
 {
@@ -9,35 +10,102 @@ namespace Game
     // (기획 §21~§24). 체크포인트 컴포넌트는 SaveCheckpoint를 호출해 이 계층에 얹힌다.
     public class StageController : MonoBehaviour
     {
-        [Header("스테이지")]
+        // 인스펙터 그룹은 StageControllerEditor가 그린다. 여기서는 라벨과 설명만 붙인다.
+        [Label("스테이지 ID")]
         [SerializeField] private string stageId = "Stage01";
+
+        [Label("시작 위치")]
+        [Tooltip("플레이어가 스폰되는 지점. 체크포인트가 없으면 여기서 부활한다")]
         [SerializeField] private Transform startPosition;
 
-        [Header("카메라 경계")]
+        [Label("왼쪽 경계 X")]
         [SerializeField] private float stageMinX = -10f;
+
+        [Label("오른쪽 경계 X")]
         [SerializeField] private float stageMaxX = 10f;
+
+        [Label("아래 경계 Y")]
         [SerializeField] private float stageMinY = -6f;
+
+        [Label("위 경계 Y")]
         [SerializeField] private float stageMaxY = 6f;
 
-        [Header("낙사")]
+        [Label("낙사선 Y")]
+        [Tooltip("이 아래로 떨어지면 체크포인트에서 부활한다")]
         [SerializeField] private float stageFallLimitY = -8f;
 
-        [Header("경계 여백")]
-        [Tooltip("타일 끝에서 카메라가 더 보여주는 빈 공간. 이 여백의 바깥이 투명 벽이다.")]
+        [Label("경계 여백")]
+        [Tooltip("타일 끝에서 카메라가 더 보여주는 빈 공간")]
         [SerializeField] private float boundsPadding = 3f;
 
-        [Header("목표 아이템")]
+        [Label("카메라 크기 (줌)")]
+        [Tooltip("화면에 얼마나 넓게 보일지. 세로 절반 크기 기준 — 5면 위아래로 10칸이 보인다")]
+        [SerializeField] private float cameraZoom = 5f;
+
+        [Label("세로 오프셋")]
+        [Tooltip("값을 올리면 캐릭터가 화면 아래쪽에 놓여 위쪽이 더 보인다")]
+        [SerializeField] private float cameraVerticalOffset = 0f;
+
+        [Label("가로 추적 잠금")]
+        [Tooltip("켜면 카메라가 좌우로 움직이지 않는다 (한 화면 스테이지, 세로 전용 스테이지)")]
+        [SerializeField] private bool lockCameraX = false;
+
+        [Label("세로 추적 잠금")]
+        [Tooltip("켜면 카메라가 위아래로 움직이지 않는다 (가로로만 진행하는 평지 스테이지)")]
+        [SerializeField] private bool lockCameraY = false;
+
+        [Label("카메라 설정 덮어쓰기")]
+        [Tooltip("이 스테이지만 조작감을 다르게 할 때 지정. 비우면 글로벌 CameraSettings를 쓴다")]
+        [SerializeField] private CameraSettings cameraSettingsOverride;
+
+        [Label("투명 벽 사용")]
+        [Tooltip("끄면 플레이어가 화면 밖으로 나갈 수 있다")]
+        [SerializeField] private bool useBoundaryWalls = true;
+
+        [Label("벽 위치 방식")]
+        [Tooltip("경계 기준: 카메라 경계에서 자동 계산 / 직접 지정: 좌우 X를 손으로 입력")]
+        [SerializeField] private BoundaryWallMode wallMode = BoundaryWallMode.FromBounds;
+
+        [Label("경계에서 벌리기")]
+        [Tooltip("벽을 경계선보다 얼마나 더 바깥에 세울지. 0이면 화면 끝까지 갈 수 있다")]
+        [SerializeField] private float wallOffsetFromBounds = 0f;
+
+        [Label("왼쪽 벽 X")]
+        [SerializeField] private float leftWallX = -12f;
+
+        [Label("오른쪽 벽 X")]
+        [SerializeField] private float rightWallX = 12f;
+
+        [Label("벽 높이 여유")]
+        [Tooltip("낙사선부터 위로 얼마나 높게 세울지. 세로로 긴 스테이지에서 위로 빠져나가면 키운다")]
+        [SerializeField] private float wallHeadroom = 30f;
+
+        [Label("전체 배치 수량")]
+        [Tooltip("스테이지에 놓인 목표 아이템 개수. 검증 버튼이 자동으로 맞춰준다")]
         [SerializeField] private int totalGoalItemCount;
+
+        [Label("클리어 요구 수량")]
+        [Tooltip("이만큼 모으면 스테이지가 클리어된다")]
         [SerializeField] private int requiredGoalItemCount;
 
+        [Label("클리어 보상 코인")]
+        [SerializeField] private int clearRewardCoin = 50;
+
+        [Label("목표 진행도 변경")]
         [Header("사망 연출")]
         [Tooltip("사망 순간 위로 튀어 오르는 속도")]
         [SerializeField] private float deathBounceForce = 6f;
 
         [Header("이벤트")]
         [SerializeField] private StringEventChannel onGoalProgressChanged;
+
+        [Label("스테이지 클리어")]
         [SerializeField] private VoidEventChannel onStageCleared;
+
+        [Label("플레이어 사망")]
         [SerializeField] private VoidEventChannel onPlayerFailed;
+
+        [Label("체크포인트 활성화")]
         [SerializeField] private VoidEventChannel onCheckpointActivated;
 
         private CheckpointState _checkpoint;
@@ -64,8 +132,29 @@ namespace Game
         public float StageMaxY => stageMaxY;
         public float StageFallLimitY => stageFallLimitY;
         public float BoundsPadding => boundsPadding;
+        public float CameraZoom => cameraZoom;
+        public float CameraVerticalOffset => cameraVerticalOffset;
+        public bool LockCameraX => lockCameraX;
+        public bool LockCameraY => lockCameraY;
+        public CameraSettings CameraSettingsOverride => cameraSettingsOverride;
+
+        public bool UseBoundaryWalls => useBoundaryWalls;
+        // 벽 안쪽 면의 X 좌표. 플레이어는 여기까지 갈 수 있다.
+        public float LeftWallX => ComputeWallX(true, wallMode, stageMinX, stageMaxX, wallOffsetFromBounds, leftWallX, rightWallX);
+        public float RightWallX => ComputeWallX(false, wallMode, stageMinX, stageMaxX, wallOffsetFromBounds, leftWallX, rightWallX);
+
+        public static float ComputeWallX(bool leftSide, BoundaryWallMode mode,
+            float minX, float maxX, float offset, float explicitLeft, float explicitRight)
+        {
+            if (mode == BoundaryWallMode.Explicit) return leftSide ? explicitLeft : explicitRight;
+            return leftSide ? minX - offset : maxX + offset;
+        }
         public int TotalGoalItemCount => totalGoalItemCount;
         public int RequiredGoalItemCount => requiredGoalItemCount;
+        public int ClearRewardCoin => clearRewardCoin;
+
+        // 이번 스테이지에서 주운 코인 (클리어 화면 표시용, UI 기획서 §6.2)
+        public int StageCoinEarned { get; private set; }
 
         private void Start()
         {
@@ -100,23 +189,30 @@ namespace Game
             return y < fallLimitY;
         }
 
-        // 경계 좌우에 투명 벽을 세워 플레이어가 화면 밖으로 나가지 못하게 한다.
-        // 카메라도 같은 경계에서 멈추므로 벽 안쪽 여백까지가 보이는 플레이 영역이 된다.
+        // 좌우에 투명 벽을 세워 플레이어가 화면 밖으로 나가지 못하게 한다.
         private void CreateBoundaryWalls()
         {
-            CreateWall("LeftBoundaryWall", stageMinX - 0.5f);
-            CreateWall("RightBoundaryWall", stageMaxX + 0.5f);
+            if (!useBoundaryWalls) return;
+
+            CreateWall("LeftBoundaryWall", LeftWallX, true);
+            CreateWall("RightBoundaryWall", RightWallX, false);
         }
 
-        private void CreateWall(string wallName, float centerX)
+        // innerFaceX가 플레이어가 닿는 면이 되도록 두께 절반만큼 바깥으로 밀어 배치한다.
+        private void CreateWall(string wallName, float innerFaceX, bool leftSide)
         {
+            const float thickness = 1f;
             float bottom = stageFallLimitY;
-            float top = stageMaxY + 30f; // 위로는 점프 제한이 없으므로 충분히 높게
+            float top = stageMaxY + wallHeadroom;
+
             var wall = new GameObject(wallName);
             wall.transform.SetParent(transform);
-            wall.transform.position = new Vector3(centerX, (bottom + top) * 0.5f, 0f);
+            wall.transform.position = new Vector3(
+                innerFaceX + (leftSide ? -thickness * 0.5f : thickness * 0.5f),
+                (bottom + top) * 0.5f, 0f);
+
             var box = wall.AddComponent<BoxCollider2D>();
-            box.size = new Vector2(1f, top - bottom);
+            box.size = new Vector2(thickness, top - bottom);
             box.sharedMaterial = new PhysicsMaterial2D("BoundaryWall") { friction = 0f, bounciness = 0f };
         }
 
@@ -152,6 +248,15 @@ namespace Game
                 if (item.IsCollected) collected.Add(item);
             }
 
+            // 코인도 같은 시점 상태를 저장한다 (인벤토리 문서 §6.5)
+            var collectedCoins = new List<CoinItem>();
+            foreach (var coin in FindObjectsByType<CoinItem>(FindObjectsSortMode.None))
+            {
+                if (coin.IsCollected) collectedCoins.Add(coin);
+            }
+
+            _checkpoint = new CheckpointState(position, property, collected,
+                collectedCoins, CurrencyWallet.Coin, StageCoinEarned);
             var acquiredProperties = new List<PropertyItem>();
             foreach (var item in FindObjectsByType<PropertyItem>(FindObjectsSortMode.None))
             {
@@ -203,11 +308,17 @@ namespace Game
             var playerProperty = player.GetComponent<PlayerProperty>();
             if (playerProperty != null) playerProperty.Restore(_checkpoint.Property);
 
+            // 상호작용 대상·E UI 초기화 (기획 §24.3)
+            var interaction = player.GetComponent<PlayerInteraction>();
+            if (interaction != null) interaction.ClearRange();
+
+            RestoreGoalItems();
+            RestoreCoins();
             RestoreItems();
 
-            // 카메라를 즉시 이동시킨다. 안 하면 0.15초 동안 맵을 가로질러 스윕한다.
+            // 기본은 즉시 이동. 끄면 맵을 가로질러 부드럽게 따라간다 (CameraSettings.snapOnRespawn)
             var follow = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
-            if (follow != null) follow.Init(player.transform, this);
+            if (follow != null && follow.SnapOnRespawn) follow.Init(player.transform, this);
 
             if (view != null) view.PlayRespawnPop(); // 스케일 0 → 1.3 → 1 재등장 연출
 
@@ -240,6 +351,24 @@ namespace Game
             onGoalProgressChanged?.Raise(GoalProgressText);
         }
 
+        // 코인도 저장 시점 상태로 되돌린다 — 안 그러면 같은 코인을 반복 획득할 수 있다 (인벤토리 문서 §6.5)
+        private void RestoreCoins()
+        {
+            foreach (var coin in FindObjectsByType<CoinItem>(FindObjectsSortMode.None))
+            {
+                if (!_checkpoint.CollectedCoins.Contains(coin)) coin.Restore();
+            }
+
+            CurrencyWallet.RestoreTo(_checkpoint.CoinBalance);
+            StageCoinEarned = _checkpoint.StageCoinEarned;
+        }
+
+        // 코인 획득 집계 (클리어 화면에서 "스테이지 획득 골드"로 표시)
+        public void NotifyCoinCollected(int amount)
+        {
+            StageCoinEarned += amount;
+        }
+
         // 목표 아이템이 획득될 때 호출된다 (기획 §21.3)
         public void NotifyGoalCollected()
         {
@@ -261,6 +390,11 @@ namespace Game
             var player = PlayerRef;
             if (player != null) player.SetDisabled(true);
 
+            StageProgress.SetCleared(SceneManager.GetActiveScene().name);
+
+            // 클리어 보상 지급 (인벤토리 문서 §6.2)
+            CurrencyWallet.Add(clearRewardCoin);
+
             onStageCleared?.Raise();
 
             if (Core.GameManager.Instance != null) Core.GameManager.Instance.StageClear();
@@ -275,7 +409,7 @@ namespace Game
             var prefab = Resources.Load<GameObject>("Player");
             if (prefab == null)
             {
-                Debug.LogWarning("[Game] Resources/Player.prefab이 없습니다. Game > Setup Stage Tooling을 실행하세요.");
+                Debug.LogWarning("[Game] Resources/Player.prefab이 없습니다. 삭제됐다면 git으로 복구하세요.");
                 return;
             }
 
@@ -316,6 +450,15 @@ namespace Game
             var center = new Vector3((stageMinX + stageMaxX) * 0.5f, (stageMinY + stageMaxY) * 0.5f);
             var size = new Vector3(stageMaxX - stageMinX, stageMaxY - stageMinY);
             Gizmos.DrawWireCube(center, size);
+
+            // 투명 벽 (플레이어가 닿는 면)
+            if (useBoundaryWalls)
+            {
+                Gizmos.color = Color.magenta;
+                float wallTop = stageMaxY + wallHeadroom;
+                Gizmos.DrawLine(new Vector3(LeftWallX, stageFallLimitY), new Vector3(LeftWallX, wallTop));
+                Gizmos.DrawLine(new Vector3(RightWallX, stageFallLimitY), new Vector3(RightWallX, wallTop));
+            }
 
             // 낙사선
             Gizmos.color = Color.red;

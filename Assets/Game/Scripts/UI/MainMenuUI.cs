@@ -1,40 +1,79 @@
-using Core;
-using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game
 {
-    // 메인 메뉴 씬 UI. StageDatabase를 읽어 스테이지 버튼을 런타임 생성한다.
     public class MainMenuUI : MonoBehaviour
     {
-        [SerializeField] private Transform buttonContainer;
-        [SerializeField] private Button stageButtonTemplate;
+        [SerializeField] private Button startButton;
+        [SerializeField] private Button settingsButton;
         [SerializeField] private Button quitButton;
+        
+        [SerializeField] private Canvas stageCanvas;
+        [SerializeField] private Canvas settingsCanvas;
 
         private void Awake()
         {
-            quitButton.onClick.AddListener(Application.Quit);
+            if (startButton)
+            {
+                startButton.onClick.AddListener(() =>
+                {
+                    stageCanvas.gameObject.SetActive(true);
+                    settingsCanvas.gameObject.SetActive(false);
+                    gameObject.SetActive(false);
+                });
+            }
+
+            if (settingsButton)
+            {
+                settingsButton.onClick.AddListener(() =>
+                {
+                    // 설정 창은 인게임과 공용이다. 없을 때만 씬의 설정 캔버스로 넘어간다.
+                    var window = FindSettingsWindow();
+                    if (window != null)
+                    {
+                        window.Open();
+                        return;
+                    }
+
+                    stageCanvas.gameObject.SetActive(false);
+                    settingsCanvas.gameObject.SetActive(true);
+                    gameObject.SetActive(false);
+                });
+            }
+            
+            if (quitButton != null)
+            {
+                quitButton.onClick.AddListener(QuitGame);
+            }
         }
 
+        // 스테이지에서 돌아온 경우에는 메인 화면을 건너뛰고 스테이지 선택 화면을 연다.
         private void Start()
         {
-            var database = Resources.Load<StageDatabase>("StageDatabase");
-            if (database == null || database.Stages.Count == 0)
-            {
-                Debug.LogWarning("[Game] StageDatabase가 비어 있습니다. 스테이지 씬을 만들어 저장하면 자동 등록됩니다.");
-                return;
-            }
+            if (!MenuNavigation.ConsumeStageSelectRequest()) return;
+            if (stageCanvas == null) return;
 
-            stageButtonTemplate.gameObject.SetActive(false);
-            foreach (var stage in database.Stages)
-            {
-                var button = Instantiate(stageButtonTemplate, buttonContainer);
-                button.gameObject.SetActive(true);
-                button.GetComponentInChildren<TMP_Text>().text = stage.displayName;
-                string sceneName = stage.sceneName;
-                button.onClick.AddListener(() => SceneLoader.Instance.Load(sceneName));
-            }
+            stageCanvas.gameObject.SetActive(true);
+            if (settingsCanvas != null) settingsCanvas.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
+
+        // 설정 창은 평소 꺼져 있으므로 비활성 오브젝트까지 찾는다.
+        private static SettingsWindow FindSettingsWindow()
+        {
+            var windows = FindObjectsByType<SettingsWindow>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            return windows.Length > 0 ? windows[0] : null;
+        }
+
+        private void QuitGame()
+        {
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
     }
 }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf64e280065b3334b8f2cb3d1de896a3, type: 3}
+  m_Name: Property_Jelly
+  m_EditorClassIdentifier: Game::Game.ItemData
+  itemId: Property_Jelly
+  itemName: "\uC824\uB9AC \uC131\uC9C8 \uC544\uC774\uD15C"
+  description: "\uC0AC\uC6A9\uD558\uBA74 \uC824\uB9AC \uC131\uC9C8\uB85C \uBC14\uB01D\uB2C8\uB2E4.
+    \uC824\uB9AC \uD0C0\uC77C\uC5D0 \uBD99\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  thumbnail: {fileID: 0}
+  category: 0
+  price: 40
+  grantedProperty: {fileID: 11400000, guid: f97616b749e45bf49ad40126e88285fd, type: 2}
