@@ -16,8 +16,7 @@ MonoBehaviour:
   itemName: "\uB354\uBE14 \uC810\uD504"
   description: "\uC0AC\uC6A9\uD558\uBA74 \uACF5\uC911\uC5D0\uC11C\uB3C4 \uC704\uB85C
     \uD55C \uBC88 \uB354 \uC810\uD504\uD55C\uB2E4."
-  thumbnail: {fileID: -8770359179612895629, guid: 0968064af23319445aa7bc2c825a44be,
-    type: 3}
+  thumbnail: {fileID: 21300000, guid: 0968064af23319445aa7bc2c825a44be, type: 3}
   category: 3
   price: 5
   effect: {fileID: 11400000, guid: 07d1dbf8e1ac0aa47a5341d0bbee3a53, type: 2}
