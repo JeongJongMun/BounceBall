@@ -122,7 +122,7 @@ MonoBehaviour:
   physicsRotationInheritanceFactor: 1
   physicsMovementRelativeTo: {fileID: 0}
   updateTiming: 1
-  unscaledTime: 0
+  unscaledTime: 1
   _animationName: 
   loop: 0
   timeScale: 1
@@ -544,7 +544,7 @@ MonoBehaviour:
   physicsRotationInheritanceFactor: 1
   physicsMovementRelativeTo: {fileID: 0}
   updateTiming: 1
-  unscaledTime: 0
+  unscaledTime: 1
   _animationName: 
   loop: 0
   timeScale: 1
@@ -678,7 +678,7 @@ MonoBehaviour:
   physicsRotationInheritanceFactor: 1
   physicsMovementRelativeTo: {fileID: 0}
   updateTiming: 1
-  unscaledTime: 0
+  unscaledTime: 1
   _animationName: 
   loop: 0
   timeScale: 1
