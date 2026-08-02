@@ -2,6 +2,7 @@ using System.Collections;
 using Core;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Game
@@ -53,14 +54,32 @@ namespace Game
             base.Awake();
             if (Instance != this) return;
             BuildOverlay();
+            SceneManager.sceneLoaded += HandleSceneLoaded;
         }
 
         protected override void OnDestroy()
         {
+            SceneManager.sceneLoaded -= HandleSceneLoaded;
             _tween?.Kill();
             if (_material != null) Destroy(_material);
             if (_fallbackMask != null) Destroy(_fallbackMask);
             base.OnDestroy();
+        }
+
+        // 오버레이를 끄는 코드는 Open() 코루틴의 마지막 줄뿐이고, 그 코루틴은 스테이지 씬의
+        // StageController가 돌린다. 암전 중에 씬이 바뀌면 코루틴이 끊겨 검정 화면이 그대로 남는데,
+        // 이 싱글톤은 DontDestroyOnLoad라 다음 씬까지 따라간다. 씬이 새로 뜨면 무조건 걷어낸다.
+        // 스테이지는 Start에서 ShowBlack부터 다시 부르므로 시작 암전을 지우지 않는다
+        // (sceneLoaded는 Awake 다음, Start 이전에 온다).
+        private void HandleSceneLoaded(Scene scene, LoadSceneMode mode) => HideImmediate();
+
+        // 진행 중이던 연출을 버리고 오버레이를 즉시 걷어낸다.
+        public void HideImmediate()
+        {
+            _tween?.Kill();
+            _tween = null;
+            if (_canvas != null) _canvas.enabled = false;
+            if (_group != null) _group.alpha = 0f;
         }
 
         // 완전 암전을 즉시 표시한다. 스테이지 시작 페이드인 직전에 쓴다.
@@ -84,12 +103,14 @@ namespace Game
 
             SetScale(openScale);
 
+            // 일시정지·클리어가 timeScale을 0으로 두는 동안에도 연출은 끝까지 진행돼야 한다.
+            // 스케일 시간을 쓰면 암전에서 얼어붙어 화면이 검은 채로 남는다 (StageIntroCamera와 같은 규칙).
             _tween?.Kill();
-            _tween = DOTween.To(() => _scale, SetScale, 0f, closeDuration).SetEase(Ease.OutQuad);
+            _tween = DOTween.To(() => _scale, SetScale, 0f, closeDuration).SetEase(Ease.OutQuad).SetUpdate(true);
             yield return _tween.WaitForCompletion();
 
             if (blackHoldDuration > 0f)
-                yield return new WaitForSeconds(blackHoldDuration);
+                yield return new WaitForSecondsRealtime(blackHoldDuration);
         }
 
         // 완전 암전 상태에서 전체 알파 페이드로 화면을 다시 밝힌다.
@@ -104,7 +125,7 @@ namespace Game
             _group.alpha = 1f;
 
             _tween?.Kill();
-            _tween = _group.DOFade(0f, openDuration).SetEase(Ease.OutQuad);
+            _tween = _group.DOFade(0f, openDuration).SetEase(Ease.OutQuad).SetUpdate(true);
             yield return _tween.WaitForCompletion();
 
             _canvas.enabled = false;

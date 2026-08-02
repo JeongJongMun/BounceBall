@@ -18,11 +18,21 @@ namespace Core
         public int Score { get; private set; }
         public int HighScore => SaveData.HighScore;
 
+        // 부활 암전처럼 화면이 가려진 연출 동안에는 일시정지를 막는다.
+        // 암전 중에 팝업을 띄워 씬을 옮기면 화면을 다시 밝힐 주체(스테이지 씬의 컨트롤러)가
+        // 함께 사라져 검은 화면에 갇힌다. 연출을 시작한 쪽이 켜고 끈다.
+        // 해제(Resume)는 막지 않는다 — 어떤 경로로든 멈춘 상태에서 빠져나오지 못하면 안 된다.
+        public bool IsPauseBlocked { get; private set; }
+
+        public void SetPauseBlocked(bool blocked) => IsPauseBlocked = blocked;
+
         // 스테이지 씬에 막 들어온 시점. 이전 상태에서 떠 있던 화면(클리어·결과)을 정리한다.
         // 시작 연출이 있으면 Playing이 될 때까지 시간이 걸리므로, 그동안 이전 화면이 남지 않도록 한다.
         public void EnterStage()
         {
             Time.timeScale = 1f;
+            // 이전 스테이지가 연출 도중 사라졌다면 차단이 켜진 채 남는다 — 진입 시 항상 푼다
+            IsPauseBlocked = false;
             if (State != GameState.Ready) SetState(GameState.Ready);
         }
 
@@ -37,6 +47,7 @@ namespace Core
         public void Pause()
         {
             if (IsSceneLoading) return;
+            if (IsPauseBlocked) return;
             if (State != GameState.Playing) return;
             Time.timeScale = 0f;
             SetState(GameState.Paused);
@@ -53,6 +64,7 @@ namespace Core
         public void TogglePause()
         {
             if (IsSceneLoading) return;
+            if (IsPauseBlocked && State == GameState.Playing) return;
             if (State == GameState.Playing) Pause();
             else if (State == GameState.Paused) Resume();
         }

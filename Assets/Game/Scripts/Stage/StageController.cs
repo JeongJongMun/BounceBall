@@ -352,6 +352,9 @@ namespace Game
         private IEnumerator RespawnRoutine(Player player)
         {
             _isRespawning = true;
+            // 암전 중에는 Esc 팝업을 막는다. 팝업으로 씬을 옮기면 이 코루틴이 끊겨
+            // 화면을 다시 밝히는 iris.Open()이 영영 실행되지 않는다.
+            BlockPause(true);
 
             player.SetDisabled(true); // 입력·자동 바운스 정지 + 속도 0
 
@@ -406,6 +409,23 @@ namespace Game
 
             player.SetDisabled(false); // 조작·자동 바운스 재개
             _isRespawning = false;
+            BlockPause(false);
+        }
+
+        private static void BlockPause(bool blocked)
+        {
+            if (Core.GameManager.Instance != null) Core.GameManager.Instance.SetPauseBlocked(blocked);
+        }
+
+        // 부활 암전 도중에 씬이 바뀌면 위 코루틴이 중단된다. 아이리스는 DontDestroyOnLoad라
+        // 검정인 채로 다음 씬까지 따라가고, 일시정지 차단도 켜진 채 남는다. 둘 다 여기서 되돌린다.
+        private void OnDestroy()
+        {
+            BlockPause(false);
+            if (!_isRespawning) return;
+
+            var iris = IrisTransition.Instance;
+            if (iris != null) iris.HideImmediate();
         }
 
         // 부활 시 스테이지 요소를 되돌린다.
