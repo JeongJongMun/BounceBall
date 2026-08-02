@@ -1785,7 +1785,7 @@ MonoBehaviour:
   stageMaxY: 10.6
   stageFallLimitY: -6.22
   boundsPadding: 3
-  cameraZoom: 5
+  cameraZoom: 6
   cameraVerticalOffset: 0
   lockCameraX: 0
   lockCameraY: 0
