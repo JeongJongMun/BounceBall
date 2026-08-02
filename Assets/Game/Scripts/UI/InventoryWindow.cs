@@ -77,7 +77,8 @@ namespace Game
 
         public void Open()
         {
-            if (root == null) return;
+            // 타이틀 화면에서는 단축키·버튼으로 열지 않는다.
+            if (root == null || MainMenuUI.IsTitleActive) return;
             // 상점과 동시에 열리지 않는다
             if (ShopWindow.Instance != null && ShopWindow.Instance.IsOpen) return;
 

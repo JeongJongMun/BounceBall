@@ -87,8 +87,10 @@ namespace Game
 
         // 인게임 플레이 중에는 상점을 열 수 없다 (문서 §7.1).
         // 스테이지 선택 화면(Ready)과 클리어 화면(Cleared)에서만 연다.
+        // 타이틀 화면(Ready이지만 MainMenuUI 활성)에서는 단축키·버튼 모두 막는다.
         private static bool CanOpenHere()
         {
+            if (MainMenuUI.IsTitleActive) return false;
             var manager = GameManager.Instance;
             return manager == null || manager.State == GameState.Ready || manager.State == GameState.Cleared;
         }

@@ -17,6 +17,9 @@ namespace Game
 
         private bool _starting;
 
+        // 타이틀에서만 이 오브젝트가 켜진다. 스테이지 선택으로 넘어가면 꺼진다.
+        public static bool IsTitleActive => FindFirstObjectByType<MainMenuUI>() != null;
+
         // 스테이지 선택·설정에서 돌아오면 다시 눌릴 수 있어야 한다.
         private void OnEnable()
         {
