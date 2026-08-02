@@ -187,7 +187,9 @@ namespace Game
         // 페이드인 전에 전체 맵으로 옮겨야 Open 동안 플레이어 뷰가 노출되지 않는다.
         private IEnumerator StartWithFadeIn()
         {
-            IrisTransition.Instance.ShowBlack();
+            // 연출 싱글톤이 없어도(테스트·연출 제거 환경) 시작은 진행돼야 한다 — 다른 연출과 같은 null 허용
+            var iris = IrisTransition.Instance;
+            if (iris != null) iris.ShowBlack();
 
             var player = PlayerRef;
             player.SetDisabled(true);
@@ -198,7 +200,7 @@ namespace Game
             // 암전 중에 전체 맵으로 미리 옮긴다. 실패하면 플레이어 뷰 그대로 페이드인한다.
             bool hasIntro = StageIntroCamera.TryPrepare(this);
 
-            yield return IrisTransition.Instance.Open();
+            if (iris != null) yield return iris.Open();
 
             // 인트로 연출이 끝난 뒤에 조작·게임을 시작한다.
             // 연출 동안에는 Ready 상태로 남아 HUD가 가려지고 일시정지도 열리지 않는다.
@@ -367,7 +369,10 @@ namespace Game
             if (deathDuration > 0f) yield return new WaitForSeconds(deathDuration);
 
             // 원이 좁아지며 화면을 가린 뒤, 완전 암전 상태에서 위치를 되돌린다.
-            yield return IrisTransition.Instance.Close();
+            // 연출 싱글톤이 없어도 부활은 끝까지 진행돼야 한다 — 여기서 예외가 나면
+            // _isRespawning이 true로 남아 다시는 부활할 수 없는 소프트락이 된다.
+            var iris = IrisTransition.Instance;
+            if (iris != null) yield return iris.Close();
 
             // 위치 복구. Rigidbody가 Interpolate라 transform만 옮기면 순간이동 잔상이 남는다.
             var body = player.Body;
@@ -396,7 +401,7 @@ namespace Game
 
             // 암전 중에 스폰 준비 후, 전체 페이드로 화면을 밝힌다.
             if (view != null) view.PlayRespawnPop();
-            yield return IrisTransition.Instance.Open();
+            if (iris != null) yield return iris.Open();
 
             player.SetDisabled(false); // 조작·자동 바운스 재개
             _isRespawning = false;
