@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8888128358632569746}
   - component: {fileID: 5536617050359812601}
+  - component: {fileID: 5536617050359812603}
   - component: {fileID: 1765945351925668701}
   - component: {fileID: 7783424937255684525}
   - component: {fileID: 5536617050359812602}
@@ -140,6 +141,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1100
   m_TargetDisplay: 0
+--- !u!225 &5536617050359812603
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4211953765400786409}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!222 &1765945351925668701
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -209,6 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Core::Core.UI.PauseScreen
   panel: {fileID: 3133567836161179393}
   popDuration: 0.25
+  canvasGroup: {fileID: 5536617050359812603}
   resumeButton: {fileID: 7375267565674240514}
   restartButton: {fileID: 1631776358692666459}
   settingsButton: {fileID: 6030218472245430741}
