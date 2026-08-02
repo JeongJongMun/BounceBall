@@ -8,6 +8,10 @@ namespace Game
     // 스테이지 시작 연출. 맵 전체를 한 번 보여준 뒤 실제 플레이 화면으로 줌인한다.
     // 연출 동안에는 물리를 멈추고(timeScale 0) CameraFollow를 꺼 두므로, 추적과 싸우지 않는다.
     // StageController가 필요할 때 카메라에 붙여 주므로 씬에 직접 배치하지 않는다.
+    //
+    // 호출 순서 (암전 → 전체 맵 선배치 → 페이드인 → hold/줌인):
+    //   TryPrepare → IrisTransition.Open → PlayPrepared
+    // Prepare 없이 Open부터 하면 페이드인 동안 플레이어 뷰가 노출된다.
     [RequireComponent(typeof(Camera))]
     public class StageIntroCamera : MonoBehaviour
     {
@@ -17,16 +21,54 @@ namespace Game
         private Action _onComplete;
         private Camera _camera;
         private bool _isFrozen;
+        private bool _prepared;
+        private float _playSize;
+        private Vector3 _playPosition;
 
-        // 인트로를 시작했으면 true. false면 호출부가 곧바로 게임을 시작하면 된다.
-        public static bool TryPlay(StageController stage, Action onComplete)
+        // 암전 중에 전체 맵으로 카메라를 옮긴다. 성공하면 PlayPrepared를 Open 이후에 호출해야 한다.
+        public static bool TryPrepare(StageController stage)
         {
-            if (stage == null || !stage.UseIntroCamera) return false;
+            if (!TryResolve(stage, out var cam, out var settings, out var follow)) return false;
 
+            if (!cam.TryGetComponent<StageIntroCamera>(out var intro))
+                intro = cam.gameObject.AddComponent<StageIntroCamera>();
+
+            intro.Prepare(stage, follow, settings);
+            return true;
+        }
+
+        // Prepare로 잡아 둔 전체 맵 화면에서 hold → 플레이 줌인을 시작한다.
+        public static bool PlayPrepared(Action onComplete)
+        {
             var cam = Camera.main;
             if (cam == null) return false;
+            if (!cam.TryGetComponent<StageIntroCamera>(out var intro) || !intro._prepared) return false;
 
-            var settings = stage.CameraSettingsOverride != null
+            intro.StartPrepared(onComplete);
+            return true;
+        }
+
+        // 인트로를 시작했으면 true. false면 호출부가 곧바로 게임을 시작하면 된다.
+        // Open 이후에 호출하면 페이드인 동안 플레이어 뷰가 보이므로, 시작 연출에는 TryPrepare를 쓴다.
+        public static bool TryPlay(StageController stage, Action onComplete)
+        {
+            if (!TryPrepare(stage)) return false;
+            return PlayPrepared(onComplete);
+        }
+
+        private static bool TryResolve(StageController stage, out Camera cam,
+            out CameraSettings settings, out CameraFollow follow)
+        {
+            cam = null;
+            settings = null;
+            follow = null;
+
+            if (stage == null || !stage.UseIntroCamera) return false;
+
+            cam = Camera.main;
+            if (cam == null) return false;
+
+            settings = stage.CameraSettingsOverride != null
                 ? stage.CameraSettingsOverride
                 : CameraSettings.Load();
 
@@ -38,10 +80,7 @@ namespace Game
             if (!ShouldPlayIntro(contentSize.x, contentSize.y, cam.aspect, stage.CameraZoom, minZoomRatio))
                 return false;
 
-            if (!cam.TryGetComponent<StageIntroCamera>(out var intro))
-                intro = cam.gameObject.AddComponent<StageIntroCamera>();
-
-            intro.Play(stage, cam.GetComponent<CameraFollow>(), onComplete, settings);
+            follow = cam.GetComponent<CameraFollow>();
             return true;
         }
 
@@ -61,13 +100,44 @@ namespace Game
 
         private void Awake() => _camera = GetComponent<Camera>();
 
-        private void Play(StageController stage, CameraFollow follow, Action onComplete, CameraSettings settings)
+        private void Prepare(StageController stage, CameraFollow follow, CameraSettings settings)
         {
+            if (_camera == null) _camera = GetComponent<Camera>();
+
             _stage = stage;
             _follow = follow;
-            _onComplete = onComplete;
             _settings = settings;
+            _onComplete = null;
 
+            StopAllCoroutines();
+            transform.DOKill();
+            Unfreeze();
+
+            // 도착 지점 = 지금 화면. CameraFollow.Init이 이미 플레이어 기준으로 잡아 둔 상태다.
+            _playSize = _stage.CameraZoom;
+            _playPosition = transform.position;
+
+            // 페이드인 전에 추적을 끄고 전체 맵으로 옮긴다. freeze는 Open 이후에 건다.
+            if (_follow != null) _follow.enabled = false;
+
+            var introBounds = ComputeIntroBounds();
+            float fitSize = Mathf.Max(
+                ComputeFitSize(introBounds.size.x, introBounds.size.y,
+                               _camera.aspect, IntroPadding, _stage.IntroMaxSize),
+                _playSize);
+
+            _camera.orthographicSize = fitSize;
+            transform.position = ComputeIntroPosition(introBounds, fitSize, _playPosition);
+
+            _prepared = true;
+        }
+
+        private void StartPrepared(Action onComplete)
+        {
+            if (!_prepared) return;
+
+            _onComplete = onComplete;
+            _prepared = false;
             StopAllCoroutines();
             StartCoroutine(Routine());
         }
@@ -80,42 +150,27 @@ namespace Game
             float duration = _settings != null ? _settings.IntroZoomDuration : 1f;
             var ease = _settings != null ? _settings.IntroEase : Ease.InOutCubic;
 
-            // 도착 지점 = 지금 화면. CameraFollow.Init이 이미 플레이어 기준으로 잡아 둔 상태다.
-            float playSize = _stage.CameraZoom;
-            var playPosition = transform.position;
-
-            // 연출 동안 추적을 멈추고 플레이어를 정지시킨다
+            // 연출 동안 플레이어를 정지시킨다 (카메라는 Prepare에서 이미 옮겨 둔 상태)
             if (_follow != null) _follow.enabled = false;
             Freeze();
 
-            // ① 맵 전체가 들어오는 화면으로 즉시 이동.
-            //    맵이 플레이 화면보다 작으면 줌인이 아니라 줌아웃이 되어 버리므로 플레이 화면을 하한으로 둔다.
-            var introBounds = ComputeIntroBounds();
-            float fitSize = Mathf.Max(
-                ComputeFitSize(introBounds.size.x, introBounds.size.y,
-                               _camera.aspect, IntroPadding, _stage.IntroMaxSize),
-                playSize);
-
-            _camera.orthographicSize = fitSize;
-            transform.position = ComputeIntroPosition(introBounds, fitSize, playPosition);
-
-            // ② 유지 (timeScale 0이므로 실시간으로 센다)
+            // ① 유지 (timeScale 0이므로 실시간으로 센다)
             if (hold > 0f) yield return new WaitForSecondsRealtime(hold);
 
-            // ③ 플레이 화면으로 전환
+            // ② 플레이 화면으로 전환
             if (duration > 0f)
             {
                 var sequence = DOTween.Sequence().SetUpdate(true);
-                sequence.Join(DOTween.To(() => _camera.orthographicSize, v => _camera.orthographicSize = v, playSize, duration)
+                sequence.Join(DOTween.To(() => _camera.orthographicSize, v => _camera.orthographicSize = v, _playSize, duration)
                     .SetEase(ease));
-                sequence.Join(transform.DOMove(playPosition, duration).SetEase(ease));
+                sequence.Join(transform.DOMove(_playPosition, duration).SetEase(ease));
 
                 while (sequence.IsActive() && !sequence.IsComplete()) yield return null;
             }
 
             // 트윈이 중간에 끊겼어도 정확한 값으로 마무리한다
-            _camera.orthographicSize = playSize;
-            transform.position = playPosition;
+            _camera.orthographicSize = _playSize;
+            transform.position = _playPosition;
 
             if (_follow != null) _follow.enabled = true;
 
@@ -192,6 +247,7 @@ namespace Game
         private void OnDisable()
         {
             transform.DOKill();
+            _prepared = false;
             Unfreeze();
         }
 

@@ -183,7 +183,8 @@ namespace Game
             SaveCheckpoint(startPosition != null ? startPosition.position : Vector3.zero);
         }
 
-        // 부활 Open과 동일: 암전 유지 → 팝 등장 → 페이드인 → 인트로 또는 플레이 시작.
+        // 암전 유지 → 팝 등장 → (인트로면 전체 맵 선배치) → 페이드인 → hold/줌인 또는 플레이 시작.
+        // 페이드인 전에 전체 맵으로 옮겨야 Open 동안 플레이어 뷰가 노출되지 않는다.
         private IEnumerator StartWithFadeIn()
         {
             IrisTransition.Instance.ShowBlack();
@@ -193,13 +194,23 @@ namespace Game
 
             var view = player.GetComponent<PlayerSpineView>();
             if (view != null) view.PlayRespawnPop();
+
+            // 암전 중에 전체 맵으로 미리 옮긴다. 실패하면 플레이어 뷰 그대로 페이드인한다.
+            bool hasIntro = StageIntroCamera.TryPrepare(this);
+
             yield return IrisTransition.Instance.Open();
 
-            player.SetDisabled(false);
-
-            // 인트로 카메라가 켜져 있으면 연출이 끝난 뒤에 게임을 시작한다.
+            // 인트로 연출이 끝난 뒤에 조작·게임을 시작한다.
             // 연출 동안에는 Ready 상태로 남아 HUD가 가려지고 일시정지도 열리지 않는다.
-            if (!StageIntroCamera.TryPlay(this, StartPlaying)) StartPlaying();
+            if (hasIntro && StageIntroCamera.PlayPrepared(() =>
+                {
+                    player.SetDisabled(false);
+                    StartPlaying();
+                }))
+                yield break;
+
+            player.SetDisabled(false);
+            StartPlaying();
         }
 
         // 경계가 타일보다 좁으면 카메라가 맵 끝을 안 비추고 투명 벽이 갈 수 있는 곳을 막는다.
