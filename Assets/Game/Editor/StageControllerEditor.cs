@@ -166,19 +166,21 @@ namespace Game.EditorTools
 
         private static void AutoCalculateBounds(StageController controller)
         {
-            var groundTilemap = FindGroundTilemap();
-            if (groundTilemap == null)
+            // 타일맵 캐시는 씬 로드 때만 무효화되므로, 에디터에서 씬을 오간 뒤에는 직접 비운다
+            StageTiles.InvalidateCache();
+
+            // 타일 ∪ 프리팹 배치물(가시 블록·발판·아이템 등의 콜라이더).
+            // 인트로 카메라와 같은 기준이라 경계와 연출 프레이밍이 어긋나지 않는다.
+            if (!StageContentBounds.TryGet(out var content))
             {
-                Debug.LogError("[Game] Ground 타일맵을 찾을 수 없습니다. Grid 아래 'Ground' 오브젝트가 필요합니다.");
+                Debug.LogError("[Game] 경계를 계산할 타일·배치물이 없습니다. 타일을 칠하거나 기믹을 배치해 주세요.");
                 return;
             }
 
-            groundTilemap.CompressBounds();
-            var local = groundTilemap.localBounds;
-            var min = groundTilemap.transform.TransformPoint(local.min);
-            var max = groundTilemap.transform.TransformPoint(local.max);
+            var min = content.min;
+            var max = content.max;
 
-            // 타일 끝에서 여백만큼 더 보여주고 카메라가 멈춘다. 투명 벽도 여백 바깥에 선다.
+            // 배치물 끝에서 여백만큼 더 보여주고 카메라가 멈춘다. 투명 벽도 여백 바깥에 선다.
             float pad = controller.BoundsPadding;
             Undo.RecordObject(controller, "경계 자동 계산");
             controller.SetBounds(min.x - pad, max.x + pad, min.y - pad, max.y + pad, min.y - 2f);

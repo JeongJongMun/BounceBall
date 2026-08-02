@@ -28,6 +28,7 @@ namespace Game
 
         public TilePropertyType TileProperty => tileProperty;
         public bool IsDeadly => isDeadly;
+        public bool ApplySurfaceEffectWhenSafe => applySurfaceEffectWhenSafe;
 
         public void SetTileProperty(TilePropertyType value) => tileProperty = value;
 
@@ -39,9 +40,12 @@ namespace Game
         }
 
         // 위험 판정을 면제받는 성질인가 (기믹 문서 §5 상호작용표).
-        public bool IsSafeFor(PlayerPropertyType property)
+        public bool IsSafeFor(PlayerPropertyType property) => IsSafeCombination(tileProperty, property);
+
+        // 타일·프리팹 사망 발판이 공유하는 면제 규칙 (HazardSurface도 이 표를 쓴다).
+        public static bool IsSafeCombination(TilePropertyType tile, PlayerPropertyType property)
         {
-            switch (tileProperty)
+            switch (tile)
             {
                 case TilePropertyType.Jelly: return property == PlayerPropertyType.Jelly;
                 case TilePropertyType.Ice: return property == PlayerPropertyType.Ice;
