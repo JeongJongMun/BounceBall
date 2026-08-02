@@ -73,10 +73,11 @@ namespace Game
             for (int i = 0; i < collision.contactCount; i++)
             {
                 var contact = collision.GetContact(i);
-                var tile = StageTiles.GetSpecialTileAt(contact.point, contact.normal);
-                if (tile == null || tile.TileProperty != TilePropertyType.Jelly) continue;
+                // 타일맵 타일과 프리팹 블록을 같은 규칙으로 본다
+                var surface = StageSurfaces.Resolve(collision.collider, contact.point, contact.normal);
+                if (surface.Property != TilePropertyType.Jelly) continue;
                 // 표면 효과를 끈 젤리 사망 발판에는 붙지 않는다 (기믹 문서 §4.3)
-                if (!tile.AppliesSurfaceEffectFor(PlayerPropertyType.Jelly)) continue;
+                if (!surface.AppliesSurfaceEffectFor(PlayerPropertyType.Jelly)) continue;
 
                 float axisAlignment = Mathf.Max(Mathf.Abs(contact.normal.x), Mathf.Abs(contact.normal.y));
                 if (axisAlignment <= best) continue;
@@ -220,10 +221,10 @@ namespace Game
 
         private static bool IsJellyAt(RaycastHit2D hit)
         {
-            var tile = StageTiles.GetSpecialTileAt(hit.point, hit.normal);
-            return tile != null
-                && tile.TileProperty == TilePropertyType.Jelly
-                && tile.AppliesSurfaceEffectFor(PlayerPropertyType.Jelly);
+            // 타일맵 타일과 프리팹 블록을 같은 규칙으로 본다 — 프리팹 젤리 블록 위도 기어다닐 수 있다
+            var surface = StageSurfaces.Resolve(hit.collider, hit.point, hit.normal);
+            return surface.Property == TilePropertyType.Jelly
+                && surface.AppliesSurfaceEffectFor(PlayerPropertyType.Jelly);
         }
 
         // 표면에서 떨어지지 않도록 위치를 지속 보정한다 (기획 §5.3)

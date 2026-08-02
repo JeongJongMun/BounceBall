@@ -83,14 +83,14 @@ namespace Game
             _player.SetGrounded(true);
             onPlayerLanded?.Raise();
 
-            // 성질 × 타일 조합으로 결과를 조회한다 (기획 §3.1, §9)
-            var tile = StageTiles.GetSpecialTileAt(contactPoint, contactNormal);
-            var tileProperty = tile != null ? tile.TileProperty : TilePropertyType.Default;
-            var interaction = PropertyInteractionTable.Resolve(_player.PropertyType, tileProperty);
+            // 성질 × 표면 조합으로 결과를 조회한다 (기획 §3.1, §9).
+            // 타일맵 타일과 프리팹 블록(SurfaceProperty·HazardSurface)을 같은 규칙으로 본다.
+            var surface = StageSurfaces.Resolve(collision.collider, contactPoint, contactNormal);
+            var interaction = PropertyInteractionTable.Resolve(_player.PropertyType, surface.Property);
 
             // 사망 발판 중 표면 효과를 끈 것은 부착·미끄러짐 대신 일반 점프로 처리한다 (기믹 문서 §4.3, §4.4).
             // 여기 도달했다는 것은 이미 사망 면제 성질이라는 뜻이다 — 아니면 PlayerHazardContact가 먼저 잡는다.
-            if (tile != null && !tile.AppliesSurfaceEffectFor(_player.PropertyType))
+            if (!surface.AppliesSurfaceEffectFor(_player.PropertyType))
                 interaction = PropertyInteractionType.NormalJump;
 
             // 부착 조합에서는 자동 점프만 하지 않는다 (기획 §8 Attach).

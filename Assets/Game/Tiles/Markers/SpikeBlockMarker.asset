@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15a794364c288f44aa2d46e50838f905, type: 3}
+  m_Name: SpikeBlockMarker
+  m_EditorClassIdentifier: Game::Game.PrefabMarkerTile
+  prefab: {fileID: 3632303451928959498, guid: dda9686c043c89d4d9f29ca681301e0f, type: 3}
+  previewSprite: {fileID: 21300000, guid: eda2cc64f236f4bbe8472f95cc129258, type: 3}
+  previewColor: {r: 1, g: 1, b: 1, a: 1}
