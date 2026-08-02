@@ -18,5 +18,5 @@ MonoBehaviour:
     \uC900\uB2E4. \uB099\uC0AC\uB294 \uB9C9\uC9C0 \uBABB\uD55C\uB2E4."
   thumbnail: {fileID: 21300000, guid: ef78bee9772b3ee4094d4d6fd770c5ae, type: 3}
   category: 3
-  price: 5
+  price: 7
   effect: {fileID: 11400000, guid: b780ea90790f17444b65910d2519c84f, type: 2}

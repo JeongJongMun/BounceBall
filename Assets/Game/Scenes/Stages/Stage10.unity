@@ -3287,7 +3287,7 @@ MonoBehaviour:
   wallHeadroom: 30
   totalGoalItemCount: 4
   requiredGoalItemCount: 4
-  clearRewardCoin: 50
+  clearRewardCoin: 8
   deathBounceForce: 6
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,
     type: 2}
@@ -4378,25 +4378,6 @@ Tilemap:
       e03: 0
       e10: -1
       e11: 0
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-  - serializedVersion: 2
-    m_RefCount: 0
-    m_Data:
-      e00: -1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: -1
       e12: 0
       e13: 0
       e20: 0
