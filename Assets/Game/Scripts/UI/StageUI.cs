@@ -61,6 +61,13 @@ namespace Game
             if (ownedCoinText != null) ownedCoinText.text = coin.ToString();
         }
 
+        // 치트 등으로 진행도가 바뀌었을 때, 열린 상태에서도 버튼을 다시 그린다.
+        public void RefreshProgress()
+        {
+            if (!isActiveAndEnabled) return;
+            Refresh();
+        }
+
         // Overlay 루트 Canvas는 위치가 매 프레임 덮어써지므로, 자식을 감싼 콘텐츠를 떨어뜨린다.
         private RectTransform EnsureDropContent()
         {
