@@ -89,5 +89,29 @@ namespace Game.Tests
             Assert.Less(Mathf.Abs(_player.Body.linearVelocity.x), 0.01f, "Disabled 상태에서 수평 이동이 발생했습니다.");
             Assert.LessOrEqual(_player.Body.linearVelocity.y, 0.01f, "Disabled 상태에서 바운스가 발생했습니다.");
         }
+
+        // 체크포인트 부활과 동일: Disabled로 바닥에서 오래 정지하면 Rigidbody가 sleep한다.
+        // 재개 직후 입력 없이도 자동 바운스가 다시 시작돼야 한다.
+        [UnityTest]
+        public IEnumerator Disabled_해제_직후_입력_없이_자동_바운스가_재개된다()
+        {
+            _player.SetDisabled(true);
+            _movement.SetInput(0f);
+
+            // 착지 후 Physics2D TimeToSleep(0.5s)을 넘겨 sleep시킨다
+            for (int i = 0; i < 120; i++) yield return new WaitForFixedUpdate();
+            Assert.IsTrue(_player.Body.IsSleeping(), "사전 조건: Disabled 착지 후 Rigidbody가 sleep해야 합니다.");
+
+            _player.SetDisabled(false);
+
+            float deadline = Time.time + 2f;
+            bool bounced = false;
+            while (Time.time < deadline)
+            {
+                if (_player.Body.linearVelocity.y > 1f) { bounced = true; break; }
+                yield return new WaitForFixedUpdate();
+            }
+            Assert.IsTrue(bounced, "조작 재개 후 입력 없이 자동 바운스가 재개되지 않았습니다.");
+        }
     }
 }

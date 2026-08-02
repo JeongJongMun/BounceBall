@@ -68,6 +68,9 @@ namespace Game
             else
             {
                 State = PlayerState.Airborne;
+                // 연출 동안 바닥에서 속도 0으로 안착하면 Rigidbody가 sleep한다.
+                // sleep 중엔 OnCollisionStay2D가 안 와서 자동 바운스가 멈추므로, 재개 시 깨운다.
+                Body.WakeUp();
             }
         }
     }
