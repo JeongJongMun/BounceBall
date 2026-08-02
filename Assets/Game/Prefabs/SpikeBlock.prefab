@@ -80,14 +80,9 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: -0.40625, y: 0.0234375}
-      - {x: -0.2109375, y: 0.0234375}
-      - {x: -0.3046875, y: 0.2890625}
-    - - {x: -0.1015625, y: 0.0234375}
-      - {x: 0.10546875, y: 0.0234375}
-      - {x: 0.0078125, y: 0.29296875}
-    - - {x: 0.20703125, y: 0.0234375}
       - {x: 0.40625, y: 0.0234375}
-      - {x: 0.30078125, y: 0.2890625}
+      - {x: 0.40625, y: 0.29296875}
+      - {x: -0.40625, y: 0.29296875}
   m_UseDelaunayMesh: 1
 --- !u!114 &3133254359037442155
 MonoBehaviour:
@@ -103,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game::Game.HazardSurface
   tileProperty: 0
   lethalAllDirections: 0
+  applySurfaceEffectWhenSafe: 1
   showGizmo: 1
 --- !u!1 &3632303451928959498
 GameObject:
@@ -185,7 +181,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: eda2cc64f236f4bbe8472f95cc129258, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
