@@ -37,9 +37,11 @@ namespace Game
             if (startTransition >= 0) startTransitionFrame = startTransition;
         }
 
-        // 로비가 보일 때마다 도입부를 처음부터 재생한다 — 게임 실행 직후든,
-        // 스테이지 선택에서 돌아왔든 같은 연출을 보여준다.
-        private void OnEnable() => Play(0, introLastFrame, null);
+        private void OnEnable()
+        {
+            if (MenuNavigation.OpenStageSelectOnLoad) return;
+            Play(0, introLastFrame, null);
+        }
 
         // 캔버스가 꺼지면 코루틴도 함께 죽는다. 남은 핸들을 정리해 두지 않으면 다음 재생에서 잘못 멈춘다.
         private void OnDisable() => _playing = null;
