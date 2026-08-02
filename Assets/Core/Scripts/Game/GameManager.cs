@@ -1,4 +1,5 @@
 using Core.Events;
+using Core.UI;
 using UnityEngine;
 
 namespace Core
@@ -35,6 +36,7 @@ namespace Core
 
         public void Pause()
         {
+            if (IsSceneLoading) return;
             if (State != GameState.Playing) return;
             Time.timeScale = 0f;
             SetState(GameState.Paused);
@@ -42,6 +44,7 @@ namespace Core
 
         public void Resume()
         {
+            if (IsSceneLoading) return;
             if (State != GameState.Paused) return;
             Time.timeScale = 1f;
             SetState(GameState.Playing);
@@ -49,9 +52,13 @@ namespace Core
 
         public void TogglePause()
         {
+            if (IsSceneLoading) return;
             if (State == GameState.Playing) Pause();
             else if (State == GameState.Paused) Resume();
         }
+
+        private static bool IsSceneLoading =>
+            SceneLoader.Instance != null && SceneLoader.Instance.IsLoading;
 
         public void GameOver()
         {
@@ -78,13 +85,21 @@ namespace Core
 
         public void BackToMenu()
         {
-            Time.timeScale = 1f;
             Score = 0;
-            SetState(GameState.Ready);
 
-            if (SceneLoader.Instance == null) return;
-            if (string.IsNullOrEmpty(menuSceneName)) SceneLoader.Instance.Reload();
-            else SceneLoader.Instance.Load(menuSceneName);
+            if (SceneLoader.Instance == null)
+            {
+                Time.timeScale = 1f;
+                SetState(GameState.Ready);
+                return;
+            }
+
+            if (UIManager.Instance != null)
+                UIManager.Instance.FadeOutForSceneTransition(SceneLoader.Instance.FadeDuration);
+
+            void AfterFadeIn() => SetState(GameState.Ready);
+            if (string.IsNullOrEmpty(menuSceneName)) SceneLoader.Instance.Reload(AfterFadeIn);
+            else SceneLoader.Instance.Load(menuSceneName, AfterFadeIn);
         }
 
         public void AddScore(int amount)

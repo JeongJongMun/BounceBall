@@ -49,9 +49,9 @@ namespace Game
         private void Update()
         {
             if (!readKeyboard || Keyboard.current == null) return;
-            bool a = Keyboard.current.aKey.isPressed;
-            bool d = Keyboard.current.dKey.isPressed;
-            _input = a == d ? 0f : (a ? -1f : 1f); // 동시 입력 = 0 (기획 §8.2)
+            bool left = Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed;
+            bool right = Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed;
+            _input = left == right ? 0f : (left ? -1f : 1f); // 동시 입력 = 0 (기획 §8.2)
         }
 
         // 얼음 성질 × 얼음 타일 착지에서 PlayerBounce가 호출한다 (기획 §6.1).

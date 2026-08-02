@@ -130,7 +130,7 @@ namespace Core.EditorTools
             var canvasGo = NewChild(loaderGo.transform, "FadeCanvas");
             var canvas = canvasGo.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 999;
+            canvas.sortingOrder = 2000; // Pause(1100)·Iris(1000)보다 위
             var group = canvasGo.AddComponent<CanvasGroup>();
             group.alpha = 0f;
             group.blocksRaycasts = false;

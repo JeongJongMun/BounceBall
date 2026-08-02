@@ -117,7 +117,8 @@ namespace Game
 
             _canvas = canvasGo.AddComponent<Canvas>();
             _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            _canvas.sortingOrder = 1000; // SceneLoader 페이드(999)보다 위
+            // UI(100)보다 위, Pause(1100)·SceneLoader 페이드(2000)보다 아래
+            _canvas.sortingOrder = 1000;
             _canvas.enabled = false;
 
             _group = canvasGo.AddComponent<CanvasGroup>();

@@ -37,6 +37,9 @@ namespace Game
             var player = other.GetComponent<Player>();
             if (player == null) return;
 
+            // 클리어·낙사 연출 중에는 획득하지 않는다 (PropertyItem과 동일)
+            if (player.State == PlayerState.Disabled) return;
+
             // 다른 아이템을 먹는 중이면 연출이 끝날 때까지 기다린다
             if (player.IsEating) return;
 
