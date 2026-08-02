@@ -52,6 +52,10 @@ namespace Game
         [Tooltip("혀 구간 중 아이템에 닿은 채 머무는 비율")]
         [Range(0f, 1f)] [SerializeField] private float tongueHoldRatio = 0.1f;
 
+        [Header("사망 폴백")]
+        [Tooltip("사망 애니메이션이 없는 스켈레톤에 쓰는 연출 길이. 튀어올랐다 떨어지는 게 보일 만큼 잡는다")]
+        [SerializeField] private float deathFallbackDuration = 0.7f;
+
         private ViewSet _active;
         private Player _player;
         private bool _crawling;
@@ -226,7 +230,10 @@ namespace Game
                 PlayIdle();
         }
 
-        // 사망 연출 재생 후 소요 시간을 돌려준다. 사망 애니가 없는 스켈레톤은 스케일 아웃으로 대체.
+        // 사망 연출 재생 후 소요 시간을 돌려준다.
+        // 사망 애니가 없는 스켈레톤은 크기를 건드리지 않고 그대로 튀어올랐다 떨어지게 두고,
+        // 사라지는 건 아이리스 암전에 맡긴다 — 스케일 아웃을 쓰면 포물선이 보이기 전에 줄어들어
+        // "그냥 작아지며 사라진다"로 읽힌다.
         public float PlayDeath()
         {
             if (!HasState) return 0f;
@@ -241,16 +248,13 @@ namespace Game
                 }
             }
 
-            var t = _active.skeleton.transform;
-            t.DOKill();
-            t.DOScale(Vector3.zero, 0.15f).SetEase(Ease.InQuad);
-            return 0.15f;
+            return deathFallbackDuration;
         }
 
         // 부활 연출: 스케일 0 → 1.3배 → 원래 크기
         public void PlayRespawnPop()
         {
-            // 사망 중 스케일 아웃됐을 수 있으니 세 뷰 모두 원복해 둔다
+            // 이전 부활 팝이 중간에 끊겨 크기가 어긋나 있을 수 있으니 세 뷰 모두 원복해 둔다
             RestoreScale(defaultView, _defaultBaseScale);
             RestoreScale(jellyView, _jellyBaseScale);
             RestoreScale(iceView, _iceBaseScale);
