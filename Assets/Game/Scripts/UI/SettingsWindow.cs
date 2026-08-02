@@ -21,12 +21,9 @@ namespace Game
         [SerializeField] private Button closeButton;
 
         [Header("데이터 초기화 (디버그)")]
-        [Tooltip("끄면 버튼이 숨겨지고 창 높이도 그만큼 줄어든다")]
+        [Tooltip("끄면 버튼을 숨긴다")]
         [SerializeField] private bool showResetButton = true;
         [SerializeField] private Button resetButton;
-        [SerializeField] private RectTransform panelRect;
-        [SerializeField] private float panelHeightWithReset = 820f;
-        [SerializeField] private float panelHeightWithoutReset = 700f;
 
         private bool _applying;
 
@@ -65,16 +62,9 @@ namespace Game
         public void Open() => gameObject.SetActive(true);
         public void Close() => gameObject.SetActive(false);
 
-        // 버튼을 숨기면 그만큼 창을 줄여 빈 공간이 남지 않게 한다.
-        // 위쪽 요소는 모두 상단 기준이라 높이가 바뀌어도 자리가 그대로다.
         private void ApplyResetButtonVisibility()
         {
             if (resetButton != null) resetButton.gameObject.SetActive(showResetButton);
-            if (panelRect == null) return;
-
-            var size = panelRect.sizeDelta;
-            size.y = showResetButton ? panelHeightWithReset : panelHeightWithoutReset;
-            panelRect.sizeDelta = size;
         }
 
         // 저장된 데이터를 모두 지우고 메인 메뉴로 돌아간다 (디버그용).
@@ -139,14 +129,13 @@ namespace Game
         private static void SetPercent(TMP_Text text, Slider slider)
         {
             if (text == null || slider == null) return;
-            text.text = Mathf.RoundToInt(slider.value * 100f) + "%";
+            text.text = Mathf.RoundToInt(slider.value * 100f).ToString();
         }
 
         // 에디터 툴링에서 배선할 때 사용.
-        public void SetResetReferences(Button reset, RectTransform panel)
+        public void SetResetReferences(Button reset)
         {
             resetButton = reset;
-            panelRect = panel;
         }
 
         public void SetReferences(Slider master, Slider bgm, Slider sfx,
