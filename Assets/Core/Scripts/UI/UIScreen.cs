@@ -64,6 +64,47 @@ namespace Core.UI
                 scale.OnComplete(() => gameObject.SetActive(false));
         }
 
+        public void HideImmediate()
+        {
+            if (canvasGroup != null)
+            {
+                canvasGroup.DOKill();
+                canvasGroup.alpha = 0f;
+                canvasGroup.blocksRaycasts = false;
+                canvasGroup.interactable = false;
+            }
+
+            if (panel != null)
+            {
+                panel.DOKill();
+                panel.localScale = Vector3.one;
+            }
+
+            gameObject.SetActive(false);
+        }
+
+        public void FadeOut(float duration)
+        {
+            if (!gameObject.activeSelf) return;
+
+            if (canvasGroup != null)
+            {
+                canvasGroup.DOKill();
+                canvasGroup.blocksRaycasts = false;
+                canvasGroup.interactable = false;
+                canvasGroup.DOFade(0f, duration).SetEase(Ease.InCubic).SetUpdate(true);
+            }
+            else if (panel != null)
+            {
+                panel.DOKill();
+                panel.DOScale(0.92f, duration).SetEase(Ease.InQuad).SetUpdate(true);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
         protected virtual void OnShow() { }
     }
 }

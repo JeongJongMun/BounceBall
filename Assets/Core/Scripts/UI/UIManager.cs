@@ -32,6 +32,14 @@ namespace Core.UI
                 GameManager.Instance.TogglePause();
         }
 
+        public void FadeOutForSceneTransition(float sceneFadeDuration)
+        {
+            var duration = sceneFadeDuration * 1.8f;
+            if (pause != null && pause.gameObject.activeSelf) pause.FadeOut(duration);
+            if (result != null && result.gameObject.activeSelf) result.FadeOut(duration);
+            if (clear != null && clear.gameObject.activeSelf) clear.FadeOut(duration);
+        }
+
         // 화면 참조는 null 허용 — 전용 메뉴 씬을 쓰는 게임은 mainMenu 없이 구성한다.
         private void HandleStateChanged(int stateValue)
         {
@@ -40,10 +48,10 @@ namespace Core.UI
             {
                 case GameState.Ready:
                     if (mainMenu != null) mainMenu.Show();
-                    if (pause != null) pause.Hide();
-                    if (result != null) result.Hide();
-                    if (clear != null) clear.Hide();
-                    if (hud != null) hud.Hide();
+                    if (pause != null) pause.HideImmediate();
+                    if (result != null) result.HideImmediate();
+                    if (clear != null) clear.HideImmediate();
+                    if (hud != null) hud.HideImmediate();
                     break;
                 case GameState.Playing:
                     if (mainMenu != null) mainMenu.Hide();
