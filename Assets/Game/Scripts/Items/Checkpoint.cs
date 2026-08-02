@@ -27,6 +27,9 @@ namespace Game
             var player = other.GetComponent<Player>();
             if (player == null) return;
 
+            // 클리어·낙사 연출 중에는 활성화하지 않는다 (PropertyItem과 동일)
+            if (player.State == PlayerState.Disabled) return;
+
             // 이미 활성화된 체크포인트는 다시 핥지 않는다. 다른 걸 먹는 중이어도 건너뛴다.
             _raiseDelay = !IsActivated && !player.IsEating
                 ? other.GetComponent<PlayerSpineView>()?.PlayEat(transform.position) ?? 0f

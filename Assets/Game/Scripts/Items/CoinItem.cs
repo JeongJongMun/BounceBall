@@ -26,7 +26,12 @@ namespace Game
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (IsCollected) return;
-            if (other.GetComponent<Player>() == null) return;
+            var player = other.GetComponent<Player>();
+            if (player == null) return;
+
+            // 클리어·낙사 연출 중에는 획득하지 않는다 (PropertyItem과 동일)
+            if (player.State == PlayerState.Disabled) return;
+
             Collect();
         }
 

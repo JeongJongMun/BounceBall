@@ -286,6 +286,7 @@ namespace Game
         // 체크포인트 활성화 (기획 §25.2). 한 번에 하나만 활성이며, 새로 활성화하면 이전 데이터를 덮어쓴다 (§25.6).
         public void ActivateCheckpoint(Checkpoint checkpoint)
         {
+            if (_isRespawning) return; // 사망 연출 중 접촉으로 저장되면 안 된다
             if (checkpoint == null || _activeCheckpoint == checkpoint) return; // 이미 활성화된 체크포인트는 재저장하지 않는다
 
             if (_activeCheckpoint != null) _activeCheckpoint.SetActivated(false);
@@ -453,7 +454,8 @@ namespace Game
         // 목표 아이템이 획득될 때 호출된다 (기획 §21.3)
         public void NotifyGoalCollected()
         {
-            if (IsStageCleared) return;
+            // 먹기 연출 도중 사망하면 Complete가 뒤늦게 올 수 있다 — 집계·클리어하지 않는다.
+            if (IsStageCleared || _isRespawning) return;
 
             AcquiredGoalItemCount++;
             onGoalProgressChanged?.Raise(GoalProgressText);
