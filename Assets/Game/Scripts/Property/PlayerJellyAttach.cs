@@ -49,9 +49,9 @@ namespace Game
         private void Update()
         {
             if (!readKeyboard || Keyboard.current == null) return;
-            bool a = Keyboard.current.aKey.isPressed;
-            bool d = Keyboard.current.dKey.isPressed;
-            _input = a == d ? 0f : (a ? -1f : 1f);
+            bool left = Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed;
+            bool right = Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed;
+            _input = left == right ? 0f : (left ? -1f : 1f);
         }
 
         private void OnCollisionEnter2D(Collision2D collision) => TryAttach(collision);
