@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Property_Default
   m_EditorClassIdentifier: Game::Game.ItemData
   itemId: Property_Default
-  itemName: "\uC131\uC9C8 \uBCC0\uD654 \uC544\uC774\uD15C (\uAE30\uBCF8)"
+  itemName: "\uC131\uC9C8 \uBCC0\uD654 (\uAE30\uBCF8)"
   description: "\uC0AC\uC6A9\uD558\uBA74 \uAE30\uBCF8 \uC131\uC9C8\uB85C \uB3CC\uC544\uAC11\uB2C8\uB2E4."
   thumbnail: {fileID: 21300000, guid: bc12cb6598889b947bd5444fe6ca8b45, type: 3}
   category: 0
