@@ -22,14 +22,36 @@ namespace Game
         // 접촉 지점에서 노멀 반대 방향(타일 내부)으로 살짝 들어간 위치의 특수 타일을 반환한다.
         public static SpecialTile GetSpecialTileAt(Vector2 contactPoint, Vector2 contactNormal)
         {
+            return TryGetSpecialTileAt(contactPoint, contactNormal, out var tile, out _) ? tile : null;
+        }
+
+        // 특수 타일과 함께, 셀 회전이 반영된 가시 방향(원본 그림 기준 위쪽)을 돌려준다.
+        // 팔레트에서 [ ] 키로 회전하거나 반전해 배치한 사망 발판의 방향 판정에 쓴다.
+        public static bool TryGetSpecialTileAt(Vector2 contactPoint, Vector2 contactNormal,
+            out SpecialTile tile, out Vector2 spikeDirection)
+        {
             var probe = contactPoint - contactNormal * 0.25f;
             foreach (var tilemap in GetTilemaps())
             {
                 if (tilemap == null) continue;
                 var cell = tilemap.WorldToCell(probe);
-                if (tilemap.GetTile(cell) is SpecialTile special) return special;
+                if (tilemap.GetTile(cell) is not SpecialTile special) continue;
+
+                tile = special;
+                spikeDirection = SpikeDirectionFrom(tilemap.GetTransformMatrix(cell));
+                return true;
             }
-            return null;
+
+            tile = null;
+            spikeDirection = Vector2.up;
+            return false;
+        }
+
+        // 셀 변환 행렬에서 가시 방향을 구한다. 회전과 상하 반전 모두 행렬이 처리한다.
+        public static Vector2 SpikeDirectionFrom(Matrix4x4 cellTransform)
+        {
+            Vector2 direction = cellTransform.MultiplyVector(Vector3.up);
+            return direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.up;
         }
 
         // 씬에 깔린 타일 전체를 감싸는 월드 영역. 타일이 하나도 없으면 false.

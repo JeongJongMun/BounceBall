@@ -19,11 +19,12 @@ namespace Game
         [SerializeField] private bool isDeadly;
         [Tooltip("사망을 면제받은 성질에서 부착·미끄러짐을 그대로 적용할지 (기믹 문서 §4.3, §4.4)")]
         [SerializeField] private bool applySurfaceEffectWhenSafe = true;
-        [Tooltip("아랫면 접촉(타일을 천장으로 받는 경우)에도 사망할지. 가시처럼 위·옆에만 돋은 타일은 끈다")]
+        [Tooltip("켜면 등면(가시 반대쪽)을 포함한 전방향에서 사망한다. 끄면 가시 반대면만 안전하다. " +
+            "가시 방향은 팔레트 회전([ ] 키) 배치를 그대로 따른다")]
         [SerializeField] private bool lethalFromBelow = true;
 
-        // 아랫면 접촉으로 볼 노멀 기준. PlayerBounce의 하단 접촉 판정과 같은 값을 쓴다.
-        private const float BelowContactThreshold = 0.5f;
+        // 등면 접촉으로 볼 내적 기준. 가시 빗면(대각 법선)은 사망 쪽에 남도록 절반으로 둔다.
+        private const float BackContactThreshold = 0.5f;
 
         public TilePropertyType TileProperty => tileProperty;
         public bool IsDeadly => isDeadly;
@@ -51,10 +52,20 @@ namespace Game
         // 이 성질의 플레이어가 접촉하면 죽는가.
         public bool IsLethalTo(PlayerPropertyType property) => isDeadly && !IsSafeFor(property);
 
-        // 접촉 방향까지 반영한 사망 판정. contactNormal은 타일에서 플레이어를 향하므로,
-        // 아래를 향하면 플레이어가 타일 밑면을 천장으로 받은 것이다.
+        // 회전 없는 배치용 축약형 — 가시가 원본 그대로 위를 향한다고 본다.
         public bool IsLethalOnContact(PlayerPropertyType property, Vector2 contactNormal)
-            => IsLethalTo(property) && (lethalFromBelow || contactNormal.y > -BelowContactThreshold);
+            => IsLethalOnContact(property, contactNormal, Vector2.up);
+
+        // 접촉 방향까지 반영한 사망 판정. spikeDirection은 셀 회전이 반영된 가시 방향이다
+        // (원본 그림 기준 위쪽 — StageTiles.TryGetSpecialTileAt가 계산해 준다).
+        // 가시 반대면(등면)에 닿았을 때만 안전하다: 천장 가시는 아래서 받으면 죽고 위를 밟으면 산다.
+        public bool IsLethalOnContact(PlayerPropertyType property, Vector2 contactNormal, Vector2 spikeDirection)
+            => IsLethalTo(property)
+               && (lethalFromBelow || !IsBackContact(contactNormal, spikeDirection));
+
+        // 접촉 법선은 타일에서 플레이어를 향하므로, 가시 방향과 반대면 등면에 닿은 것이다.
+        public static bool IsBackContact(Vector2 contactNormal, Vector2 spikeDirection)
+            => Vector2.Dot(contactNormal, spikeDirection) <= -BackContactThreshold;
 
         // 부착·미끄러짐 같은 표면 효과를 적용할지. 사망 발판이 아니면 항상 적용한다.
         public bool AppliesSurfaceEffectFor(PlayerPropertyType property)

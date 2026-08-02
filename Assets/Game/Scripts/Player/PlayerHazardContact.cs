@@ -28,8 +28,9 @@ namespace Game
             for (int i = 0; i < collision.contactCount; i++)
             {
                 var contact = collision.GetContact(i);
-                var tile = StageTiles.GetSpecialTileAt(contact.point, contact.normal);
-                if (tile == null || !tile.IsLethalOnContact(PlayerRef.PropertyType, contact.normal)) continue;
+                // 가시 방향(셀 회전 반영)까지 받아 등면 접촉만 안전 처리한다
+                if (!StageTiles.TryGetSpecialTileAt(contact.point, contact.normal, out var tile, out var spikeDirection)) continue;
+                if (!tile.IsLethalOnContact(PlayerRef.PropertyType, contact.normal, spikeDirection)) continue;
 
                 // 실드가 있으면 사망을 1회 무효화한다 (상점 소비형 문서 §5.6).
                 // 원래 안전한 조합은 위의 IsLethalOnContact에서 걸러지므로 실드가 소모되지 않는다 (§5.4).
