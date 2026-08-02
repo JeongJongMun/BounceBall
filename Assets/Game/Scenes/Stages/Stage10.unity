@@ -2805,7 +2805,7 @@ Transform:
   m_GameObject: {fileID: 1327169763}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.71, y: 6.84, z: 0}
+  m_LocalPosition: {x: -6.14, y: -1.09, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3270,7 +3270,7 @@ MonoBehaviour:
   stageMaxX: 8.700001
   stageMinY: -11.55
   stageMaxY: 13.45
-  stageFallLimitY: -10.55
+  stageFallLimitY: -12.6
   boundsPadding: 3
   cameraZoom: 5
   cameraVerticalOffset: 0
