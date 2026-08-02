@@ -486,6 +486,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5e5bd1613b7651743842f153d34a2d1a, type: 3}
   introLastFrame: 16
   startTransitionFrame: 22
+  introLickFrame: 8
+  startLickFrame: 18
   framesPerSecond: 12
 --- !u!223 &706203814 stripped
 Canvas:

@@ -19,6 +19,10 @@ namespace Game
         [SerializeField] private int introLastFrame = 16;
         [Tooltip("시작 연출 중 이 프레임에 도달하면 스테이지 선택으로 넘어간다. 혀가 가장 나온 중간 지점")]
         [SerializeField] private int startTransitionFrame = 22;
+        [Tooltip("도입부에서 혀가 나오기 시작하는 프레임. Title_Lick 효과음을 낸다")]
+        [SerializeField] private int introLickFrame = 8;
+        [Tooltip("시작 연출에서 혀가 나오기 시작하는 프레임. Title_Lick 효과음을 낸다")]
+        [SerializeField] private int startLickFrame = 18;
         [SerializeField] private float framesPerSecond = 12f;
 
         private Coroutine _playing;
@@ -87,6 +91,7 @@ namespace Game
             for (int i = from; i <= to; i++)
             {
                 ShowFrame(i);
+                PlayLickSoundIfNeeded(i);
                 if (interval > 0f) yield return new WaitForSecondsRealtime(interval);
             }
 
@@ -99,6 +104,12 @@ namespace Game
             if (target == null || frames == null) return;
             if (index < 0 || index > LastIndex) return;
             if (frames[index] != null) target.sprite = frames[index];
+        }
+
+        private void PlayLickSoundIfNeeded(int index)
+        {
+            if (index != introLickFrame && index != startLickFrame) return;
+            Sound.Play(SoundId.Title_Lick);
         }
     }
 }

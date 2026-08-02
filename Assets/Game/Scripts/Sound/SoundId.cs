@@ -33,6 +33,9 @@ namespace Game
 
         // 값이 SoundDatabase에 int로 저장되므로 새 사운드는 항상 뒤에 추가한다.
         // 중간에 끼우면 기존 항목의 클립 연결이 어긋난다.
-        Dead // 플레이어 사망
+        Dead, // 플레이어 사망
+
+        // UI (타이틀)
+        Title_Lick
     }
 }
