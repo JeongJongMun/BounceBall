@@ -45,7 +45,7 @@ namespace Game
             CurrencyWallet.OnCoinChanged += RefreshOwnedCoin;
             RefreshOwnedCoin(CurrencyWallet.Coin);
             Refresh();
-            PlayDropIntro();
+            if (!MenuNavigation.OpenStageSelectOnLoad) PlayDropIntro();
         }
 
         private void OnDisable()

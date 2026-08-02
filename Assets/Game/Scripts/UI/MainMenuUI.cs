@@ -61,14 +61,15 @@ namespace Game
         // 스테이지에서 돌아온 경우에는 메인 화면을 건너뛰고 스테이지 선택 화면을 연다.
         private void Start()
         {
-            if (!MenuNavigation.ConsumeStageSelectRequest()) return;
+            if (!MenuNavigation.OpenStageSelectOnLoad) return;
             if (stageCanvas == null) return;
 
+            // OnEnable에서 플래그를 읽을 수 있게, 켠 뒤에 소비한다.
             stageCanvas.gameObject.SetActive(true);
+            MenuNavigation.ConsumeStageSelectRequest();
             gameObject.SetActive(false);
         }
 
-        // 시작 연출이 끝난 뒤 실제로 게임(스테이지 선택)으로 넘어간다.
         private void EnterStageSelect()
         {
             if (stageCanvas != null) stageCanvas.gameObject.SetActive(true);

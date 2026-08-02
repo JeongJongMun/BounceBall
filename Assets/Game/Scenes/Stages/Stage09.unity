@@ -4564,7 +4564,7 @@ MonoBehaviour:
   totalGoalItemCount: 2
   requiredGoalItemCount: 2
   clearRewardCoin: 7
-  deathBounceForce: 6
+  deathBounceForce: 16
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,
     type: 2}
   onStageCleared: {fileID: 11400000, guid: cb747b9164232d04b9885739a15dda67, type: 2}

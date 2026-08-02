@@ -1029,8 +1029,8 @@ MonoBehaviour:
   startPosition: {fileID: 1335066053}
   stageMinX: -8.36
   stageMaxX: 9.34
-  stageMinY: -3.9
-  stageMaxY: 5.62
+  stageMinY: -4.35
+  stageMaxY: 9.08
   stageFallLimitY: -5.25
   boundsPadding: 3
   cameraZoom: 5
@@ -1049,7 +1049,7 @@ MonoBehaviour:
   totalGoalItemCount: 1
   requiredGoalItemCount: 1
   clearRewardCoin: 3
-  deathBounceForce: 6
+  deathBounceForce: 16
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,
     type: 2}
   onStageCleared: {fileID: 11400000, guid: cb747b9164232d04b9885739a15dda67, type: 2}
@@ -3698,7 +3698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cccd7baadc5c49348bed3f15a357e8e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::Game.ParallaxBackground
-  horizonOffset: 0
+  horizonOffset: -1.2
   seed: 35665
   layers:
   - layerName: "\uC0B0"
