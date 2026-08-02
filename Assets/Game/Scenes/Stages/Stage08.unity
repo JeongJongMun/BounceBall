@@ -1800,7 +1800,7 @@ MonoBehaviour:
   wallHeadroom: 30
   totalGoalItemCount: 2
   requiredGoalItemCount: 2
-  clearRewardCoin: 8
+  clearRewardCoin: 6
   deathBounceForce: 6
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,
     type: 2}
