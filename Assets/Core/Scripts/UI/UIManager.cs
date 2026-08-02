@@ -50,7 +50,8 @@ namespace Core.UI
                     if (pause != null) pause.Hide();
                     if (result != null) result.Hide();
                     if (clear != null) clear.Hide();
-                    if (hud != null) hud.Show();
+                    // pause 중에는 HUD를 숨기지 않으므로, 이미 떠 있으면 Show()로 팝 애니를 다시 돌리지 않는다.
+                    if (hud != null && !hud.gameObject.activeSelf) hud.Show();
                     break;
                 case GameState.Paused:
                     if (pause != null) pause.Show();

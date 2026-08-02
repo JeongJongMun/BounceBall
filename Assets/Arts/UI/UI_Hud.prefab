@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181cff1407c52c0438cd95c504078f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game::Game.UI.GoalHud
-  panel: {fileID: 3341607598897404085}
+  panel: {fileID: 9119065162899301900}
   popDuration: 0.25
   goalText: {fileID: 3034087535973452203}
   onGoalProgressChanged: {fileID: 11400000, guid: aed3e757906b00942925f0dc49c73e08,
