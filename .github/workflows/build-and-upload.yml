@@ -3,24 +3,34 @@ name: Build & Upload to Google Drive
 on:
   push:
     branches: [main, dev]
+  # itch.io 업로드용 빌드를 아무 때나 뽑을 수 있게 수동 실행도 열어둔다
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build StandaloneWindows64
+    name: Build ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
+    strategy:
+      # 한쪽이 깨져도 다른 플랫폼 빌드는 끝까지 간다
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64
+          - WebGL
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           lfs: true
 
+      # Library는 플랫폼마다 임포트 결과가 달라 캐시를 섞으면 안 된다
       - name: Cache Library
         uses: actions/cache@v4
         with:
           path: Library
-          key: Library-StandaloneWindows64-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-StandaloneWindows64-
+            Library-${{ matrix.targetPlatform }}-
             Library-
 
       - name: Build with Unity
@@ -30,20 +40,45 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneWindows64
+          targetPlatform: ${{ matrix.targetPlatform }}
           buildName: BounceBall
 
       - name: Set build name
         id: buildname
         run: |
           sudo chown -R $USER build
-          echo "name=$(TZ=Asia/Seoul date +%Y_%m_%d_%H%M)_${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          echo "name=$(TZ=Asia/Seoul date +%Y_%m_%d_%H%M)_${{ github.ref_name }}_${{ matrix.targetPlatform }}" >> "$GITHUB_OUTPUT"
+
+      # itch.io는 zip 최상단에 index.html이 있어야 HTML 게임으로 인식한다.
+      # 빌드 폴더를 통째로 압축하면 한 겹 더 들어가 "index.html을 찾을 수 없다"며 거부한다.
+      - name: Package WebGL for itch.io
+        if: matrix.targetPlatform == 'WebGL'
+        run: |
+          INDEX=$(find build/WebGL -name index.html | head -n1)
+          if [ -z "$INDEX" ]; then
+            echo "::error::WebGL 빌드에서 index.html을 찾지 못했습니다"
+            ls -R build/WebGL
+            exit 1
+          fi
+          mkdir -p dist
+          (cd "$(dirname "$INDEX")" && zip -qr "$GITHUB_WORKSPACE/dist/${{ steps.buildname.outputs.name }}.zip" .)
+          ls -lh dist
+
+      # WebGL은 itch.io에 그대로 올릴 zip 하나, Windows는 빌드 폴더 전체를 넘긴다
+      - name: Set upload path
+        id: uploadpath
+        run: |
+          if [ "${{ matrix.targetPlatform }}" = "WebGL" ]; then
+            echo "path=dist" >> "$GITHUB_OUTPUT"
+          else
+            echo "path=build/${{ matrix.targetPlatform }}" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Upload artifact (backup)
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.buildname.outputs.name }}
-          path: build/StandaloneWindows64
+          path: ${{ steps.uploadpath.outputs.path }}
           retention-days: 7
 
       - name: Upload to Google Drive
@@ -54,4 +89,4 @@ jobs:
           RCLONE_CONFIG_GDRIVE_ROOT_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq rclone
-          rclone copy build/StandaloneWindows64 "gdrive:${{ steps.buildname.outputs.name }}" -v --transfers 8
+          rclone copy "${{ steps.uploadpath.outputs.path }}" "gdrive:${{ steps.buildname.outputs.name }}" -v --transfers 8
