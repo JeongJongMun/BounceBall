@@ -140,14 +140,36 @@ namespace Game
             transform.DOScale(TargetScale(), tweenDuration).SetEase(Ease.OutBack).SetUpdate(true);
         }
 
-        // 우클릭으로 해제한다 (문서 §5.6.3의 "별도의 해제 동작")
         public void OnPointerClick(PointerEventData eventData)
         {
+            // HUD 칸은 좌클릭·탭으로 사용한다. 숫자키가 없는 터치 기기에서는
+            // 이 경로가 아이템을 쓸 수 있는 유일한 방법이다.
+            // 인벤토리 창의 칸(등록용)은 드래그로 등록·해제하므로 제외한다.
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                if (_acceptsDrop) return;
+                UseSlot();
+                return;
+            }
+
+            // 우클릭으로 해제한다 (문서 §5.6.3의 "별도의 해제 동작")
             if (eventData.button != PointerEventData.InputButton.Right) return;
             if (QuickSlots.IsEmpty(SlotIndex)) return;
 
             QuickSlots.Clear(SlotIndex);
             Sound.Play(SoundId.UI_Click); // 우클릭은 전역 클릭음(좌클릭) 대상이 아니다
+        }
+
+        // 숫자키 경로(QuickSlotBar)와 같은 규칙을 따른다.
+        // 빈 칸이면 조용히 무시하고(문서 §5.4), 실패 사유별 알림은 ItemUseService가 처리한다.
+        private void UseSlot()
+        {
+            if (UIPopupState.IsAnyOpen) return; // 팝업이 열려 있으면 사용하지 않는다 (문서 §11)
+
+            var itemId = QuickSlots.GetItemId(SlotIndex);
+            if (string.IsNullOrEmpty(itemId)) return;
+
+            ItemUseService.TryUse(itemId);
         }
 
         // 등록된 아이템을 칸 밖으로 끌어내면 해제한다 (문서 §5.6.3)
