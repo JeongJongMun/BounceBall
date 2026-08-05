@@ -12,15 +12,15 @@ namespace Game
     //
     // EventSystem을 거치므로 일시정지·퀵슬롯 같은 위쪽 UI를 누를 때는
     // 여기로 내려오지 않는다 — 버튼을 누르려다 캐릭터가 움직이는 일이 없다.
+    //
+    // 마우스는 무시한다. 데스크톱 브라우저에서도 Touchscreen 장치가 잡히기 때문에
+    // 장치 유무로 이 영역을 껐다 켜면 데스크톱에서 화면을 클릭했을 때 캐릭터가 움직인다.
+    // 포인터 종류로 거르면 항상 켜 두어도 안전하다.
     [RequireComponent(typeof(Graphic))]
     public class TouchMoveZone : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         [Label("방향 (-1 왼쪽 / +1 오른쪽)")]
         [SerializeField] private float direction = -1f;
-
-        [Label("터치가 없는 기기에서 숨김")]
-        [Tooltip("데스크톱에서는 꺼 두어야 마우스 클릭이 이동으로 먹히지 않는다")]
-        [SerializeField] private bool hideWithoutTouchscreen = true;
 
         // 같은 영역을 여러 손가락이 눌렀을 때, 하나를 떼도 나머지가 유지되도록
         // 포인터 id를 세어 둔다.
@@ -28,12 +28,6 @@ namespace Game
 
         private void OnEnable()
         {
-            if (hideWithoutTouchscreen && !GameInput.HasTouchscreen)
-            {
-                gameObject.SetActive(false);
-                return;
-            }
-
             var graphic = GetComponent<Graphic>();
             if (graphic != null) graphic.raycastTarget = true;
         }
@@ -42,8 +36,11 @@ namespace Game
 
         public void OnPointerDown(PointerEventData eventData)
         {
+            if (!IsTouch(eventData)) return;
             if (!_pointers.Add(eventData.pointerId)) return;
             if (_pointers.Count == 1) GameInput.AddTouchDirection(direction);
+
+            InputMode.ReportTouch();
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -51,6 +48,9 @@ namespace Game
             if (!_pointers.Remove(eventData.pointerId)) return;
             if (_pointers.Count == 0) GameInput.AddTouchDirection(-direction);
         }
+
+        // 마우스 포인터는 음수 id를 쓴다 (좌 -1 / 우 -2 / 가운데 -3). 터치는 0 이상이다.
+        private static bool IsTouch(PointerEventData eventData) => eventData.pointerId >= 0;
 
         private void ReleaseAll()
         {
