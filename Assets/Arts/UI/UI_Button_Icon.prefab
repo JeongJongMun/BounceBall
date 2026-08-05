@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1385383135770839280}
+  - component: {fileID: 2938046397410256201}
   m_Layer: 0
   m_Name: Key
   m_TagString: Untagged
@@ -37,6 +38,18 @@ RectTransform:
   m_AnchoredPosition: {x: 3, y: -3}
   m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 1, y: 0}
+--- !u!114 &2938046397410256201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772351277342569482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4743374662ac8db45aa17163f5f784d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game::Game.KeyHint
 --- !u!1 &1043179327328831016
 GameObject:
   m_ObjectHideFlags: 0
