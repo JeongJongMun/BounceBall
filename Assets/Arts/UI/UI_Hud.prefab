@@ -425,7 +425,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9051671162927394601
 CanvasRenderer:
@@ -554,7 +554,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game::Game.TouchMoveZone
   direction: 1
-  hideWithoutTouchscreen: 1
 --- !u!1 &4889273347772451055
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,7 +846,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Game::Game.TouchMoveZone
   direction: -1
-  hideWithoutTouchscreen: 1
 --- !u!1 &6717830983909862981
 GameObject:
   m_ObjectHideFlags: 0
