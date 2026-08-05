@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Game
 {
@@ -35,10 +34,9 @@ namespace Game
 
         private void Update()
         {
-            if (!readKeyboard || Keyboard.current == null) return;
-            bool left = Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed;
-            bool right = Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed;
-            _input = left == right ? 0f : (left ? -1f : 1f); // 동시 입력 = 0 (기획 §8.2)
+            // 키보드와 터치를 GameInput이 합친다. 동시 입력 = 0 (기획 §8.2)
+            if (!readKeyboard) return;
+            _input = GameInput.Horizontal();
         }
 
         private void FixedUpdate()
