@@ -14,14 +14,27 @@ jobs:
       # 한쪽이 깨져도 다른 플랫폼 빌드는 끝까지 간다
       fail-fast: false
       matrix:
-        targetPlatform:
-          - StandaloneWindows64
-          - WebGL
+        # Android는 IL2CPP라 빌드가 20분을 넘긴다. dev 푸시마다 돌리면 Actions 사용량이
+        # 빠르게 소진되므로 main 푸시와 수동 실행에서만 포함한다.
+        targetPlatform: >-
+          ${{ fromJSON(
+            (github.ref_name == 'main' || github.event_name == 'workflow_dispatch')
+            && '["StandaloneWindows64","WebGL","Android"]'
+            || '["StandaloneWindows64","WebGL"]'
+          ) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           lfs: true
+
+      # 안드로이드 에디터 이미지와 IL2CPP 중간 산출물이 커서 러너 디스크가 부족해지기 쉽다.
+      # 빌드와 무관한 사전 설치 툴체인만 지운다.
+      - name: Free disk space
+        if: matrix.targetPlatform == 'Android'
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost /usr/share/swift || true
+          df -h /
 
       # Library는 플랫폼마다 임포트 결과가 달라 캐시를 섞으면 안 된다
       - name: Cache Library
@@ -42,6 +55,10 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           buildName: Ml-em
+          # itch.io 배포와 실기기 사이드로드용이라 APK로 뽑는다.
+          # 플레이 스토어에 올리려면 androidAppBundle(AAB)로 바꾸고 키스토어를 붙여야 한다.
+          # 키스토어를 주지 않으면 디버그 키로 서명된다 — 설치·테스트에는 문제없다.
+          androidExportType: androidPackage
 
       - name: Set build name
         id: buildname

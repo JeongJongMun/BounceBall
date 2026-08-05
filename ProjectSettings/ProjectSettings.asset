@@ -170,7 +170,8 @@ PlayerSettings:
   androidMaxAspectRatio: 2.4
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Standalone: com.unity.template.platformer
+    Android: com.yeah.mlem
+    Standalone: com.yeah.mlem
   buildNumber:
     Standalone: 0
     VisionOS: 0
