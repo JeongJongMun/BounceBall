@@ -7,9 +7,22 @@ on:
   workflow_dispatch:
 
 jobs:
+  # 폴더 이름을 한 번만 정해 모든 플랫폼이 공유한다.
+  # 각 잡에서 시각을 재면 빌드 소요 시간이 달라(Android는 20분 이상) 폴더가 쪼개진다.
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      folder: ${{ steps.folder.outputs.name }}
+    steps:
+      - name: Decide folder name
+        id: folder
+        run: echo "name=$(TZ=Asia/Seoul date +%Y_%m_%d_%H%M)_${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+
   build:
     name: Build ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
+    needs: prepare
     strategy:
       # 한쪽이 깨져도 다른 플랫폼 빌드는 끝까지 간다
       fail-fast: false
@@ -64,7 +77,7 @@ jobs:
         id: buildname
         run: |
           sudo chown -R $USER build
-          echo "name=$(TZ=Asia/Seoul date +%Y_%m_%d_%H%M)_${{ github.ref_name }}_${{ matrix.targetPlatform }}" >> "$GITHUB_OUTPUT"
+          echo "name=${{ needs.prepare.outputs.folder }}_${{ matrix.targetPlatform }}" >> "$GITHUB_OUTPUT"
 
       # 플랫폼마다 파일 하나만 남긴다. 드라이브에 폴더가 쌓이지 않고 받는 쪽도 단순해진다.
       - name: Package artifact
@@ -122,6 +135,6 @@ jobs:
           RCLONE_CONFIG_GDRIVE_ROOT_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq rclone
-          # dist 안의 파일 하나를 지정 폴더 바로 아래에 올린다.
-          # 대상에 이름을 붙이면 그 이름의 하위 폴더가 생기므로 붙이지 않는다.
-          rclone copy dist "gdrive:" -v --transfers 8
+          # 세 플랫폼이 같은 폴더에 각자의 파일 하나씩을 올린다.
+          # 폴더 이름은 prepare 잡이 정한 값이라 모든 잡이 동일하다.
+          rclone copy dist "gdrive:${{ needs.prepare.outputs.folder }}" -v --transfers 8
