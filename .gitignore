@@ -110,3 +110,7 @@ InitTestScene*.unity*
 
 # IDE
 /.idea/
+
+# AI 작업용 구현 계획서. 개발 중 소비되고 끝나는 문서라 저장소에 남기지 않는다.
+# 설계 이력은 git log에 남아 있다.
+docs/superpowers/
